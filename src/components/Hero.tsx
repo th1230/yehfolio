@@ -17,7 +17,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
           >
-            設計師 & 開發者
+            前端工程師
           </motion.h1>
           
           <motion.p 
@@ -26,7 +26,8 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
           >
-            創造美麗與功能並存的數位體驗，專注於使用者介面設計與前端開發
+            三年開發經驗 • Angular 專家 • 全端開發能力<br />
+            專注於創造高品質的 Web 應用程式
           </motion.p>
           
           <motion.div 

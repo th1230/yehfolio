@@ -19,6 +19,8 @@ export default function Navigation() {
   const navItems = [
     { name: '首頁', href: '#' },
     { name: '關於', href: '#about' },
+    { name: '技能', href: '#skills' },
+    { name: '經驗', href: '#experience' },
     { name: '作品', href: '#projects' },
     { name: '聯絡', href: '#contact' }
   ];

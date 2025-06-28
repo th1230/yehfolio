@@ -112,40 +112,6 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Newsletter Section */}
-        <motion.div
-          className="border-t border-apricot/20 pt-8 mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
-          viewport={{ once: true }}
-        >
-          <div className="max-w-md mx-auto text-center">
-            <h4 className="text-lg font-semibold mb-2 text-apricot">
-              訂閱最新消息
-            </h4>
-            <p className="text-apricot/70 mb-4">
-              獲取設計靈感與開發技巧的最新分享
-            </p>
-            <div className="flex">
-              <input
-                type="email"
-                placeholder="輸入您的 Email"
-                className="flex-1 px-4 py-2 rounded-l-lg bg-apricot/10 border border-apricot/20 
-                         text-apricot placeholder-apricot/50 focus:outline-none focus:ring-2 
-                         focus:ring-sandy-brown focus:border-transparent transition-all duration-300"
-              />
-              <motion.button
-                className="px-6 py-2 bg-sandy-brown text-white rounded-r-lg font-medium 
-                         hover:bg-fawn transition-all duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                訂閱
-              </motion.button>
-            </div>
-          </div>
-        </motion.div>
 
         {/* Bottom Section */}
         <motion.div
