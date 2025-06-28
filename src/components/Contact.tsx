@@ -1,58 +1,47 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef, useState } from "react";
+import { FaLinkedin, FaGithub } from "react-icons/fa6";
 
 export default function Contact() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // 處理表單提交
-    console.log('Form submitted:', formData);
+    console.log("Form submitted:", formData);
   };
 
   const contactInfo = [
     {
       icon: "📧",
       title: "Email",
-      value: "hello@example.com",
-      link: "mailto:hello@example.com"
+      value: "thomasyeayea@gmail.com",
+      link: "mailto:thomasyeayea@gmail.com",
     },
-    {
-      icon: "📱",
-      title: "電話",
-      value: "+886 912 345 678",
-      link: "tel:+886912345678"
-    },
-    {
-      icon: "📍",
-      title: "地點",
-      value: "台北市，台灣",
-      link: "#"
-    }
   ];
 
   const socialLinks = [
-    { name: "LinkedIn", url: "#", icon: "🔗" },
-    { name: "GitHub", url: "#", icon: "💻" },
-    { name: "Dribbble", url: "#", icon: "🎨" },
-    { name: "Behance", url: "#", icon: "🎭" }
+    { name: "LinkedIn", url: "https://www.linkedin.com/in/jtunn-yue-yeh", icon: FaLinkedin },
+    { name: "GitHub", url: "https://github.com/th1230", icon: FaGithub },
   ];
 
   return (
@@ -81,7 +70,7 @@ export default function Contact() {
               <h3 className="text-2xl font-bold mb-8 text-outer-space dark:text-fawn">
                 聯絡資訊
               </h3>
-              
+
               <div className="space-y-6 mb-12">
                 {contactInfo.map((info, index) => (
                   <motion.a
@@ -90,8 +79,14 @@ export default function Contact() {
                     className="flex items-center space-x-4 p-4 rounded-lg bg-white dark:bg-gray-800/50 
                              shadow-md hover:shadow-lg transition-all duration-300 group"
                     initial={{ opacity: 0, y: 20 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                    transition={{ duration: 0.6, delay: 0.4 + index * 0.1, ease: "easeOut" }}
+                    animate={
+                      isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+                    }
+                    transition={{
+                      duration: 0.6,
+                      delay: 0.4 + index * 0.1,
+                      ease: "easeOut",
+                    }}
                     whileHover={{ y: -2 }}
                   >
                     <span className="text-2xl">{info.icon}</span>
@@ -99,8 +94,10 @@ export default function Contact() {
                       <h4 className="font-medium text-outer-space dark:text-apricot">
                         {info.title}
                       </h4>
-                      <p className="text-outer-space/80 dark:text-apricot/80 group-hover:text-sandy-brown 
-                                   transition-colors duration-300">
+                      <p
+                        className="text-outer-space/80 dark:text-apricot/80 group-hover:text-sandy-brown 
+                                   transition-colors duration-300"
+                      >
                         {info.value}
                       </p>
                     </div>
@@ -111,7 +108,9 @@ export default function Contact() {
               {/* 社群媒體 */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                animate={
+                  isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+                }
                 transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}
               >
                 <h4 className="text-lg font-medium mb-4 text-outer-space dark:text-fawn">
@@ -122,15 +121,24 @@ export default function Contact() {
                     <motion.a
                       key={social.name}
                       href={social.url}
+                      target="_blank"
                       className="w-12 h-12 bg-white dark:bg-gray-800/50 rounded-lg flex items-center 
                                justify-center shadow-md hover:shadow-lg transition-all duration-300"
                       whileHover={{ y: -3, rotate: 5 }}
                       whileTap={{ scale: 0.95 }}
                       initial={{ opacity: 0, scale: 0 }}
-                      animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
-                      transition={{ duration: 0.4, delay: 1 + index * 0.1, ease: "easeOut" }}
+                      animate={
+                        isInView
+                          ? { opacity: 1, scale: 1 }
+                          : { opacity: 0, scale: 0 }
+                      }
+                      transition={{
+                        duration: 0.4,
+                        delay: 1 + index * 0.1,
+                        ease: "easeOut",
+                      }}
                     >
-                      <span className="text-lg">{social.icon}</span>
+                      <social.icon className="text-lg" />
                     </motion.a>
                   ))}
                 </div>
@@ -147,11 +155,16 @@ export default function Contact() {
                 <div className="grid md:grid-cols-2 gap-6">
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                    animate={
+                      isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+                    }
                     transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
                   >
-                    <label htmlFor="name" className="block text-sm font-medium mb-2 
-                                                  text-outer-space dark:text-apricot">
+                    <label
+                      htmlFor="name"
+                      className="block text-sm font-medium mb-2 
+                                                  text-outer-space dark:text-apricot"
+                    >
                       姓名
                     </label>
                     <input
@@ -167,14 +180,19 @@ export default function Contact() {
                                transition-all duration-300"
                     />
                   </motion.div>
-                  
+
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                    animate={
+                      isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+                    }
                     transition={{ duration: 0.6, delay: 0.7, ease: "easeOut" }}
                   >
-                    <label htmlFor="email" className="block text-sm font-medium mb-2 
-                                                   text-outer-space dark:text-apricot">
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium mb-2 
+                                                   text-outer-space dark:text-apricot"
+                    >
                       Email
                     </label>
                     <input
@@ -194,11 +212,16 @@ export default function Contact() {
 
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                  animate={
+                    isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+                  }
                   transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}
                 >
-                  <label htmlFor="subject" className="block text-sm font-medium mb-2 
-                                                   text-outer-space dark:text-apricot">
+                  <label
+                    htmlFor="subject"
+                    className="block text-sm font-medium mb-2 
+                                                   text-outer-space dark:text-apricot"
+                  >
                     主題
                   </label>
                   <input
@@ -217,11 +240,16 @@ export default function Contact() {
 
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                  animate={
+                    isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+                  }
                   transition={{ duration: 0.6, delay: 0.9, ease: "easeOut" }}
                 >
-                  <label htmlFor="message" className="block text-sm font-medium mb-2 
-                                                    text-outer-space dark:text-apricot">
+                  <label
+                    htmlFor="message"
+                    className="block text-sm font-medium mb-2 
+                                                    text-outer-space dark:text-apricot"
+                  >
                     訊息
                   </label>
                   <textarea
@@ -245,7 +273,9 @@ export default function Contact() {
                   whileHover={{ y: -2 }}
                   whileTap={{ y: 0 }}
                   initial={{ opacity: 0, y: 20 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                  animate={
+                    isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+                  }
                   transition={{ duration: 0.6, delay: 1, ease: "easeOut" }}
                 >
                   發送訊息

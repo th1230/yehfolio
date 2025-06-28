@@ -4,10 +4,7 @@ html {
 
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #3e4e50;
-}
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
   --color-background: var(--background);
@@ -20,16 +17,7 @@ html {
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #1a1a1a;
-    --foreground: #f8bd7f;
-  }
-}
-
 body {
-  background: var(--background);
-  color: var(--foreground);
   overflow-x: hidden;
 }
 

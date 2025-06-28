@@ -1,9 +1,15 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
-import { useRef, useState } from 'react';
-import { FiExternalLink, FiGithub, FiX, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef, useState } from "react";
+import {
+  FiExternalLink,
+  FiGithub,
+  FiX,
+  FiChevronLeft,
+  FiChevronRight,
+} from "react-icons/fi";
 
 interface Project {
   id: string;
@@ -33,8 +39,10 @@ export default function Projects() {
     {
       id: "internal-transfer-system",
       title: "內部中轉系統",
-      description: "企業內部資料轉換與管理系統，使用 Angular + RxJS 實現自動刷新功能",
-      detailedDescription: "為公司開發的內部資料轉換系統，提供前台使用者介面和後台管理功能。使用 Angular 框架搭配 RxJS 實現自動刷新功能，大幅提升了資料處理效率。",
+      description:
+        "企業內部資料轉換與管理系統，使用 Angular + RxJS 實現自動刷新功能",
+      detailedDescription:
+        "為公司開發的內部資料轉換系統，提供前台使用者介面和後台管理功能。使用 Angular 框架搭配 RxJS 實現自動刷新功能，大幅提升了資料處理效率。",
       technologies: ["Angular", "RxJS", "TypeScript", "Bootstrap"],
       category: "商業專案",
       duration: "3個月",
@@ -42,26 +50,27 @@ export default function Projects() {
       achievements: [
         "獨立完成前後台系統開發",
         "實現自動刷新功能，提升使用者體驗",
-        "建立完整的資料轉換流程"
+        "建立完整的資料轉換流程",
       ],
       challenges: [
         "複雜的資料轉換邏輯處理",
         "即時資料同步機制設計",
-        "前後台權限管理系統"
+        "前後台權限管理系統",
       ],
       features: [
         "自動資料刷新",
         "權限管理系統",
         "資料轉換介面",
-        "後台管理功能"
+        "後台管理功能",
       ],
-      images: []
+      images: [],
     },
     {
       id: "digital-nomad-platform",
       title: "數位游牧平台",
       description: "數位游牧生活資訊平台，Lighthouse 效能分數達 95%",
-      detailedDescription: "使用 Razor 進行前台切版，搭配 JavaScript 實現功能邏輯。後台使用 Angular 開發管理平台，通過 Lighthouse 檢測達到 95% 的效能分數，實現完整的 SEO 優化。",
+      detailedDescription:
+        "使用 Razor 進行前台切版，搭配 JavaScript 實現功能邏輯。後台使用 Angular 開發管理平台，通過 Lighthouse 檢測達到 95% 的效能分數，實現完整的 SEO 優化。",
       technologies: ["Razor", "JavaScript", "Angular", "Lighthouse優化", "SEO"],
       category: "商業專案",
       duration: "4個月",
@@ -70,29 +79,30 @@ export default function Projects() {
         "Lighthouse 效能分數達 95%",
         "Google Search Console 索引優化",
         "響應式圖片與懶加載實現",
-        "CSP 安全性設置完成"
+        "CSP 安全性設置完成",
       ],
       challenges: [
         "效能優化至 95% Lighthouse 分數",
         "SEO 優化與 Structured Data 設置",
-        "圖片優化與懶加載實現"
+        "圖片優化與懶加載實現",
       ],
       features: [
         "響應式設計",
         "圖片懶加載",
         "SEO 優化",
         "內容管理系統",
-        "文章分類管理"
+        "文章分類管理",
       ],
       images: [],
       liveUrl: "https://example.com",
-      githubUrl: "https://github.com/yourusername/project"
+      githubUrl: "https://github.com/yourusername/project",
     },
     {
       id: "financial-reporting-platform",
       title: "期信申報平台",
       description: "金融期貨信託申報系統，實現複雜的多頁面通用列印功能",
-      detailedDescription: "使用 Angular 開發的金融申報系統，主要負責頁面內容管理與開發。實現了複雜的多頁面通用列印功能，確保符合金融法規要求。",
+      detailedDescription:
+        "使用 Angular 開發的金融申報系統，主要負責頁面內容管理與開發。實現了複雜的多頁面通用列印功能，確保符合金融法規要求。",
       technologies: ["Angular", "TypeScript", "RxJS"],
       category: "金融專案",
       duration: "6個月",
@@ -100,26 +110,18 @@ export default function Projects() {
       achievements: [
         "完成多頁面通用列印功能",
         "頁面內容管理系統開發",
-        "共用元件優化與調整"
+        "共用元件優化與調整",
       ],
-      challenges: [
-        "複雜的列印格式處理",
-        "多頁面資料整合",
-        "金融法規遵循要求"
-      ],
-      features: [
-        "多頁面列印",
-        "資料管理",
-        "表單驗證",
-        "報表生成"
-      ],
-      images: []
+      challenges: ["複雜的列印格式處理", "多頁面資料整合", "金融法規遵循要求"],
+      features: ["多頁面列印", "資料管理", "表單驗證", "報表生成"],
+      images: [],
     },
     {
       id: "fund-observatory",
       title: "基金觀測站",
       description: "第三期金融專案，包含期信子分類與境外境內基金功能開發",
-      detailedDescription: "金融相關的基金資訊平台，包含期信子分類頁面開發以及境外境內基金內容開發。同樣實現了多頁面通用列印功能。",
+      detailedDescription:
+        "金融相關的基金資訊平台，包含期信子分類頁面開發以及境外境內基金內容開發。同樣實現了多頁面通用列印功能。",
       technologies: ["Angular", "TypeScript", "Chart.js"],
       category: "金融專案",
       duration: "5個月",
@@ -127,27 +129,27 @@ export default function Projects() {
       achievements: [
         "期信子分類頁面開發",
         "境外境內基金功能實現",
-        "資料視覺化圖表整合"
+        "資料視覺化圖表整合",
       ],
-      challenges: [
-        "複雜的基金資料結構",
-        "多層級分類系統",
-        "即時資料更新機制"
-      ],
-      features: [
-        "基金資訊查詢",
-        "資料視覺化",
-        "分類管理",
-        "報表列印"
-      ],
-      images: []
+      challenges: ["複雜的基金資料結構", "多層級分類系統", "即時資料更新機制"],
+      features: ["基金資訊查詢", "資料視覺化", "分類管理", "報表列印"],
+      images: [],
     },
     {
       id: "talent-matching-platform",
       title: "才藝媒合平台",
-      description: "全端開發的才藝媒合網站，整合 WebSocket、Google OAuth、JWT 等技術",
-      detailedDescription: "團體 Side Project，使用 Node.js + Express + MongoDB 後端，Angular 前端。整合 WebSocket、Google OAuth、JWT 等技術，實現完整的媒合平台功能。",
-      technologies: ["Angular", "Node.js", "Express", "MongoDB", "WebSocket", "Google OAuth"],
+      description:
+        "全端開發的才藝媒合網站，整合 WebSocket、Google OAuth、JWT 等技術",
+      detailedDescription:
+        "團體 Side Project，使用 Node.js + Express + MongoDB 後端，Angular 前端。整合 WebSocket、Google OAuth、JWT 等技術，實現完整的媒合平台功能。",
+      technologies: [
+        "Angular",
+        "Node.js",
+        "Express",
+        "MongoDB",
+        "WebSocket",
+        "Google OAuth",
+      ],
       category: "Side Project",
       duration: "4個月",
       role: "全端開發工程師",
@@ -155,28 +157,29 @@ export default function Projects() {
         "完整全端開發經驗",
         "即時通訊功能實現",
         "第三方登入整合",
-        "團隊協作經驗"
+        "團隊協作經驗",
       ],
-      challenges: [
-        "即時通訊系統設計",
-        "用戶認證與授權",
-        "媒合演算法實現"
-      ],
-      features: [
-        "即時聊天",
-        "才藝媒合",
-        "Google 登入",
-        "個人檔案管理"
-      ],
+      challenges: ["即時通訊系統設計", "用戶認證與授權", "媒合演算法實現"],
+      features: ["即時聊天", "才藝媒合", "Google 登入", "個人檔案管理"],
       images: [],
-      githubUrl: "https://github.com/yourusername/talent-matching"
+      githubUrl: "https://github.com/yourusername/talent-matching",
     },
     {
       id: "ai-ticketing-platform",
       title: "AI 票務平台",
-      description: "整合 AI 機器人的票務平台，使用 Next.js SSR + Docker + GitHub Actions 自動部署",
-      detailedDescription: "使用 Next.js SSR + Zustand + SWR 前端，Node.js + PostgreSQL + Prisma 後端。通過 Docker 容器化部署，GitHub Actions 自動化 CI/CD。",
-      technologies: ["Next.js", "Zustand", "SWR", "Node.js", "PostgreSQL", "Prisma", "Docker"],
+      description:
+        "整合 AI 機器人的票務平台，使用 Next.js SSR + Docker + GitHub Actions 自動部署",
+      detailedDescription:
+        "使用 Next.js SSR + Zustand + SWR 前端，Node.js + PostgreSQL + Prisma 後端。通過 Docker 容器化部署，GitHub Actions 自動化 CI/CD。",
+      technologies: [
+        "Next.js",
+        "Zustand",
+        "SWR",
+        "Node.js",
+        "PostgreSQL",
+        "Prisma",
+        "Docker",
+      ],
       category: "Side Project",
       duration: "3個月",
       role: "全端開發工程師",
@@ -184,28 +187,20 @@ export default function Projects() {
         "AI 機器人整合",
         "Docker 容器化部署",
         "GitHub Actions CI/CD",
-        "現代化狀態管理"
+        "現代化狀態管理",
       ],
-      challenges: [
-        "AI 機器人 API 整合",
-        "容器化部署配置",
-        "自動化部署流程"
-      ],
-      features: [
-        "AI 客服機器人",
-        "票務管理",
-        "自動化部署",
-        "狀態管理"
-      ],
+      challenges: ["AI 機器人 API 整合", "容器化部署配置", "自動化部署流程"],
+      features: ["AI 客服機器人", "票務管理", "自動化部署", "狀態管理"],
       images: [],
       liveUrl: "https://your-ticketing-app.render.com",
-      githubUrl: "https://github.com/yourusername/ai-ticketing"
+      githubUrl: "https://github.com/yourusername/ai-ticketing",
     },
     {
       id: "custom-gpt-platform",
       title: "客製化 GPT 平台",
       description: "基於 Nuxt.js 的 GPT 對話平台，使用 SSE 串接 OpenAI API",
-      detailedDescription: "與外部後端工程師協作，使用 Nuxt.js 開發客製化 GPT 平台。實現對話功能、自動顯示、歷史資料管理等功能，使用 SSE 串接 OpenAI API。",
+      detailedDescription:
+        "與外部後端工程師協作，使用 Nuxt.js 開發客製化 GPT 平台。實現對話功能、自動顯示、歷史資料管理等功能，使用 SSE 串接 OpenAI API。",
       technologies: ["Nuxt.js", "Vue.js", "SSE", "OpenAI API"],
       category: "協作專案",
       duration: "2個月",
@@ -214,26 +209,19 @@ export default function Projects() {
         "SSE 即時通訊實現",
         "對話歷史管理",
         "OpenAI API 整合",
-        "Vue 生態系統掌握"
+        "Vue 生態系統掌握",
       ],
-      challenges: [
-        "SSE 串流資料處理",
-        "對話狀態管理",
-        "API 串接優化"
-      ],
-      features: [
-        "即時對話",
-        "歷史紀錄",
-        "對話分享",
-        "自動化顯示"
-      ],
-      images: []
+      challenges: ["SSE 串流資料處理", "對話狀態管理", "API 串接優化"],
+      features: ["即時對話", "歷史紀錄", "對話分享", "自動化顯示"],
+      images: [],
     },
     {
       id: "line-liff-management",
       title: "LINE LIFF 管理系統",
-      description: "LINE LIFF 前台 + React 後台管理系統，包含模板設定與發送功能",
-      detailedDescription: "前台使用 LINE LIFF + Next.js 實現客製化網站，後台使用 React 開發內部管理系統，包含模板設定與發送功能。",
+      description:
+        "LINE LIFF 前台 + React 後台管理系統，包含模板設定與發送功能",
+      detailedDescription:
+        "前台使用 LINE LIFF + Next.js 實現客製化網站，後台使用 React 開發內部管理系統，包含模板設定與發送功能。",
       technologies: ["Next.js", "React", "LINE LIFF", "LINE API"],
       category: "協作專案",
       duration: "3個月",
@@ -242,32 +230,30 @@ export default function Projects() {
         "LINE LIFF 平台整合",
         "模板管理系統",
         "訊息發送功能",
-        "雙平台開發經驗"
+        "雙平台開發經驗",
       ],
-      challenges: [
-        "LINE LIFF 限制處理",
-        "模板系統設計",
-        "跨平台整合"
-      ],
-      features: [
-        "LINE 整合",
-        "模板管理",
-        "訊息發送",
-        "內部管理系統"
-      ],
-      images: []
-    }
+      challenges: ["LINE LIFF 限制處理", "模板系統設計", "跨平台整合"],
+      features: ["LINE 整合", "模板管理", "訊息發送", "內部管理系統"],
+      images: [],
+    },
   ];
 
-  const categories = ["全部", "商業專案", "金融專案", "Side Project", "協作專案"];
+  const categories = [
+    "全部",
+    "商業專案",
+    "金融專案",
+    "Side Project",
+    "協作專案",
+  ];
 
-  const filteredProjects = selectedCategory === "全部" 
-    ? projects 
-    : projects.filter(project => project.category === selectedCategory);
+  const filteredProjects =
+    selectedCategory === "全部"
+      ? projects
+      : projects.filter((project) => project.category === selectedCategory);
 
   const nextImage = () => {
     if (selectedProject?.images) {
-      setCurrentImageIndex((prev) => 
+      setCurrentImageIndex((prev) =>
         prev === selectedProject.images!.length - 1 ? 0 : prev + 1
       );
     }
@@ -275,7 +261,7 @@ export default function Projects() {
 
   const prevImage = () => {
     if (selectedProject?.images) {
-      setCurrentImageIndex((prev) => 
+      setCurrentImageIndex((prev) =>
         prev === 0 ? selectedProject.images!.length - 1 : prev - 1
       );
     }
@@ -284,30 +270,41 @@ export default function Projects() {
   const openModal = (project: Project) => {
     setSelectedProject(project);
     setCurrentImageIndex(0);
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
   };
 
   const closeModal = () => {
     setSelectedProject(null);
     setCurrentImageIndex(0);
-    document.body.style.overflow = 'unset';
+    document.body.style.overflow = "unset";
   };
 
   // 鍵盤支援
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (!selectedProject) return;
-    
-    if (event.key === 'Escape') {
+
+    if (event.key === "Escape") {
       closeModal();
-    } else if (event.key === 'ArrowLeft' && selectedProject.images && selectedProject.images.length > 1) {
+    } else if (
+      event.key === "ArrowLeft" &&
+      selectedProject.images &&
+      selectedProject.images.length > 1
+    ) {
       prevImage();
-    } else if (event.key === 'ArrowRight' && selectedProject.images && selectedProject.images.length > 1) {
+    } else if (
+      event.key === "ArrowRight" &&
+      selectedProject.images &&
+      selectedProject.images.length > 1
+    ) {
       nextImage();
     }
   };
 
   return (
-    <section id="projects" className="py-20 px-4">
+    <section
+      id="projects"
+      className="py-20 px-4 bg-gray-50 dark:bg-gray-900/30"
+    >
       <div className="max-w-7xl mx-auto">
         <motion.div
           ref={ref}
@@ -335,8 +332,8 @@ export default function Projects() {
                 onClick={() => setSelectedCategory(category)}
                 className={`px-6 py-2 rounded-full border-2 transition-all duration-300 ${
                   selectedCategory === category
-                    ? 'border-sandy-brown bg-sandy-brown text-white'
-                    : 'border-outer-space/20 dark:border-apricot/20 text-outer-space dark:text-apricot hover:border-sandy-brown hover:text-sandy-brown'
+                    ? "border-sandy-brown bg-sandy-brown text-white"
+                    : "border-outer-space/20 dark:border-apricot/20 text-outer-space dark:text-apricot hover:border-sandy-brown hover:text-sandy-brown"
                 }`}
                 whileHover={{ y: -2 }}
                 whileTap={{ y: 0 }}
@@ -354,8 +351,14 @@ export default function Projects() {
                 className="bg-white dark:bg-gray-800/50 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl 
                          transition-all duration-300 cursor-pointer border border-gray-200 dark:border-gray-700"
                 initial={{ opacity: 0, y: 50 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-                transition={{ duration: 0.6, delay: 0.1 * index, ease: "easeOut" }}
+                animate={
+                  isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }
+                }
+                transition={{
+                  duration: 0.6,
+                  delay: 0.1 * index,
+                  ease: "easeOut",
+                }}
                 whileHover={{ y: -5 }}
                 onClick={() => openModal(project)}
               >
@@ -387,7 +390,7 @@ export default function Projects() {
                     </div>
                   )}
                 </div>
-                
+
                 <div className="p-6">
                   <h3 className="text-xl font-bold mb-3 text-outer-space dark:text-apricot">
                     {project.title}
@@ -395,7 +398,7 @@ export default function Projects() {
                   <p className="text-outer-space/80 dark:text-apricot/80 mb-4 text-sm leading-relaxed">
                     {project.description}
                   </p>
-                  
+
                   <div className="flex flex-wrap gap-2 mb-4">
                     {project.technologies.slice(0, 3).map((tech) => (
                       <span
@@ -411,7 +414,7 @@ export default function Projects() {
                       </span>
                     )}
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-outer-space/60 dark:text-apricot/60">
                       {project.duration}
@@ -429,7 +432,7 @@ export default function Projects() {
 
       {/* 專案詳情彈窗 */}
       {selectedProject && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
           onKeyDown={handleKeyDown}
           tabIndex={-1}
@@ -460,11 +463,13 @@ export default function Projects() {
                   <div className="aspect-video bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden">
                     <img
                       src={selectedProject.images[currentImageIndex]}
-                      alt={`${selectedProject.title} - 圖片 ${currentImageIndex + 1}`}
+                      alt={`${selectedProject.title} - 圖片 ${
+                        currentImageIndex + 1
+                      }`}
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  
+
                   {selectedProject.images.length > 1 && (
                     <>
                       <button
@@ -479,22 +484,25 @@ export default function Projects() {
                       >
                         <FiChevronRight className="w-6 h-6" />
                       </button>
-                      
+
                       <div className="flex justify-center mt-4 space-x-2">
                         {selectedProject.images.map((_, index) => (
                           <button
                             key={index}
                             onClick={() => setCurrentImageIndex(index)}
                             className={`w-3 h-3 rounded-full transition-colors ${
-                              index === currentImageIndex ? 'bg-sandy-brown' : 'bg-gray-300 dark:bg-gray-600'
+                              index === currentImageIndex
+                                ? "bg-sandy-brown"
+                                : "bg-gray-300 dark:bg-gray-600"
                             }`}
                           />
                         ))}
                       </div>
-                      
+
                       <div className="text-center mt-2">
                         <span className="text-sm text-outer-space/60 dark:text-apricot/60">
-                          {currentImageIndex + 1} / {selectedProject.images.length}
+                          {currentImageIndex + 1} /{" "}
+                          {selectedProject.images.length}
                         </span>
                       </div>
                     </>
@@ -505,29 +513,45 @@ export default function Projects() {
               {/* 專案基本資訊 */}
               <div className="grid md:grid-cols-2 gap-6 mb-6">
                 <div>
-                  <h3 className="text-lg font-semibold mb-2 text-outer-space dark:text-apricot">專案概述</h3>
+                  <h3 className="text-lg font-semibold mb-2 text-outer-space dark:text-apricot">
+                    專案概述
+                  </h3>
                   <p className="text-outer-space/80 dark:text-apricot/80 mb-4">
                     {selectedProject.detailedDescription}
                   </p>
-                  
+
                   <div className="space-y-2">
                     <div className="flex">
-                      <span className="font-medium text-outer-space dark:text-apricot w-20">類型：</span>
-                      <span className="text-outer-space/80 dark:text-apricot/80">{selectedProject.category}</span>
+                      <span className="font-medium text-outer-space dark:text-apricot w-20">
+                        類型：
+                      </span>
+                      <span className="text-outer-space/80 dark:text-apricot/80">
+                        {selectedProject.category}
+                      </span>
                     </div>
                     <div className="flex">
-                      <span className="font-medium text-outer-space dark:text-apricot w-20">期間：</span>
-                      <span className="text-outer-space/80 dark:text-apricot/80">{selectedProject.duration}</span>
+                      <span className="font-medium text-outer-space dark:text-apricot w-20">
+                        期間：
+                      </span>
+                      <span className="text-outer-space/80 dark:text-apricot/80">
+                        {selectedProject.duration}
+                      </span>
                     </div>
                     <div className="flex">
-                      <span className="font-medium text-outer-space dark:text-apricot w-20">角色：</span>
-                      <span className="text-outer-space/80 dark:text-apricot/80">{selectedProject.role}</span>
+                      <span className="font-medium text-outer-space dark:text-apricot w-20">
+                        角色：
+                      </span>
+                      <span className="text-outer-space/80 dark:text-apricot/80">
+                        {selectedProject.role}
+                      </span>
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold mb-2 text-outer-space dark:text-apricot">使用技術</h3>
+                  <h3 className="text-lg font-semibold mb-2 text-outer-space dark:text-apricot">
+                    使用技術
+                  </h3>
                   <div className="flex flex-wrap gap-2 mb-4">
                     {selectedProject.technologies.map((tech) => (
                       <span
@@ -539,10 +563,15 @@ export default function Projects() {
                     ))}
                   </div>
 
-                  <h3 className="text-lg font-semibold mb-2 text-outer-space dark:text-apricot">主要功能</h3>
+                  <h3 className="text-lg font-semibold mb-2 text-outer-space dark:text-apricot">
+                    主要功能
+                  </h3>
                   <ul className="space-y-1">
                     {selectedProject.features.map((feature, index) => (
-                      <li key={index} className="text-outer-space/80 dark:text-apricot/80 text-sm">
+                      <li
+                        key={index}
+                        className="text-outer-space/80 dark:text-apricot/80 text-sm"
+                      >
                         • {feature}
                       </li>
                     ))}
@@ -553,10 +582,15 @@ export default function Projects() {
               {/* 成就與挑戰 */}
               <div className="grid md:grid-cols-2 gap-6 mb-6">
                 <div>
-                  <h3 className="text-lg font-semibold mb-2 text-outer-space dark:text-apricot">主要成就</h3>
+                  <h3 className="text-lg font-semibold mb-2 text-outer-space dark:text-apricot">
+                    主要成就
+                  </h3>
                   <ul className="space-y-2">
                     {selectedProject.achievements.map((achievement, index) => (
-                      <li key={index} className="text-outer-space/80 dark:text-apricot/80 text-sm flex items-start">
+                      <li
+                        key={index}
+                        className="text-outer-space/80 dark:text-apricot/80 text-sm flex items-start"
+                      >
                         <span className="text-green-500 mr-2">✓</span>
                         {achievement}
                       </li>
@@ -565,10 +599,15 @@ export default function Projects() {
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold mb-2 text-outer-space dark:text-apricot">技術挑戰</h3>
+                  <h3 className="text-lg font-semibold mb-2 text-outer-space dark:text-apricot">
+                    技術挑戰
+                  </h3>
                   <ul className="space-y-2">
                     {selectedProject.challenges.map((challenge, index) => (
-                      <li key={index} className="text-outer-space/80 dark:text-apricot/80 text-sm flex items-start">
+                      <li
+                        key={index}
+                        className="text-outer-space/80 dark:text-apricot/80 text-sm flex items-start"
+                      >
                         <span className="text-sandy-brown mr-2">⚡</span>
                         {challenge}
                       </li>
@@ -592,10 +631,12 @@ export default function Projects() {
                 ) : (
                   <div className="flex items-center space-x-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg">
                     <FiExternalLink className="w-4 h-4 text-gray-400" />
-                    <span className="text-sm text-outer-space/60 dark:text-apricot/60">內部系統無法公開訪問</span>
+                    <span className="text-sm text-outer-space/60 dark:text-apricot/60">
+                      內部系統無法公開訪問
+                    </span>
                   </div>
                 )}
-                
+
                 {selectedProject.githubUrl ? (
                   <a
                     href={selectedProject.githubUrl}
@@ -609,10 +650,12 @@ export default function Projects() {
                 ) : (
                   <div className="flex items-center space-x-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg">
                     <FiGithub className="w-4 h-4 text-gray-400" />
-                    <span className="text-sm text-outer-space/60 dark:text-apricot/60">商業專案代碼不公開</span>
+                    <span className="text-sm text-outer-space/60 dark:text-apricot/60">
+                      商業專案代碼不公開
+                    </span>
                   </div>
                 )}
-                
+
                 <div className="flex items-center space-x-2 px-4 py-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                   <span className="text-sm text-blue-600 dark:text-blue-400">
                     💡 如需了解更多技術細節，歡迎聯絡討論

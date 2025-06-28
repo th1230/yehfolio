@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
 
 export default function Experience() {
   const ref = useRef(null);
@@ -19,10 +19,10 @@ export default function Experience() {
         "開發數位遊牧平台，Lighthouse 檢測達到 95% 分數，實現完整 SEO 優化",
         "負責金融相關平台開發，包含期信申報平台與基金觀測站",
         "實現多頁面通用列印功能，優化使用者體驗",
-        "負責共用元件開發與系統維護優化"
+        "負責共用元件開發與系統維護優化",
       ],
-      technologies: ["Angular", "TypeScript", "RxJS", "HTML/CSS", "JavaScript"]
-    }
+      technologies: ["Angular", "TypeScript", "RxJS", "HTML/CSS", "JavaScript"],
+    },
   ];
 
   const sideProjects = [
@@ -30,13 +30,20 @@ export default function Experience() {
       year: "2023",
       title: "AI 票務平台",
       description: "團體專案 - 整合 AI 機器人的票務系統",
-      technologies: ["Next.js", "Node.js", "PostgreSQL", "Prisma", "Docker", "GitHub Actions"],
+      technologies: [
+        "Next.js",
+        "Node.js",
+        "PostgreSQL",
+        "Prisma",
+        "Docker",
+        "GitHub Actions",
+      ],
       achievements: [
         "前端使用 Next.js SSR + Zustand + SWR",
         "後端使用 Node.js + Express + PostgreSQL",
         "Docker 容器化部署，GitHub Actions 自動化 CI/CD",
-        "部署至 Render 平台"
-      ]
+        "部署至 Render 平台",
+      ],
     },
     {
       year: "2022",
@@ -47,9 +54,9 @@ export default function Experience() {
         "後端使用 Node.js + Express + MongoDB + Mongoose",
         "整合 WebSocket 即時通訊功能",
         "實現 Google OAuth 與 Google Mail 服務",
-        "JWT 身份驗證系統"
-      ]
-    }
+        "JWT 身份驗證系統",
+      ],
+    },
   ];
 
   const collaborations = [
@@ -61,8 +68,8 @@ export default function Experience() {
         "對話功能與自動化顯示",
         "歷史數據管理與重載",
         "對話分享功能",
-        "SSE 串接 OpenAI API"
-      ]
+        "SSE 串接 OpenAI API",
+      ],
     },
     {
       title: "LINE LIFF 管理系統",
@@ -71,13 +78,16 @@ export default function Experience() {
       features: [
         "LINE LIFF 客製化網站開發",
         "React 後台管理系統",
-        "模板設定與發送功能"
-      ]
-    }
+        "模板設定與發送功能",
+      ],
+    },
   ];
 
   return (
-    <section id="experience" className="py-20 px-4 bg-gray-50 dark:bg-gray-900/30">
+    <section
+      id="experience"
+      className="py-20 px-4 bg-gray-50 dark:bg-gray-900/30"
+    >
       <div className="max-w-6xl mx-auto">
         <motion.div
           ref={ref}
@@ -99,15 +109,23 @@ export default function Experience() {
                 key={index}
                 className="bg-white dark:bg-gray-800/50 rounded-xl p-6 shadow-lg mb-6"
                 initial={{ opacity: 0, x: -50 }}
-                animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
-                transition={{ duration: 0.6, delay: 0.2 + index * 0.1, ease: "easeOut" }}
+                animate={
+                  isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }
+                }
+                transition={{
+                  duration: 0.6,
+                  delay: 0.2 + index * 0.1,
+                  ease: "easeOut",
+                }}
               >
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
                   <div>
                     <h4 className="text-xl font-bold text-outer-space dark:text-apricot mb-1">
                       {exp.title}
                     </h4>
-                    <p className="text-sandy-brown font-medium mb-2">{exp.company}</p>
+                    <p className="text-sandy-brown font-medium mb-2">
+                      {exp.company}
+                    </p>
                     <p className="text-outer-space/80 dark:text-apricot/80 mb-4">
                       {exp.description}
                     </p>
@@ -116,19 +134,24 @@ export default function Experience() {
                     {exp.period}
                   </span>
                 </div>
-                
+
                 <div className="mb-4">
-                  <h5 className="font-semibold text-outer-space dark:text-apricot mb-2">主要成就：</h5>
+                  <h5 className="font-semibold text-outer-space dark:text-apricot mb-2">
+                    主要成就：
+                  </h5>
                   <ul className="space-y-1">
                     {exp.achievements.map((achievement, idx) => (
-                      <li key={idx} className="text-outer-space/80 dark:text-apricot/80 flex items-start">
+                      <li
+                        key={idx}
+                        className="text-outer-space/80 dark:text-apricot/80 flex items-start"
+                      >
                         <span className="text-sandy-brown mr-2">•</span>
                         {achievement}
                       </li>
                     ))}
                   </ul>
                 </div>
-                
+
                 <div className="flex flex-wrap gap-2">
                   {exp.technologies.map((tech) => (
                     <span
@@ -154,21 +177,32 @@ export default function Experience() {
                   key={index}
                   className="bg-white dark:bg-gray-800/50 rounded-xl p-6 shadow-lg"
                   initial={{ opacity: 0, y: 30 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                  transition={{ duration: 0.6, delay: 0.4 + index * 0.1, ease: "easeOut" }}
+                  animate={
+                    isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }
+                  }
+                  transition={{
+                    duration: 0.6,
+                    delay: 0.4 + index * 0.1,
+                    ease: "easeOut",
+                  }}
                 >
                   <div className="flex items-center justify-between mb-3">
                     <h4 className="text-lg font-bold text-outer-space dark:text-apricot">
                       {project.title}
                     </h4>
-                    <span className="text-sm text-fawn font-medium">{project.year}</span>
+                    <span className="text-sm text-fawn font-medium">
+                      {project.year}
+                    </span>
                   </div>
                   <p className="text-outer-space/80 dark:text-apricot/80 mb-4">
                     {project.description}
                   </p>
                   <ul className="space-y-1 mb-4">
                     {project.achievements.map((achievement, idx) => (
-                      <li key={idx} className="text-sm text-outer-space/70 dark:text-apricot/70 flex items-start">
+                      <li
+                        key={idx}
+                        className="text-sm text-outer-space/70 dark:text-apricot/70 flex items-start"
+                      >
                         <span className="text-sandy-brown mr-2">•</span>
                         {achievement}
                       </li>
@@ -200,8 +234,14 @@ export default function Experience() {
                   key={index}
                   className="bg-white dark:bg-gray-800/50 rounded-xl p-6 shadow-lg"
                   initial={{ opacity: 0, y: 30 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                  transition={{ duration: 0.6, delay: 0.6 + index * 0.1, ease: "easeOut" }}
+                  animate={
+                    isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }
+                  }
+                  transition={{
+                    duration: 0.6,
+                    delay: 0.6 + index * 0.1,
+                    ease: "easeOut",
+                  }}
                 >
                   <h4 className="text-lg font-bold text-outer-space dark:text-apricot mb-2">
                     {collab.title}
@@ -211,7 +251,10 @@ export default function Experience() {
                   </p>
                   <ul className="space-y-1 mb-4">
                     {collab.features.map((feature, idx) => (
-                      <li key={idx} className="text-sm text-outer-space/70 dark:text-apricot/70 flex items-start">
+                      <li
+                        key={idx}
+                        className="text-sm text-outer-space/70 dark:text-apricot/70 flex items-start"
+                      >
                         <span className="text-sandy-brown mr-2">•</span>
                         {feature}
                       </li>
