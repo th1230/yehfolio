@@ -1,26 +1,76 @@
+html {
+  scroll-behavior: smooth;
+}
+
 @import "tailwindcss";
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #3e4e50;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-outer-space: #3e4e50ff;
+  --color-apricot: #facfadff;
+  --color-fawn: #f8bd7fff;
+  --color-sandy-brown: #f5ac72ff;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #1a1a1a;
+    --foreground: #f8bd7f;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+/* 禁用所有發光效果 */
+*,
+*::before,
+*::after {
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+/* 自定義陰影效果，只使用柔和的陰影 */
+.shadow-lg {
+  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* 確保沒有放大效果的 hover 狀態 */
+button:hover,
+a:hover {
+  transform: none !important;
+}
+
+/* 平滑的過渡效果 */
+* {
+  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, 
+              opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* 禁用預設的聚焦環 */
+*:focus {
+  outline: none;
+}
+
+/* 自定義聚焦樣式 */
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-sandy-brown);
+  outline-offset: 2px;
 }
