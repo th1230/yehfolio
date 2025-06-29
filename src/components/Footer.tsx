@@ -116,7 +116,7 @@ export default function Footer() {
         {/* Back to Top */}
         <motion.button
           className="fixed bottom-8 right-8 w-12 h-12 bg-sandy-brown text-white rounded-full 
-                   shadow-lg hover:bg-fawn transition-all duration-300 flex items-center justify-center"
+                   shadow-lg hover:bg-fawn transition-all duration-300 flex items-center justify-center z-50 cursor-pointer"
           whileHover={{ y: -3, scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           initial={{ opacity: 0, scale: 0 }}

@@ -8,20 +8,50 @@ export default function Experience() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-  const experiences = [
+  const timelineEvents = [
     {
-      period: "2021 - 現在",
-      title: "前端工程師",
-      company: "公司",
-      description: "主要使用 Angular 框架進行前端開發，完成多個大型專案",
+      period: "2024 - 現在",
+      title: "智慧投資資訊平台",
+      description: "開發金融數據分析與基金追蹤系統，提供用戶完整的投資決策資訊",
+      technologies: ["Angular", "TypeScript", "RxJS", "Chart.js"],
       achievements: [
-        "獨立完成內部中轉系統前後台開發，使用 RxJS 實現自動 refresh 功能",
-        "開發數位遊牧平台，Lighthouse 檢測達到 95% 分數，實現完整 SEO 優化",
-        "負責金融相關平台開發，包含期信申報平台與基金觀測站",
-        "實現多頁面通用列印功能，優化使用者體驗",
-        "負責共用元件開發與系統維護優化",
+        "實現即時數據更新與圖表視覺化",
+        "建立完整的基金篩選與比較功能",
+        "優化資料載入效能，提升 40% 響應速度",
       ],
-      technologies: ["Angular", "TypeScript", "RxJS", "HTML/CSS", "JavaScript"],
+    },
+    {
+      period: "2023 - 2024",
+      title: "金融申報管理系統",
+      description: "建構期貨信託業者申報平台，簡化監管流程並確保合規性",
+      technologies: ["Angular", "TypeScript", "Angular Material", "PDF.js"],
+      achievements: [
+        "開發多層級表單驗證機制",
+        "實現批量資料匯入匯出功能",
+        "建立自動化報表產生系統",
+      ],
+    },
+    {
+      period: "2022 - 2023",
+      title: "遠距工作媒合平台",
+      description: "打造數位人才與企業媒合的專業平台，支援全球化遠端工作模式",
+      technologies: ["Angular", "TypeScript", "RxJS", "PWA"],
+      achievements: [
+        "實現 Lighthouse 95+ 高效能優化",
+        "建立完整的 SEO 策略與實作",
+        "開發響應式設計，支援多設備使用",
+      ],
+    },
+    {
+      period: "2021 - 2022",
+      title: "企業內部管理系統",
+      description: "開發公司內部中轉與資料管理系統，整合多個業務流程",
+      technologies: ["Angular", "TypeScript", "RxJS", "NgRx"],
+      achievements: [
+        "實現自動資料同步與更新機制",
+        "建立模組化架構設計",
+        "開發通用列印與報表功能",
+      ],
     },
   ];
 
@@ -99,71 +129,299 @@ export default function Experience() {
             工作經驗
           </h2>
 
-          {/* 工作經驗 */}
+          {/* 工作經驗 - 幾何藝術時間線 */}
           <div className="mb-16">
-            <h3 className="text-2xl font-bold mb-8 text-outer-space dark:text-fawn">
-              專業經驗
+            <h3 className="text-2xl font-bold mb-12 text-center text-outer-space dark:text-fawn">
+              專業經驗軌跡
             </h3>
-            {experiences.map((exp, index) => (
+
+            <div className="relative max-w-5xl mx-auto px-4 md:px-8">
+              {/* 主要時間軸 - 桌面版垂直居中，手機版左側 */}
               <motion.div
-                key={index}
-                className="bg-white dark:bg-gray-800/50 rounded-xl p-6 shadow-lg mb-6"
-                initial={{ opacity: 0, x: -50 }}
-                animate={
-                  isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }
-                }
-                transition={{
-                  duration: 0.6,
-                  delay: 0.2 + index * 0.1,
-                  ease: "easeOut",
-                }}
-              >
-                <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
-                  <div>
-                    <h4 className="text-xl font-bold text-outer-space dark:text-apricot mb-1">
-                      {exp.title}
-                    </h4>
-                    <p className="text-sandy-brown font-medium mb-2">
-                      {exp.company}
-                    </p>
-                    <p className="text-outer-space/80 dark:text-apricot/80 mb-4">
-                      {exp.description}
-                    </p>
-                  </div>
-                  <span className="text-sm font-medium text-fawn bg-fawn/10 px-3 py-1 rounded-full whitespace-nowrap">
-                    {exp.period}
-                  </span>
-                </div>
+                className="absolute left-[34px] md:left-1/2 top-0 w-1 bg-gradient-to-b from-sandy-brown via-fawn to-sandy-brown md:transform md:-translate-x-1/2 rounded-full shadow-lg"
+                initial={{ height: 0 }}
+                animate={isInView ? { height: "100%" } : { height: 0 }}
+                transition={{ duration: 1.5, delay: 0.5 }}
+              />
 
-                <div className="mb-4">
-                  <h5 className="font-semibold text-outer-space dark:text-apricot mb-2">
-                    主要成就：
-                  </h5>
-                  <ul className="space-y-1">
-                    {exp.achievements.map((achievement, idx) => (
-                      <li
-                        key={idx}
-                        className="text-outer-space/80 dark:text-apricot/80 flex items-start"
-                      >
-                        <span className="text-sandy-brown mr-2">•</span>
-                        {achievement}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+              {/* 背景幾何裝飾 - 手機版隱藏 */}
+              <div className="hidden md:block absolute inset-0 overflow-hidden pointer-events-none opacity-30">
+                {/* 圓環裝飾 */}
+                <div className="absolute top-32 left-8 w-16 h-16 border border-sandy-brown/30 rounded-full" />
+                <div className="absolute top-64 right-12 w-12 h-12 border border-fawn/30 rounded-full" />
+                <div className="absolute bottom-32 left-16 w-20 h-20 border border-sandy-brown/20 rounded-full" />
 
-                <div className="flex flex-wrap gap-2">
-                  {exp.technologies.map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-3 py-1 bg-sandy-brown/10 text-sandy-brown text-sm rounded-full"
+                {/* 方形裝飾 */}
+                <div className="absolute top-96 right-8 w-8 h-8 border border-fawn/40 transform rotate-45" />
+                <div className="absolute bottom-64 right-20 w-6 h-6 bg-sandy-brown/20 transform rotate-45" />
+              </div>
+
+              {timelineEvents.map((event, index) => {
+                const isLeft = index % 2 === 0;
+                const colorSchemes = [
+                  {
+                    bg: "bg-emerald-400",
+                    text: "text-emerald-700",
+                    border: "border-emerald-200",
+                    bgLight: "bg-emerald-50",
+                    bgDark: "bg-emerald-900/30",
+                    textDark: "text-emerald-300",
+                  },
+                  {
+                    bg: "bg-orange-400",
+                    text: "text-orange-700",
+                    border: "border-orange-200",
+                    bgLight: "bg-orange-50",
+                    bgDark: "bg-orange-900/30",
+                    textDark: "text-orange-300",
+                  },
+                  {
+                    bg: "bg-purple-400",
+                    text: "text-purple-700",
+                    border: "border-purple-200",
+                    bgLight: "bg-purple-50",
+                    bgDark: "bg-purple-900/30",
+                    textDark: "text-purple-300",
+                  },
+                  {
+                    bg: "bg-blue-400",
+                    text: "text-blue-700",
+                    border: "border-blue-200",
+                    bgLight: "bg-blue-50",
+                    bgDark: "bg-blue-900/30",
+                    textDark: "text-blue-300",
+                  },
+                ];
+                const colorScheme = colorSchemes[index];
+
+                return (
+                  <motion.div
+                    key={index}
+                    className="relative mb-16 md:mb-20"
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={
+                      isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }
+                    }
+                    transition={{
+                      duration: 0.8,
+                      delay: index * 0.2,
+                      ease: "easeOut",
+                    }}
+                  >
+                    {/* 時間節點 - 手機版左側對齊，桌面版居中 */}
+                    <motion.div
+                      className="absolute left-5 md:left-1/2 top-8 transform -translate-x-1/2 z-20"
+                      initial={{ scale: 0, rotate: -90 }}
+                      animate={
+                        isInView
+                          ? { scale: 1, rotate: 0 }
+                          : { scale: 0, rotate: -90 }
+                      }
+                      transition={{
+                        duration: 0.6,
+                        delay: index * 0.2 + 0.5,
+                        type: "spring",
+                        stiffness: 200,
+                      }}
                     >
-                      {tech}
-                    </span>
-                  ))}
+                      {/* 外層圓形 */}
+                      <div
+                        className={`relative w-10 h-10 md:w-12 md:h-12 ${colorScheme.bg} rounded-full shadow-xl border-3 md:border-4 border-white dark:border-gray-800`}
+                      >
+                        {/* 內層圓點 */}
+                        <div className="absolute inset-2 md:inset-3 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center">
+                          <div
+                            className={`w-1.5 h-1.5 md:w-2 md:h-2 ${colorScheme.bg} rounded-full`}
+                          />
+                        </div>
+                      </div>
+
+                      {/* 時間標籤 - 手機版調整位置 */}
+                      <div
+                        className={`absolute -top-8 md:-top-10 left-1/2 transform -translate-x-1/2 ${colorScheme.bg} text-white px-2 md:px-3 py-1 rounded-full text-xs font-bold shadow-lg whitespace-nowrap`}
+                      >
+                        {event.period}
+                      </div>
+                    </motion.div>
+
+                    {/* 連接線 - 手機版簡化，桌面版雙向 */}
+                    <motion.div
+                      className={`absolute top-13 md:top-14 w-8 md:w-12 h-0.5 ${
+                        colorScheme.bg
+                      } ${"left-10"} ${
+                        isLeft ? "md:left-[45%]" : "md:left-1/2"
+                      }`}
+                      initial={{ width: 0 }}
+                      animate={isInView ? { width: 32 } : { width: 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.2 + 0.8 }}
+                    />
+
+                    {/* 內容卡片 - 手機版統一左對齊，桌面版左右交替 */}
+                    <motion.div
+                      className={`pl-16 md:pl-0 ${
+                        // 手機版統一左對齊
+                        isLeft
+                          ? "md:ml-0 md:mr-auto md:pl-20"
+                          : "md:mr-0 md:ml-auto md:pr-20"
+                      } max-w-sm md:max-w-md`}
+                      initial={{ opacity: 0, x: -50 }}
+                      animate={
+                        isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }
+                      }
+                      transition={{ duration: 0.6, delay: index * 0.2 + 0.3 }}
+                      whileHover={{ scale: 1.02, y: -3 }}
+                    >
+                      {/* 卡片主體 */}
+                      <div className="relative w-full bg-white dark:bg-gray-800/90 rounded-2xl p-4 md:p-6 shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
+                        {/* 頂部色彩條 */}
+                        <div
+                          className={`absolute top-0 left-0 right-0 h-1 ${colorScheme.bg}`}
+                        />
+
+                        {/* 角落裝飾 - 手機版固定右上角 */}
+                        <div
+                          className={`absolute top-3 md:top-4 right-3 md:right-4 ${
+                            // 桌面版根據位置調整
+                            "md:" + (isLeft ? "right-4" : "left-4")
+                          } w-2 h-2 md:w-3 md:h-3 ${
+                            colorScheme.bg
+                          } rounded-full opacity-60`}
+                        />
+
+                        <div className="relative z-10">
+                          {/* 專案標題 - 手機版左對齊 */}
+                          <h4
+                            className={`text-lg md:text-xl font-bold text-outer-space dark:text-apricot mb-2 text-left ${
+                              // 桌面版根據位置調整
+                              "md:" + (isLeft ? "text-left" : "text-right")
+                            }`}
+                          >
+                            {event.title}
+                          </h4>
+
+                          {/* 專案描述 - 手機版左對齊 */}
+                          <p
+                            className={`text-outer-space/70 dark:text-apricot/70 mb-4 text-sm leading-relaxed text-left ${
+                              // 桌面版根據位置調整
+                              "md:" + (isLeft ? "text-left" : "text-right")
+                            }`}
+                          >
+                            {event.description}
+                          </p>
+
+                          {/* 成就列表 - 手機版左對齊 */}
+                          <div className="mb-4">
+                            <h5
+                              className={`text-sm font-semibold text-outer-space dark:text-apricot mb-3 flex items-center justify-start ${
+                                // 桌面版根據位置調整
+                                "md:" +
+                                (isLeft ? "justify-start" : "justify-end")
+                              }`}
+                            >
+                              <span className="mr-2 md:mr-2">🎯</span>
+                              <span
+                                className={`md:${isLeft ? "block" : "hidden"}`}
+                              >
+                                核心成就
+                              </span>
+                              <span
+                                className={`hidden md:${
+                                  isLeft ? "hidden" : "block"
+                                } md:ml-2`}
+                              >
+                                核心成就
+                              </span>
+                            </h5>
+                            <div className="space-y-2">
+                              {event.achievements.map((achievement, idx) => (
+                                <motion.div
+                                  key={idx}
+                                  className={`flex items-start ${
+                                    // 桌面版根據位置調整
+                                    "md:" + (isLeft ? "" : "flex-row-reverse")
+                                  }`}
+                                  initial={{ opacity: 0, x: -20 }}
+                                  animate={
+                                    isInView
+                                      ? { opacity: 1, x: 0 }
+                                      : { opacity: 0, x: -20 }
+                                  }
+                                  transition={{
+                                    delay: index * 0.2 + idx * 0.1 + 1,
+                                  }}
+                                >
+                                  <div
+                                    className={`flex-shrink-0 w-1.5 h-1.5 ${
+                                      colorScheme.bg
+                                    } rounded-full mt-2 mr-3 ${
+                                      // 桌面版根據位置調整
+                                      "md:" + (isLeft ? "mr-3" : "ml-3")
+                                    }`}
+                                  />
+                                  <p
+                                    className={`text-xs text-outer-space/70 dark:text-apricot/70 leading-relaxed text-left ${
+                                      // 桌面版根據位置調整
+                                      "md:" +
+                                      (isLeft ? "text-left" : "text-right")
+                                    }`}
+                                  >
+                                    {achievement}
+                                  </p>
+                                </motion.div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* 技術標籤 - 手機版左對齊 */}
+                          <div
+                            className={`flex flex-wrap gap-2 justify-start ${
+                              // 桌面版根據位置調整
+                              "md:" + (isLeft ? "justify-start" : "justify-end")
+                            }`}
+                          >
+                            {event.technologies.map((tech, techIndex) => (
+                              <motion.span
+                                key={tech}
+                                className={`px-2 md:px-3 py-1 text-xs font-medium rounded-full ${colorScheme.bgLight} ${colorScheme.text} ${colorScheme.border} border dark:${colorScheme.bgDark} dark:${colorScheme.textDark}`}
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={
+                                  isInView
+                                    ? { opacity: 1, scale: 1 }
+                                    : { opacity: 0, scale: 0.8 }
+                                }
+                                transition={{
+                                  delay: index * 0.2 + techIndex * 0.05 + 1.2,
+                                }}
+                                whileHover={{ scale: 1.05, y: -1 }}
+                              >
+                                {tech}
+                              </motion.span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* 卡片投影 */}
+                      <div className="absolute inset-0 bg-gray-200/20 dark:bg-gray-600/20 rounded-2xl transform translate-x-1 translate-y-1 -z-10" />
+                    </motion.div>
+                  </motion.div>
+                );
+              })}
+
+              {/* 時間軸結束裝飾 */}
+              <motion.div
+                className="absolute bottom-0 left-9 md:left-1/2 transform -translate-x-1/2 flex items-center justify-center"
+                initial={{ opacity: 0, scale: 0 }}
+                animate={
+                  isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }
+                }
+                transition={{ delay: 1.5, duration: 0.6 }}
+              >
+                <div className="relative w-6 h-6 md:w-8 md:h-8 bg-gradient-to-br from-sandy-brown to-fawn rounded-full shadow-lg border-2 border-white dark:border-gray-800">
+                  <div className="absolute inset-1 md:inset-2 bg-white dark:bg-gray-800 rounded-full" />
                 </div>
               </motion.div>
-            ))}
+            </div>
           </div>
 
           {/* Side Projects */}

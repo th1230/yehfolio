@@ -438,13 +438,13 @@ export default function Projects() {
           tabIndex={-1}
         >
           <motion.div
-            className="bg-white dark:bg-gray-800 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+            className="bg-white dark:bg-gray-800 rounded-xl max-w-4xl w-full max-h-[90vh] p-6"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="sticky top-0 bg-white dark:bg-gray-800 p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+            <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center pb-6">
               <h2 className="text-2xl font-bold text-outer-space dark:text-apricot">
                 {selectedProject.title}
               </h2>
@@ -456,7 +456,7 @@ export default function Projects() {
               </button>
             </div>
 
-            <div className="p-6">
+            <div className="max-h-[400px] pt-6 overflow-y-auto">
               {/* 圖片輪播區域 */}
               {selectedProject.images && selectedProject.images.length > 0 && (
                 <div className="relative mb-6">
