@@ -25,9 +25,9 @@ export default function Hero() {
     };
   };
 
-  const titleText = 'Hello, 我是濬宇';
-  const subtitleText = '一個喜歡寫程式的前端工程師';
-  const descriptionText = '目前專精於 Angular 和現代 Web 開發';
+const titleText = '前端工程師 / 葉濬宇';
+const subtitleText = '習慣邊做邊學，持續磨練開發能力';
+const descriptionText = '以前端為核心，持續拓展跨領域技術與實作經驗';
 
   // 字符動畫變體
   const letterVariants = {

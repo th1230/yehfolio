@@ -27,20 +27,111 @@ export default function About() {
               animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
               transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
             >
-              <h3 className="text-outer-space dark:text-fawn mb-6 text-2xl font-bold">
-                前端工程師
-              </h3>
-              <p className="text-outer-space/80 dark:text-apricot/80 mb-6 text-lg leading-relaxed">
-                淡江大學畢業，目前專精於前端開發，主要使用 Angular
-                進行專案開發。 具備從需求分析到產品上線的完整開發流程經驗。
-              </p>
-              <p className="text-outer-space/80 dark:text-apricot/80 mb-6 text-lg leading-relaxed">
-                除了前端技術外，也在學習後端開發，希望能更完整地理解整個系統架構。
-                持續透過實作專案來驗證和應用新學到的技術。
-              </p>
-              <p className="text-outer-space/80 dark:text-apricot/80 text-lg leading-relaxed">
-                對於新技術保持好奇心，相信每個專案都是學習成長的機會。
-              </p>
+              <motion.h3
+                className="text-outer-space dark:text-fawn mb-6 text-2xl font-bold"
+                initial={{ opacity: 0, y: 20 }}
+                animate={
+                  isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+                }
+                transition={{ duration: 0.6, delay: 0.3, ease: 'easeOut' }}
+              >
+                <motion.span
+                  initial={{ opacity: 0 }}
+                  animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+                  transition={{ duration: 0.8, delay: 0.6 }}
+                  className="inline-block"
+                >
+                  前端工程師
+                </motion.span>
+              </motion.h3>
+
+              <motion.p
+                className="text-outer-space/80 dark:text-apricot/80 mb-6 text-lg leading-relaxed"
+                initial={{ opacity: 0, y: 20 }}
+                animate={
+                  isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+                }
+                transition={{ duration: 0.6, delay: 0.4, ease: 'easeOut' }}
+              >
+                <motion.span
+                  initial={{ opacity: 0 }}
+                  animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+                  transition={{ duration: 0.8, delay: 0.7 }}
+                >
+                  淡江大學畢業，主力使用
+                </motion.span>
+                <motion.span
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={
+                    isInView
+                      ? { opacity: 1, scale: 1 }
+                      : { opacity: 0, scale: 0.8 }
+                  }
+                  transition={{ duration: 0.5, delay: 0.9, ease: 'backOut' }}
+                  className="text-fawn font-semibold px-1"
+                >
+                  Angular
+                </motion.span>
+                <motion.span
+                  initial={{ opacity: 0 }}
+                  animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+                  transition={{ duration: 0.8, delay: 1.1 }}
+                >
+                  進行專案開發，曾參與多項功能實作與系統前端設計，具備實務開發與交付經驗。
+                </motion.span>
+              </motion.p>
+
+              <motion.p
+                className="text-outer-space/80 dark:text-apricot/80 mb-6 text-lg leading-relaxed"
+                initial={{ opacity: 0, y: 20 }}
+                animate={
+                  isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+                }
+                transition={{ duration: 0.6, delay: 0.5, ease: 'easeOut' }}
+              >
+                <motion.span
+                  initial={{ opacity: 0 }}
+                  animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+                  transition={{ duration: 0.8, delay: 1.3 }}
+                >
+                  除了前端，也透過
+                </motion.span>
+                <motion.span
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={
+                    isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }
+                  }
+                  transition={{ duration: 0.5, delay: 1.5, ease: 'easeOut' }}
+                  className="text-fawn font-semibold px-1"
+                >
+                  side project
+                </motion.span>
+                <motion.span
+                  initial={{ opacity: 0 }}
+                  animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+                  transition={{ duration: 0.8, delay: 1.7 }}
+                >
+                  接觸後端開發，逐步理解資料處理與 API
+                  設計，並強化對整體架構的理解。
+                </motion.span>
+              </motion.p>
+
+              <motion.p
+                className="text-outer-space/80 dark:text-apricot/80 text-lg leading-relaxed"
+                initial={{ opacity: 0, y: 20 }}
+                animate={
+                  isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+                }
+                transition={{ duration: 0.6, delay: 0.6, ease: 'easeOut' }}
+              >
+                <motion.span
+                  initial={{ opacity: 0 }}
+                  animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+                  transition={{ duration: 0.8, delay: 1.9 }}
+                >
+                  習慣從實作中累積經驗，會關注技術發展，並嘗試將合適的新工具應用到實際開發中。
+                </motion.span>
+              </motion.p>
             </motion.div>
 
             <motion.div

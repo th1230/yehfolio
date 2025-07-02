@@ -477,7 +477,7 @@ export default function Projects() {
                         </div>
                         <div className="mt-2 text-center">
                           <span className="text-outer-space/60 dark:text-apricot/60 text-sm">
-                            {currentImageIndex + 1} /{' '}
+                            {currentImageIndex + 1} /
                             {selectedProject.images.length}
                           </span>
                         </div>
