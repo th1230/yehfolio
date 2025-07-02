@@ -20,7 +20,7 @@ export interface GalaxyBand {
   height: number;
   rotation: number;
   opacity: number;
-  type: "spiral" | "bar" | "irregular" | "elliptical";
+  type: 'spiral' | 'bar' | 'irregular' | 'elliptical';
   particles: Star[];
 }
 
@@ -73,21 +73,21 @@ function genSpiral({
     const y = Math.sin(θ) * r + Math.cos(θ) * off;
 
     /* 色彩分區 */
-    let color = "",
+    let color = '',
       size = 1,
       opacity = 1;
     if (r < 0.15 * Rmax) {
       color = hsl(45 + Math.random() * 10, 85, 60); // 黃心
       size = 1 + Math.random();
-      opacity = 0.8 + Math.random() * 0.2;
+      opacity = Math.max(0.01, Math.min(1, 0.8 + Math.random() * 0.2));
     } else if (r < 0.7 * Rmax) {
       color = hsl(200 + Math.random() * 30, 80, 70); // 藍臂
       size = 0.4 + Math.random() * 0.6;
-      opacity = 0.5 + Math.random() * 0.4;
+      opacity = Math.max(0.01, Math.min(1, 0.5 + Math.random() * 0.4));
     } else {
       color = hsl(5 + Math.random() * 20, 70, 70); // 紅暈
       size = 0.2 + Math.random() * 0.3;
-      opacity = 0.2 + Math.random() * 0.3;
+      opacity = Math.max(0.01, Math.min(1, 0.2 + Math.random() * 0.3));
     }
 
     out.push({ x, y, size, opacity, color, distance: r });
@@ -149,7 +149,10 @@ function genBarGalaxy({
       (1 - (distFromCenter / barA) * 0.5);
 
     const size = 0.4 + Math.random() * 0.6; // 棒段星星可以大一點
-    const opacity = (1 - distFromCenter / barA) * (0.6 + Math.random() * 0.4);
+    const opacity = Math.max(
+      0,
+      Math.min(1, (1 - distFromCenter / barA) * (0.6 + Math.random() * 0.4)),
+    );
     out.push({
       x,
       y,
@@ -185,7 +188,7 @@ function genBarGalaxy({
 
     // 讓星星更傾向於在旋臂「內部」
     const keepOnArm = Math.exp(
-      -Math.pow(thetaOffset / (TAU * armSpread * 0.5), 2) * 5
+      -Math.pow(thetaOffset / (TAU * armSpread * 0.5), 2) * 5,
     ); // 高斯分佈，中心密度高
     if (Math.random() > keepOnArm) continue;
 
@@ -197,8 +200,13 @@ function genBarGalaxy({
       Math.exp(-distFromCenter / diskRmax); // 越遠越薄
 
     const size = 0.3 + Math.random() * 0.7; // 旋臂星星可以更亮、更大
-    const opacity =
-      (1 - distFromCenter / diskRmax) * (0.7 + Math.random() * 0.3); // 旋臂星星通常更顯眼
+    const opacity = Math.max(
+      0.01,
+      Math.min(
+        1,
+        (1 - distFromCenter / diskRmax) * (0.7 + Math.random() * 0.3),
+      ),
+    ); // 旋臂星星通常更顯眼
     out.push({
       x,
       y,
@@ -230,8 +238,13 @@ function genBarGalaxy({
     if (Math.random() > keep) continue;
 
     const size = 0.1 + Math.random() * 0.2; // 光暈星星非常小且暗
-    const opacity =
-      (1 - distFromCenter / (diskRmax * 2)) * (0.1 + Math.random() * 0.1);
+    const opacity = Math.max(
+      0.01,
+      Math.min(
+        1,
+        (1 - distFromCenter / (diskRmax * 2)) * (0.1 + Math.random() * 0.1),
+      ),
+    );
     out.push({
       x,
       y,
@@ -261,7 +274,7 @@ function genIrregular({
     { x: 80, y: 70, w: 0.1 },
   ];
   const cum = centers.map((c, i) =>
-    centers.slice(0, i + 1).reduce((s, m) => s + m.w, 0)
+    centers.slice(0, i + 1).reduce((s, m) => s + m.w, 0),
   );
   const out: Star[] = [];
 
@@ -281,7 +294,10 @@ function genIrregular({
 
     const dist = Math.hypot(x, y) / Rmax;
     const size = 0.2 + Math.random() * 0.7;
-    const opacity = (1 - dist) * (0.3 + Math.random() * 0.5);
+    const opacity = Math.max(
+      0.01,
+      Math.min(1, (1 - dist) * (0.3 + Math.random() * 0.5)),
+    );
 
     out.push({
       x,
@@ -334,8 +350,10 @@ function genEllipticalGalaxy({
     if (Math.random() > keep) continue;
 
     const size = 0.2 + Math.random() * 0.3; // 橢圓星系星星普遍較小且均勻
-    const opacity =
-      (1 - distFromCenter / maxDist) * (0.3 + Math.random() * 0.4); // 整體透明度可以更低，模擬更稀疏
+    const opacity = Math.max(
+      0.01,
+      Math.min(1, (1 - distFromCenter / maxDist) * (0.3 + Math.random() * 0.4)),
+    ); // 整體透明度可以更低，模擬更稀疏
 
     out.push({
       x,
@@ -359,7 +377,7 @@ export function createGalaxyBands(): GalaxyBand[] {
 
   for (let i = 0; i < galaxyCount; i++) {
     // 隨機選擇銀河類型
-    const types = ["bar", "irregular", "elliptical"] as const;
+    const types = ['bar', 'irregular', 'elliptical'] as const;
     const type = types[Math.floor(Math.random() * types.length)];
 
     // 隨機位置 (避免重疊，在較大範圍內分布)
@@ -375,7 +393,7 @@ export function createGalaxyBands(): GalaxyBand[] {
     let galaxy: GalaxyBand;
 
     switch (type) {
-      case "bar": {
+      case 'bar': {
         // 隨機棒旋參數
         const a = 200 + Math.random() * 600; // 半長軸 200-500
         const b = 50 + Math.random() * 150; // 半短軸 50-200
@@ -399,7 +417,7 @@ export function createGalaxyBands(): GalaxyBand[] {
         break;
       }
 
-      case "irregular": {
+      case 'irregular': {
         // 隨機不規則參數
         const Rmax = 120 + Math.random() * 280; // 120-400
         const starCount = 10000 + Math.random() * 5000; // 2500-7500
@@ -418,7 +436,7 @@ export function createGalaxyBands(): GalaxyBand[] {
         break;
       }
 
-      case "elliptical": {
+      case 'elliptical': {
         // 隨機橢圓參數
         const a = 80 + Math.random() * 150; // 半長軸 80-230
         const b = 60 + Math.random() * 120; // 半短軸 60-180

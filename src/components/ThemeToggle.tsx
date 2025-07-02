@@ -9,21 +9,21 @@ export default function ThemeToggle() {
   return (
     <motion.button
       onClick={toggleTheme}
-      className="relative flex items-center justify-center w-12 h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-200 cursor-pointer dark:border-gray-600 hover:shadow-xl transition-all duration-300"
+      className="relative flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-gray-200 bg-white shadow-lg transition-all duration-300 hover:shadow-xl dark:border-gray-600 dark:bg-gray-800"
       whileTap={{ scale: 0.9 }}
       whileHover={{ scale: 1.05 }}
       aria-label="切換主題"
     >
       <motion.div
         className="flex items-center justify-center"
-        animate={{ 
+        animate={{
           rotate: theme === 'dark' ? 180 : 0,
         }}
         transition={{
-          type: "spring",
+          type: 'spring',
           stiffness: 200,
           damping: 20,
-          duration: 0.6
+          duration: 0.6,
         }}
       >
         {theme === 'light' ? (

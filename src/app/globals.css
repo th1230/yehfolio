@@ -2,7 +2,7 @@ html {
   scroll-behavior: smooth;
 }
 
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -46,8 +46,12 @@ a:hover {
 
 /* 平滑的過渡效果 */
 * {
-  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, 
-              opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    opacity 0.3s ease,
+    transform 0.3s ease;
 }
 
 /* 禁用預設的聚焦環 */

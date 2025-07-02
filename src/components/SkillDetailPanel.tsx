@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import { memo } from "react";
+import { motion } from 'framer-motion';
+import { memo } from 'react';
 
 type SkillDetail = {
   name: string;
@@ -20,7 +20,7 @@ interface SkillDetailPanelProps {
 
 const SkillDetailPanel = memo(({ selectedSkill }: SkillDetailPanelProps) => {
   return (
-    <div className="bg-white dark:bg-gray-800/50 rounded-2xl p-4 shadow-lg">
+    <div className="rounded-2xl bg-white p-4 shadow-lg dark:bg-gray-800/50">
       {selectedSkill ? (
         <motion.div
           key={selectedSkill.name}
@@ -30,13 +30,19 @@ const SkillDetailPanel = memo(({ selectedSkill }: SkillDetailPanelProps) => {
           className="space-y-4"
         >
           {/* 技能標題 */}
-          <div className="flex items-center mb-4">
-            <div className="text-2xl mr-3">{selectedSkill.icon}</div>
+          <div className="mb-4 flex items-center">
+            <div className="mr-3 flex h-8 w-8 items-center justify-center">
+              <img
+                src={selectedSkill.icon}
+                alt={selectedSkill.name}
+                className="h-full w-full object-contain"
+              />
+            </div>
             <div>
-              <h3 className="text-lg font-bold text-outer-space dark:text-apricot">
+              <h3 className="text-outer-space dark:text-apricot text-lg font-bold">
                 {selectedSkill.name}
               </h3>
-              <p className="text-xs text-outer-space/70 dark:text-apricot/70">
+              <p className="text-outer-space/70 dark:text-apricot/70 text-xs">
                 {selectedSkill.category}
               </p>
             </div>
@@ -44,38 +50,18 @@ const SkillDetailPanel = memo(({ selectedSkill }: SkillDetailPanelProps) => {
 
           {/* 技能描述 */}
           <div className="space-y-3">
-            <p className="text-sm text-outer-space/80 dark:text-apricot/80 leading-relaxed">
+            <p className="text-outer-space/80 dark:text-apricot/80 text-sm leading-relaxed">
               {selectedSkill.description}
             </p>
-            
-            {/* 應用情境 */}
-            <div className="space-y-1">
-              <p className="text-sm font-medium text-outer-space dark:text-apricot">
-                👉 應用情境
-              </p>
-              <p className="text-sm text-outer-space/80 dark:text-apricot/80 ml-4">
-                {selectedSkill.applications}
-              </p>
-            </div>
-
-            {/* 相關連結 */}
-            <div className="space-y-1">
-              <p className="text-sm font-medium text-outer-space dark:text-apricot">
-                🔗 相關應用見
-              </p>
-              <p className="text-sm text-outer-space/80 dark:text-apricot/80 ml-4">
-                {selectedSkill.relatedLinks}
-              </p>
-            </div>
           </div>
         </motion.div>
       ) : (
         <div className="flex flex-col items-center justify-center py-8 text-center">
-          <div className="text-3xl mb-3">⭐</div>
-          <h3 className="text-lg font-bold mb-2 text-outer-space dark:text-apricot">
+          <div className="mb-3 text-3xl">⭐</div>
+          <h3 className="text-outer-space dark:text-apricot mb-2 text-lg font-bold">
             選擇技能星星
           </h3>
-          <p className="text-sm text-outer-space/70 dark:text-apricot/70">
+          <p className="text-outer-space/70 dark:text-apricot/70 text-sm">
             點擊左側的技能星星查看詳細資訊
           </p>
         </div>
