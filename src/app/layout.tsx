@@ -41,9 +41,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const isExportMode = process.env.EXPORT_MODE === 'true';
+
   return (
     <html lang="zh-TW">
-      <head></head>
+      <head>
+        <base href={isExportMode ? '/yehfolio' : '/'} />
+      </head>
       <body className="text-outer-space dark:bg-outer-space dark:text-fawn !overflow-x-hidden bg-gray-50">
         <ThemeProvider>{children}</ThemeProvider>
       </body>

@@ -9,7 +9,6 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizeCss: false,
   },
-  basePath: '/yehfolio',
 };
 
 export default nextConfig;
