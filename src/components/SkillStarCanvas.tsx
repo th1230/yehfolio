@@ -100,101 +100,101 @@ const SkillStarfield = memo(() => {
       color: '#DD0031',
       icon: '/images/skills/Angular-Dark.svg',
       description:
-        '三年 Angular 開發經驗，主要負責大型企業級前後台系統建構。具備模組化架構設計能力，並能運用 RxJS 與 NgRx 進行複雜數據流與狀態管理。擅長運用 Angular CLI、依賴注入等核心特性，確保應用程式穩定性與可維護性。',
+        '具備多年 Angular 開發經驗，能以模組化架構建構企業級前後台系統，熟悉 RxJS 流程設計與表單驗證、依賴注入、狀態管理等核心功能，能獨立完成複雜頁面與應用邏輯。',
     },
     {
       name: 'React',
-      level: 80,
+      level: 70,
       category: '前端框架',
       color: '#61DAFB',
       icon: '/images/skills/React-Dark.svg',
       description:
-        '累積多個小型專案 React 開發經驗，能夠運用 React Hooks、Context API 及第三方狀態管理工具構建元件。曾參與 Line LIFF 後台管理系統開發，具備 SPA 實作與問題排除經驗。',
+        '具備 React 開發經驗，能使用 Hooks 實作元件邏輯、處理狀態與表單交互，並結合路由與第三方套件完成中小型應用的建構。',
     },
     {
       name: 'Vue',
-      level: 70,
+      level: 65,
       category: '前端框架',
       color: '#4FC08D',
       icon: '/images/skills/VueJS-Dark.svg',
       description:
-        '具備中小型專案 Vue 開發經驗，能運用 Vue 3 Composition API、Pinia 狀態管理與 Vue Router。曾參與 AI 客製化 GPT 後台系統開發，高效運用 Vite 進行專案建構。',
+        '能使用 Vue 3 Composition API 撰寫元件邏輯，搭配 Pinia 與 Vue Router 完成基本資料操作與畫面切換，具備實際應用建構經驗。',
     },
     {
       name: 'Next.js',
-      level: 80,
+      level: 65,
       category: '前端框架',
       color: '#FF6B6B',
       icon: '/images/skills/NextJS-Dark.svg',
       description:
-        '具備 Next.js 13+ App Router、Server Components、SSR/SSG 實作經驗。曾負責 AI 票務平台前端與數位游牧前台優化，具備網站效能與 SEO 相關經驗。',
+        '具備使用 Next.js App Router 架構開發前台應用的經驗，能處理動態路由、頁面資料載入與登入流程，並整合內建元件與 Metadata 設定完成基本使用者操作與畫面管理。',
     },
     {
       name: 'Nuxt.js',
-      level: 75,
+      level: 60,
       category: '前端框架',
       color: '#00DC82',
       icon: '/images/skills/NuxtJS-Dark.svg',
       description:
-        '曾與團隊協作，負責使用 Nuxt 3 建構客製化 AI 聊天機器人前台。此專案仿照 ChatGPT 介面，透過 SSE (Server-Sent Events) 串接後端與 AI 模型，實現對話、自動顯示、歷史數據管理、對話分享等功能。我能夠理解 Nuxt 應用程式的運作流程並規劃專案結構。',
+        '具備 Nuxt 3 開發經驗，能透過頁面元件、AsyncData 與 Pinia 建構資料流程，處理使用者互動與簡易畫面更新邏輯，理解基本 SSR 應用方式與框架使用規則。',
     },
 
     // 程式語言
     {
       name: 'JavaScript',
-      level: 90,
+      level: 85,
       category: '程式語言',
       color: '#F7DF1E',
       icon: '/images/skills/JavaScript.svg',
       description:
-        '能夠高效運用 ES6+ 語法特性及 Promise、async/await 處理非同步。對模組系統與原型鏈有一定理解。具備分析與優化 JavaScript 程式碼效能的實務經驗，如提升 Lighthouse 檢測分數。',
+        '擅長使用 JavaScript 撰寫功能模組與邏輯結構，具備 ES6+ 語法應用、非同步處理與資料結構操作等實務經驗，能獨立設計並實作可維護的應用邏輯，作為前端開發的主要程式語言。',
     },
     {
       name: 'TypeScript',
-      level: 85,
+      level: 80,
       category: '程式語言',
       color: '#3178C6',
       icon: '/images/skills/TypeScript.svg',
       description:
-        '能夠有效利用 TypeScript 進行型別安全開發，曾應用泛型、條件型別提升大型專案程式碼品質與可維護性，支援團隊協作順暢。',
+        '在實務開發中使用 TypeScript 編寫模組與業務邏輯，習慣在設計階段建立明確的介面與資料型別，確保模組之間的資料流清晰可控。能處理日常開發中常見的型別擴展、條件處理與整合第三方型別定義，提升專案維護性與可讀性。',
     },
 
     // 後端技術
     {
       name: 'Node.js',
-      level: 80,
+      level: 70,
       category: '後端技術',
       color: '#339933',
       icon: '/images/skills/NodeJS-Dark.svg',
       description:
-        '具備使用 Node.js 建構 RESTful API/GraphQL 服務經驗。曾參與才藝媒合與 AI 票務平台後端開發，對事件循環機制有一定的了解。',
+        '具備 Node.js 實務開發經驗，能以模組化方式撰寫中小型應用的後端邏輯，處理非同步控制流程與錯誤攔截，並整合 Express 架構 API 服務、身份驗證與資料操作邏輯，完成前後端串接與服務端應用建構。',
     },
     {
       name: 'Express',
-      level: 85,
+      level: 70,
       category: '後端技術',
       color: '#000000',
       icon: '/images/skills/ExpressJS-Dark.svg',
       description:
-        '具備 Express.js 框架開發後端應用經驗，熟悉中介軟體設計與路由管理。曾整合身份驗證與 API 文件生成工具，建立 Web API 服務。',
+        '能以 Express 架構撰寫後端服務，設計路由結構、實作中介層控制流程，整合驗證邏輯與錯誤處理，並結合資料庫與第三方服務完成 API 開發與前後端資料流設計。',
     },
     {
       name: 'MongoDB',
-      level: 75,
+      level: 60,
       category: '後端技術',
       color: '#47A248',
       icon: '/images/skills/MongoDB.svg',
       description:
-        '具備 MongoDB 文件型資料庫的實務操作經驗，主要透過 ORM (如 Mongoose) 進行資料操作。曾應用於才藝媒合平台等專案，進行使用者數據和內容的儲存與查詢。能夠理解 NoSQL 資料庫的基本概念與設計原則，並完成所需資料庫任務。',
+        '可透過 Mongoose 操作 MongoDB 資料庫，建立資料模型與進行基本查詢與更新操作，應用於會員資料與內容管理流程。',
     },
     {
       name: 'PostgreSQL',
-      level: 70,
+      level: 55,
       category: '後端技術',
       color: '#336791',
       icon: '/images/skills/PostgreSQL-Dark.svg',
       description:
-        '在 AI 票務平台專案中應用 PostgreSQL 搭配 Prisma ORM。具備透過 ORM 實現資料操作的能力，並能執行資料庫的基本查詢。對關聯式資料庫的基礎概念有所了解，能參與資料庫相關的開發任務。',
+        '具備 PostgreSQL 操作經驗，能使用 Prisma 進行資料表建模與 CRUD 操作，理解資料關聯設計與基本查詢應用。',
     },
 
     // 開發工具
@@ -205,27 +205,28 @@ const SkillStarfield = memo(() => {
       color: '#F05032',
       icon: '/images/skills/Git.svg',
       description:
-        '熟練運用 Git 進行版本控制，掌握分支策略與合併衝突解決。具備參與團隊協作 Git 工作流程與程式碼審查的經驗。',
+        '熟練使用 Git 管理版本與分支，能進行合併、衝突處理與協作開發，並支援基本的 code review 流程。',
     },
     {
       name: 'Docker',
-      level: 75,
+      level: 70,
       category: '開發工具',
       color: '#2496ED',
       icon: '/images/skills/Docker.svg',
       description:
-        '具備 Docker 容器化實務經驗，能建構 Dockerfile。曾負責 AI 票務平台前後端容器化，並協助優化 CI/CD 映像建構速度。',
+        '具備容器化實作經驗，能撰寫 Dockerfile 並封裝應用映像，完成前後端專案的打包與本地運行環境建置。',
     },
     {
       name: 'GitHub Actions',
-      level: 70,
+      level: 65,
       category: '開發工具',
       color: '#2088FF',
       icon: '/images/skills/GithubActions-Dark.svg',
       description:
-        '參與自動化 CI/CD 流程設計與實作，透過 GitHub Actions 實現自動化部署。熟悉程式碼檢查、測試執行與多環境部署策略。',
+        '可使用 GitHub Actions 撰寫基本 CI/CD 工作流程，實現自動化測試、部署與格式檢查任務，提升開發效率。',
     },
   ];
+
   // ...existing code...
 
   /* ---- 初始化星座佈局 ---- */
@@ -237,7 +238,7 @@ const SkillStarfield = memo(() => {
     nodesRef.current = skillsData.map((s) => {
       const x = (Math.random() - 0.5) * 800; // 隨機x位置
       const y = (Math.random() - 0.5) * 400; // 隨機y位置
-      const radius = 2 + ((s.level - 70) / 30) * 3; // 縮小：70 ➜ 2px, 100 ➜ 5px
+      const radius = 2 + ((s.level - 60) / 30) * 3; // 縮小：70 ➜ 2px, 100 ➜ 5px
       return {
         ...s,
         x,

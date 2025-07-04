@@ -77,7 +77,7 @@ export default function About() {
                   animate={isInView ? { opacity: 1 } : { opacity: 0 }}
                   transition={{ duration: 0.8, delay: 1.1 }}
                 >
-                  進行專案開發，曾參與多項功能實作與系統前端設計，具備實務開發與交付經驗。
+                  進行專案開發，曾參與多項功能實作與系統前端設計，具備實務開發經驗。
                 </motion.span>
               </motion.p>
 
@@ -129,7 +129,7 @@ export default function About() {
                   animate={isInView ? { opacity: 1 } : { opacity: 0 }}
                   transition={{ duration: 0.8, delay: 1.9 }}
                 >
-                  習慣從實作中累積經驗，會關注技術發展，並嘗試將合適的新工具應用到實際開發中。
+                  開發過程中習慣邊做邊學，對技術更新會有基本的掌握，若遇到能解決問題的新工具，也會評估後嘗試導入。
                 </motion.span>
               </motion.p>
             </motion.div>

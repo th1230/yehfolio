@@ -246,14 +246,14 @@ export default function Experience() {
                       className={`pl-16 md:pl-0 ${
                         // 手機版統一左對齊
                         isLeft
-                          ? 'md:mr-auto md:ml-0 md:pl-20'
-                          : 'md:mr-0 md:ml-auto md:pr-20'
+                          ? 'md:mr-auto'
+                          : 'md:mr-0 md:ml-auto'
                       } max-w-sm md:max-w-md`}
                       initial={{ opacity: 0, x: -50 }}
                       animate={
                         isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }
                       }
-                      transition={{ duration: 0.2, delay: index * 0.2 + 0.3 }}
+                      transition={{ duration: 0.2 }}
                       whileHover={{ scale: 1.02, y: -3 }}
                     >
                       {/* 卡片主體 */}

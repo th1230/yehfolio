@@ -153,7 +153,7 @@ const descriptionText = '以前端為核心，持續拓展跨領域技術與實�
             </a>
             <a href="#contact">
               <motion.button
-                className="border-outer-space dark:border-apricot text-outer-space dark:text-apricot cursor-pointer rounded-lg border-2 px-8 py-3 font-medium transition-all duration-300"
+                className="border-outer-space dark:border-apricot text-outer-space dark:text-apricot cursor-pointer rounded-lg border-2 px-8 py-[10px] font-medium transition-all duration-300"
                 whileHover={{ y: -2, borderColor: '#f5ac72' }}
                 whileTap={{ y: 0 }}
               >

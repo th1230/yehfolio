@@ -32,13 +32,14 @@ export default function Footer() {
   return (
     <footer className="bg-outer-space py-16 text-white dark:bg-gray-900">
       <div className="mx-auto max-w-7xl px-4">
-        <div className="mb-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mb-12 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           {/* Brand Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
             viewport={{ once: true }}
+            className='lg:col-span-2'
           >
             <h3 className="dark:text-apricot mb-4 text-2xl font-bold text-white">
               YehFolio
