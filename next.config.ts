@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   experimental: {
-    useLightningcss: false,
+    optimizeCss: false,
   },
 };
 
