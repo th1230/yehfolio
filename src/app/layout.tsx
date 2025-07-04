@@ -4,7 +4,8 @@ import { ThemeProvider } from '@/contexts/ThemeContext';
 
 export const metadata: Metadata = {
   title: 'Thomas Yeh Portfolio - Angular Frontend Developer',
-  description: 'Thomas Yeh 的個人作品集，專精於 Angular 開發，同時熟悉 React、Next.js、TypeScript 等前端技術。',
+  description:
+    'Thomas Yeh 的個人作品集，專精於 Angular 開發，同時熟悉 React、Next.js、TypeScript 等前端技術。',
   keywords: [
     'Angular Developer',
     'Frontend Developer',
@@ -25,7 +26,8 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'zh_TW',
     title: 'Yeh Portfolio - Angular Frontend Developer',
-    description: 'Thomas Yeh 的個人作品集，專精於 Angular 開發，展示技術專案和學習成果。',
+    description:
+      'Thomas Yeh 的個人作品集，專精於 Angular 開發，展示技術專案和學習成果。',
     siteName: 'Yeh Portfolio',
   },
   robots: {

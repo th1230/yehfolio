@@ -39,7 +39,7 @@ export default function Footer() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
             viewport={{ once: true }}
-            className='lg:col-span-2'
+            className="lg:col-span-2"
           >
             <h3 className="dark:text-apricot mb-4 text-2xl font-bold text-white">
               YehFolio

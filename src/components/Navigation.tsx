@@ -63,11 +63,15 @@ export default function Navigation() {
                 e.preventDefault();
                 scrollToSection('#');
               }}
-              className="text-outer-space dark:text-apricot text-2xl font-bold flex items-center gap-x-2"
+              className="text-outer-space dark:text-apricot flex items-center gap-x-2 text-2xl font-bold"
               whileHover={{ rotate: 5 }}
               transition={{ duration: 0.3 }}
             >
-              <img src="./images/logo.png" className='h-8' alt="YehFolio Logo" />
+              <img
+                src="./images/logo.png"
+                className="h-8"
+                alt="YehFolio Logo"
+              />
               YehFolio
             </motion.a>
           </motion.div>

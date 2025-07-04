@@ -245,9 +245,7 @@ export default function Experience() {
                     <motion.div
                       className={`pl-16 md:pl-0 ${
                         // 手機版統一左對齊
-                        isLeft
-                          ? 'md:mr-auto'
-                          : 'md:mr-0 md:ml-auto'
+                        isLeft ? 'md:mr-auto' : 'md:mr-0 md:ml-auto'
                       } max-w-sm md:max-w-md`}
                       initial={{ opacity: 0, x: -50 }}
                       animate={

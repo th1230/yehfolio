@@ -68,7 +68,7 @@ export default function About() {
                       : { opacity: 0, scale: 0.8 }
                   }
                   transition={{ duration: 0.5, delay: 0.9, ease: 'backOut' }}
-                  className="text-fawn font-semibold px-1"
+                  className="text-fawn px-1 font-semibold"
                 >
                   Angular
                 </motion.span>
@@ -102,7 +102,7 @@ export default function About() {
                     isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }
                   }
                   transition={{ duration: 0.5, delay: 1.5, ease: 'easeOut' }}
-                  className="text-fawn font-semibold px-1"
+                  className="text-fawn px-1 font-semibold"
                 >
                   side project
                 </motion.span>
