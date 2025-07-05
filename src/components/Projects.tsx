@@ -107,7 +107,7 @@ export default function Projects() {
       ],
       challenges: [
         '理解並擴充前期共用元件邏輯，處理多模組差異化需求',
-        '掌握 NX monorepo 架構下模組管理與依賴設定',
+        '了解 NX monorepo 架構下模組管理與依賴設定',
         '確保複數頁面與分類模組功能整合後的穩定性',
         '處理列印功能在各模組下的顯示與樣式一致性',
       ],
@@ -285,7 +285,6 @@ export default function Projects() {
       challenges: [
         '處理 LINE LIFF 於內嵌環境的限制與登入流程整合',
         '設計模板系統，支援不同訊息類型與結構動態呈現',
-        '串接前後台資料流並保持跨平台狀態一致性',
       ],
       features: [
         'LINE 登入與 LIFF 整合',

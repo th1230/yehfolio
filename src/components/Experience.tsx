@@ -81,7 +81,7 @@ export default function Experience() {
       achievements: [
         '建構後台文章、標籤、廣告等多模組管理功能',
         '前台實作 Lazy Loading、RWD 與 SEO 優化，Lighthouse SEO 分數 95+',
-        '整合 GA 分析與前後台資料流監控',
+        '實作 Facebook / Twitter / LINE 分享 meta 設定與測試驗證',
       ],
     },
     {
