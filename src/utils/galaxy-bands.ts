@@ -27,73 +27,67 @@ export interface GalaxyBand {
 /* 2. 通用工具 ----------------------------------------------------------- */
 const TAU = Math.PI * 2;
 
-/** 取指數盤半徑 I(R) = I0 · e^(−R/h)   :contentReference[oaicite:0]{index=0} */
-function sampleExponentialRadius(Rmax: number, h: number) {
-  const u = Math.random();
-  return -h * Math.log(1 - u * (1 - Math.exp(-Rmax / h)));
-}
-
 /** 取 RGB Hex → Canvas 色碼 */
 function hsl(h: number, s: number, l: number) {
   return `hsl(${h},${s}%,${l}%)`;
 }
 
 /* 3. 螺旋星系 ----------------------------------------------------------- */
-function genSpiral({
-  Rmax,
-  starCount,
-  arms,
-  pitchDeg,
-}: {
-  Rmax: number;
-  starCount: number;
-  arms: number;
-  pitchDeg: number;
-}): Star[] {
-  const h = 0.3 * Rmax;
-  const k = 1 / Math.tan((pitchDeg * Math.PI) / 180); // θ = θ0 + k ln r  :contentReference[oaicite:1]{index=1}
-  const out: Star[] = [];
+// function genSpiral({
+//   Rmax,
+//   starCount,
+//   arms,
+//   pitchDeg,
+// }: {
+//   Rmax: number;
+//   starCount: number;
+//   arms: number;
+//   pitchDeg: number;
+// }): Star[] {
+//   const h = 0.3 * Rmax;
+//   const k = 1 / Math.tan((pitchDeg * Math.PI) / 180); // θ = θ0 + k ln r  :contentReference[oaicite:1]{index=1}
+//   const out: Star[] = [];
 
-  while (out.length < starCount) {
-    const r = sampleExponentialRadius(Rmax, h);
-    const arm = Math.floor(Math.random() * arms);
-    const base = (arm * TAU) / arms;
+//   while (out.length < starCount) {
+//     const r = sampleExponentialRadius(Rmax, h);
+//     const arm = Math.floor(Math.random() * arms);
+//     const base = (arm * TAU) / arms;
 
-    /* 對數螺旋角 + 微擾 */
-    const θ =
-      base +
-      k * Math.log(r) +
-      (Math.random() - 0.5) * (Math.PI / 60) + // 臂內隨機
-      (r / Rmax) * (Math.PI / 2); // swirl
+//     /* 對數螺旋角 + 微擾 */
+//     const θ =
+//       base +
+//       k * Math.log(r) +
+//       (Math.random() - 0.5) * (Math.PI / 60) + // 臂內隨機
+//       (r / Rmax) * (Math.PI / 2); // swirl
 
-    /* 臂厚度高斯散佈 */
-    const armW = 0.04 * r + 12;
-    const off = armW * (Math.random() - 0.5);
-    const x = Math.cos(θ) * r - Math.sin(θ) * off;
-    const y = Math.sin(θ) * r + Math.cos(θ) * off;
+//     /* 臂厚度高斯散佈 */
+//     const armW = 0.04 * r + 12;
+//     const off = armW * (Math.random() - 0.5);
+//     const x = Math.cos(θ) * r - Math.sin(θ) * off;
+//     const y = Math.sin(θ) * r + Math.cos(θ) * off;
 
-    /* 色彩分區 */
-    let color = '',
-      size = 1,
-      opacity = 1;
-    if (r < 0.15 * Rmax) {
-      color = hsl(45 + Math.random() * 10, 85, 60); // 黃心
-      size = 1 + Math.random();
-      opacity = Math.max(0.01, Math.min(1, 0.8 + Math.random() * 0.2));
-    } else if (r < 0.7 * Rmax) {
-      color = hsl(200 + Math.random() * 30, 80, 70); // 藍臂
-      size = 0.4 + Math.random() * 0.6;
-      opacity = Math.max(0.01, Math.min(1, 0.5 + Math.random() * 0.4));
-    } else {
-      color = hsl(5 + Math.random() * 20, 70, 70); // 紅暈
-      size = 0.2 + Math.random() * 0.3;
-      opacity = Math.max(0.01, Math.min(1, 0.2 + Math.random() * 0.3));
-    }
+//     /* 色彩分區 */
+//     let color = '',
+//       size = 1,
+//       opacity = 1;
+//     if (r < 0.15 * Rmax) {
+//       color = hsl(45 + Math.random() * 10, 85, 60); // 黃心
+//       size = 1 + Math.random();
+//       opacity = Math.max(0.01, Math.min(1, 0.8 + Math.random() * 0.2));
+//     } else if (r < 0.7 * Rmax) {
+//       color = hsl(200 + Math.random() * 30, 80, 70); // 藍臂
+//       size = 0.4 + Math.random() * 0.6;
+//       opacity = Math.max(0.01, Math.min(1, 0.5 + Math.random() * 0.4));
+//     } else {
+//       color = hsl(5 + Math.random() * 20, 70, 70); // 紅暈
+//       size = 0.2 + Math.random() * 0.3;
+//       opacity = Math.max(0.01, Math.min(1, 0.2 + Math.random() * 0.3));
+//     }
 
-    out.push({ x, y, size, opacity, color, distance: r });
-  }
-  return out;
-}
+//     out.push({ x, y, size, opacity, color, distance: r });
+//   }
+//   return out;
+// }
 
 /* 4. 棒旋星系（僅棒段） -------------------------------------------------- */
 function genBarGalaxy({
@@ -118,12 +112,10 @@ function genBarGalaxy({
   const out: Star[] = [];
   const barStarsRatio = 0.35; // 棒段星星比例 (35%)
   const armStarsRatio = 0.6; // 旋臂星星比例 (60%)
-  const haloStarsRatio = 0.05; // 光暈星星比例 (5%) - 模擬稀疏的球狀分佈
 
   const totalStarCount = starCount;
   const barStarCount = Math.floor(totalStarCount * barStarsRatio);
   const armStarCount = Math.floor(totalStarCount * armStarsRatio);
-  const haloStarCount = Math.floor(totalStarCount * haloStarsRatio);
 
   // 1. 生成棒段核心 (更緊密且中心明亮)
   while (out.length < barStarCount) {
@@ -132,8 +124,8 @@ function genBarGalaxy({
     const r = Math.sqrt(r_dist) * Math.max(barA, barB); // 讓星星更集中在中心
     const theta = Math.random() * TAU;
 
-    let x = Math.cos(theta) * barA * (r / Math.max(barA, barB));
-    let y = Math.sin(theta) * barB * (r / Math.max(barA, barB));
+    const x = Math.cos(theta) * barA * (r / Math.max(barA, barB));
+    const y = Math.sin(theta) * barB * (r / Math.max(barA, barB));
 
     // 沿著棒軸 (x 軸) 增加密度
     const densityFactor = Math.exp(-Math.abs(x) / (barA * 0.8)) * 0.8 + 0.2;
@@ -172,15 +164,15 @@ function genBarGalaxy({
     // 半徑分佈：越往外越稀疏，但不能太快，從棒段末端開始延伸
     const r_rand = Math.random();
     // 讓旋臂從棒段末端附近開始，並向外擴展
-    let r_base = barA + (diskRmax - barA) * Math.sqrt(r_rand); // 從 barA 外緣開始，隨機分佈到 Rmax
+    const r_base = barA + (diskRmax - barA) * Math.sqrt(r_rand); // 從 barA 外緣開始，隨機分佈到 Rmax
 
     // 計算基礎角度
     const baseTheta = Math.log(r_base / barA) * armTightness; // 讓旋臂從 barA 附近開始
     const thetaOffset = (Math.random() - 0.5) * TAU * armSpread; // 旋臂的隨機寬度
     const theta = baseTheta + armStartAngle + thetaOffset;
 
-    let x = r_base * Math.cos(theta);
-    let y = r_base * Math.sin(theta);
+    const x = r_base * Math.cos(theta);
+    const y = r_base * Math.sin(theta);
 
     // 限制在盤面最大半徑內
     const distFromCenter = Math.hypot(x, y);
@@ -225,9 +217,9 @@ function genBarGalaxy({
     const theta_halo = Math.random() * TAU;
     const phi_halo = Math.acos(Math.random() * 2 - 1); // 球面座標的 phi 角
 
-    let x = r_halo * Math.sin(phi_halo) * Math.cos(theta_halo);
-    let y = r_halo * Math.sin(phi_halo) * Math.sin(theta_halo);
-    let z = r_halo * Math.cos(phi_halo);
+    const x = r_halo * Math.sin(phi_halo) * Math.cos(theta_halo);
+    const y = r_halo * Math.sin(phi_halo) * Math.sin(theta_halo);
+    const z = r_halo * Math.cos(phi_halo);
 
     const distFromCenter = Math.hypot(x, y, z);
     if (distFromCenter > diskRmax * 2 || distFromCenter < diskRmax * 0.5)
@@ -287,8 +279,8 @@ function genIrregular({
     /* 極座標隨機 */
     const ang = Math.random() * TAU;
     const d = Math.random() * Rmax * (0.5 + Math.random() * 0.5);
-    let x = c.x + Math.cos(ang) * d + (Math.random() - 0.5) * 40;
-    let y = c.y + Math.sin(ang) * d + (Math.random() - 0.5) * 40;
+    const x = c.x + Math.cos(ang) * d + (Math.random() - 0.5) * 40;
+    const y = c.y + Math.sin(ang) * d + (Math.random() - 0.5) * 40;
 
     if (Math.hypot(x, y) > Rmax) continue;
 

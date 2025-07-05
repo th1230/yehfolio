@@ -41,13 +41,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const isExportMode = process.env.EXPORT_MODE === 'true';
+  const isProd = process.env.NODE_ENV === 'production';
 
   return (
     <html lang="zh-TW">
-      <head>
-        <base href={isExportMode ? '/yehfolio' : '/'} />
-      </head>
+      <head>{isProd && <base href="/yehfolio" />}</head>
       <body className="text-outer-space dark:bg-outer-space dark:text-fawn !overflow-x-hidden bg-gray-50">
         <ThemeProvider>{children}</ThemeProvider>
       </body>
