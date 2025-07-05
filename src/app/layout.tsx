@@ -45,7 +45,7 @@ export default function RootLayout({
 
   return (
     <html lang="zh-TW">
-      <head>{isProd && <base href="/yehfolio" />}</head>
+      <head>{isProd && <base href="/yehfolio/" />}</head>
       <body className="text-outer-space dark:bg-outer-space dark:text-fawn !overflow-x-hidden bg-gray-50">
         <ThemeProvider>{children}</ThemeProvider>
       </body>

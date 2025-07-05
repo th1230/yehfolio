@@ -98,7 +98,7 @@ const SkillStarfield = memo(() => {
       level: 95,
       category: '前端框架',
       color: '#DD0031',
-      icon: '/images/skills/Angular-Dark.svg',
+      icon: './images/skills/Angular-Dark.svg',
       description:
         '具備多年 Angular 開發經驗，能以模組化架構建構企業級前後台系統，熟悉 RxJS 流程設計與表單驗證、依賴注入、狀態管理等核心功能，能獨立完成複雜頁面與應用邏輯。',
     },
@@ -107,7 +107,7 @@ const SkillStarfield = memo(() => {
       level: 70,
       category: '前端框架',
       color: '#61DAFB',
-      icon: '/images/skills/React-Dark.svg',
+      icon: './images/skills/React-Dark.svg',
       description:
         '具備 React 開發經驗，能使用 Hooks 實作元件邏輯、處理狀態與表單交互，並結合路由與第三方套件完成中小型應用的建構。',
     },
@@ -116,7 +116,7 @@ const SkillStarfield = memo(() => {
       level: 65,
       category: '前端框架',
       color: '#4FC08D',
-      icon: '/images/skills/VueJS-Dark.svg',
+      icon: './images/skills/VueJS-Dark.svg',
       description:
         '能使用 Vue 3 Composition API 撰寫元件邏輯，搭配 Pinia 與 Vue Router 完成基本資料操作與畫面切換，具備實際應用建構經驗。',
     },
@@ -125,7 +125,7 @@ const SkillStarfield = memo(() => {
       level: 65,
       category: '前端框架',
       color: '#FF6B6B',
-      icon: '/images/skills/NextJS-Dark.svg',
+      icon: './images/skills/NextJS-Dark.svg',
       description:
         '具備使用 Next.js App Router 架構開發前台應用的經驗，能處理動態路由、頁面資料載入與登入流程，並整合內建元件與 Metadata 設定完成基本使用者操作與畫面管理。',
     },
@@ -134,7 +134,7 @@ const SkillStarfield = memo(() => {
       level: 60,
       category: '前端框架',
       color: '#00DC82',
-      icon: '/images/skills/NuxtJS-Dark.svg',
+      icon: './images/skills/NuxtJS-Dark.svg',
       description:
         '具備 Nuxt 3 開發經驗，能透過頁面元件、AsyncData 與 Pinia 建構資料流程，處理使用者互動與簡易畫面更新邏輯，理解基本 SSR 應用方式與框架使用規則。',
     },
@@ -145,7 +145,7 @@ const SkillStarfield = memo(() => {
       level: 85,
       category: '程式語言',
       color: '#F7DF1E',
-      icon: '/images/skills/JavaScript.svg',
+      icon: './images/skills/JavaScript.svg',
       description:
         '擅長使用 JavaScript 撰寫功能模組與邏輯結構，具備 ES6+ 語法應用、非同步處理與資料結構操作等實務經驗，能獨立設計並實作可維護的應用邏輯，作為前端開發的主要程式語言。',
     },
@@ -154,7 +154,7 @@ const SkillStarfield = memo(() => {
       level: 80,
       category: '程式語言',
       color: '#3178C6',
-      icon: '/images/skills/TypeScript.svg',
+      icon: './images/skills/TypeScript.svg',
       description:
         '在實務開發中使用 TypeScript 編寫模組與業務邏輯，習慣在設計階段建立明確的介面與資料型別，確保模組之間的資料流清晰可控。能處理日常開發中常見的型別擴展、條件處理與整合第三方型別定義，提升專案維護性與可讀性。',
     },
@@ -165,7 +165,7 @@ const SkillStarfield = memo(() => {
       level: 70,
       category: '後端技術',
       color: '#339933',
-      icon: '/images/skills/NodeJS-Dark.svg',
+      icon: './images/skills/NodeJS-Dark.svg',
       description:
         '具備 Node.js 實務開發經驗，能以模組化方式撰寫中小型應用的後端邏輯，處理非同步控制流程與錯誤攔截，並整合 Express 架構 API 服務、身份驗證與資料操作邏輯，完成前後端串接與服務端應用建構。',
     },
@@ -174,7 +174,7 @@ const SkillStarfield = memo(() => {
       level: 70,
       category: '後端技術',
       color: '#000000',
-      icon: '/images/skills/ExpressJS-Dark.svg',
+      icon: './images/skills/ExpressJS-Dark.svg',
       description:
         '能以 Express 架構撰寫後端服務，設計路由結構、實作中介層控制流程，整合驗證邏輯與錯誤處理，並結合資料庫與第三方服務完成 API 開發與前後端資料流設計。',
     },
@@ -183,7 +183,7 @@ const SkillStarfield = memo(() => {
       level: 60,
       category: '後端技術',
       color: '#47A248',
-      icon: '/images/skills/MongoDB.svg',
+      icon: './images/skills/MongoDB.svg',
       description:
         '可透過 Mongoose 操作 MongoDB 資料庫，建立資料模型與進行基本查詢與更新操作，應用於會員資料與內容管理流程。',
     },
@@ -192,7 +192,7 @@ const SkillStarfield = memo(() => {
       level: 55,
       category: '後端技術',
       color: '#336791',
-      icon: '/images/skills/PostgreSQL-Dark.svg',
+      icon: './images/skills/PostgreSQL-Dark.svg',
       description:
         '具備 PostgreSQL 操作經驗，能使用 Prisma 進行資料表建模與 CRUD 操作，理解資料關聯設計與基本查詢應用。',
     },
@@ -203,7 +203,7 @@ const SkillStarfield = memo(() => {
       level: 85,
       category: '開發工具',
       color: '#F05032',
-      icon: '/images/skills/Git.svg',
+      icon: './images/skills/Git.svg',
       description:
         '熟練使用 Git 管理版本與分支，能進行合併、衝突處理與協作開發，並支援基本的 code review 流程。',
     },
@@ -212,7 +212,7 @@ const SkillStarfield = memo(() => {
       level: 70,
       category: '開發工具',
       color: '#2496ED',
-      icon: '/images/skills/Docker.svg',
+      icon: './images/skills/Docker.svg',
       description:
         '具備容器化實作經驗，能撰寫 Dockerfile 並封裝應用映像，完成前後端專案的打包與本地運行環境建置。',
     },
@@ -221,7 +221,7 @@ const SkillStarfield = memo(() => {
       level: 65,
       category: '開發工具',
       color: '#2088FF',
-      icon: '/images/skills/GithubActions-Dark.svg',
+      icon: './images/skills/GithubActions-Dark.svg',
       description:
         '可使用 GitHub Actions 撰寫基本 CI/CD 工作流程，實現自動化測試、部署與格式檢查任務，提升開發效率。',
     },
