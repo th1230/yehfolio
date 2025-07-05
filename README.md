@@ -2,7 +2,7 @@
 
 > 🌐 **線上展示**: [https://th1230.github.io/yehfolio/](https://th1230.github.io/yehfolio/)
 
-這是一個展示三年前端開發經驗的個人作品集網站，使用 Next.js 14 和 TypeScript 開發。
+這是一個展示三年前端開發經驗的個人作品集網站，使用 Next.js 15 和 TypeScript 開發。
 
 ## 關於我
 
