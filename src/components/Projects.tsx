@@ -223,7 +223,7 @@ export default function Projects() {
         './images/projects/Eventa-Event-Overview.png',
         './images/projects/Eventa-AI-Chat.png',
       ],
-      liveUrl: 'https://eventa-frontend-prod.onrender.com',
+      liveUrl: 'https://eventa-frontend.onrender.com',
       githubUrl: 'https://github.com/Eventa5',
     },
     {
