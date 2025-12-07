@@ -272,7 +272,7 @@ export default function SeasonalBackground() {
     const initParticles = () => {
       particlesRef.current = [];
       const particleCount = getParticleCount();
-      const canvasWidth = canvas.width / (window.devicePixelRatio || 1);
+      const _canvasWidth = canvas.width / (window.devicePixelRatio || 1);
       const canvasHeight = canvas.height / (window.devicePixelRatio || 1);
 
       for (let i = 0; i < particleCount; i++) {
@@ -290,9 +290,6 @@ export default function SeasonalBackground() {
     const animate = (currentTime: number) => {
       if (!imagesLoadedRef.current) return;
 
-      // 🔍 性能監測開始
-      const perfStart = performance.now();
-
       const deltaTime = lastTimeRef.current ? (currentTime - lastTimeRef.current) / 16.67 : 1;
       lastTimeRef.current = currentTime;
 
@@ -301,9 +298,6 @@ export default function SeasonalBackground() {
 
       ctx.clearRect(0, 0, canvasWidth, canvasHeight);
       drawSeasonalBackground(ctx, canvasWidth, canvasHeight);
-
-      // 🔍 計算邏輯開始
-      const calcStart = performance.now();
 
       // 🌪️ 全局風力（隨時間變化）
       const globalWind = Math.sin(currentTime * 0.0003) * 1.5;
@@ -360,37 +354,11 @@ export default function SeasonalBackground() {
         }
       });
 
-      const calcEnd = performance.now();
-
-      // 🔍 繪圖開始
-      const drawStart = performance.now();
-
       particlesRef.current.forEach(particle => {
         drawParticle(particle);
       });
 
       drawGroundLayer(ctx, currentTime);
-
-      const drawEnd = performance.now();
-
-      // 🔍 性能監測結束 - 每 60 幀印一次
-      if (Math.floor(currentTime / 1000) !== Math.floor((lastTimeRef.current || 0) / 1000)) {
-        const totalTime = perfStart ? drawEnd - perfStart : 0;
-        const calcTime = calcStart && calcEnd ? calcEnd - calcStart : 0;
-        const drawTime = drawStart && drawEnd ? drawEnd - drawStart : 0;
-
-        console.log('🎨 性能分析:');
-        console.log(`   總耗時: ${totalTime.toFixed(2)}ms`);
-        console.log(
-          `   計算邏輯: ${calcTime.toFixed(2)}ms (${((calcTime / totalTime) * 100).toFixed(1)}%)`
-        );
-        console.log(
-          `   繪圖渲染: ${drawTime.toFixed(2)}ms (${((drawTime / totalTime) * 100).toFixed(1)}%)`
-        );
-        console.log(`   粒子數量: ${particlesRef.current.length}`);
-        console.log(`   地面粒子: ${groundParticlesRef.current.length}`);
-        console.log(`   FPS: ${(1000 / totalTime).toFixed(1)}`);
-      }
 
       animationFrameRef.current = requestAnimationFrame(animate);
     };

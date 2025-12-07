@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { memo } from 'react';
 
-import { springConfigs, useReducedMotion, scaleIn } from '@/utils/animations';
+import { useReducedMotion } from '@/utils/animations';
 
 import type { SkillDetail } from '@/types';
 

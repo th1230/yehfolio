@@ -3,13 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 
-import {
-  springConfigs,
-  useReducedMotion,
-  hoverEffects,
-  tapEffects,
-  staggerContainer,
-} from '@/utils/animations';
+import { springConfigs, useReducedMotion, tapEffects, staggerContainer } from '@/utils/animations';
 
 import ThemeToggle from './ThemeToggle';
 

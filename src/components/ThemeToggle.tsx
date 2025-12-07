@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 
 import { useTheme } from '@/contexts/ThemeContext';
-import { springConfigs, useReducedMotion, hoverEffects, tapEffects } from '@/utils/animations';
+import { useReducedMotion, hoverEffects, tapEffects } from '@/utils/animations';
 
 export default function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();

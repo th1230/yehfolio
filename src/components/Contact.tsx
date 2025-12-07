@@ -4,8 +4,6 @@ import { motion, useInView } from 'framer-motion';
 import { useRef, useMemo, useState, useEffect } from 'react';
 import { FaLinkedin, FaGithub } from 'react-icons/fa6';
 
-import { springConfigs, useReducedMotion, hoverEffects } from '@/utils/animations';
-
 import type { ContactInfo } from '@/types';
 
 // 動畫配置常數
@@ -49,7 +47,6 @@ export default function Contact() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const [isClient, setIsClient] = useState(false);
-  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     setIsClient(true);

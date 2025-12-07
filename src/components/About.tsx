@@ -3,7 +3,7 @@
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 
-import { springConfigs, useReducedMotion, staggerContainer } from '@/utils/animations';
+import { springConfigs, useReducedMotion } from '@/utils/animations';
 
 export default function About() {
   const ref = useRef(null);
@@ -18,7 +18,7 @@ export default function About() {
   });
 
   const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
-  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
+  const _opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
 
   return (
     <section id="about" ref={containerRef} className="bg-gray-50 px-4 py-20 dark:bg-gray-900/30">

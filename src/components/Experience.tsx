@@ -3,7 +3,7 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 
-import { springConfigs, useReducedMotion, staggerContainer } from '@/utils/animations';
+import { springConfigs, useReducedMotion } from '@/utils/animations';
 
 export default function Experience() {
   const ref = useRef(null);
