@@ -1,9 +1,43 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { useRef, useMemo, useState, useEffect } from 'react';
 import { FaLinkedin, FaGithub } from 'react-icons/fa6';
+
+import { springConfigs, useReducedMotion, hoverEffects } from '@/utils/animations';
+
+import type { ContactInfo } from '@/types';
+
+// 動畫配置常數
+const ANIMATION_CONFIG = {
+  ART_ELEMENTS_COUNT: 8,
+  PARTICLES_COUNT: 35,
+  ART_SIZE_MIN: 40,
+  ART_SIZE_RANGE: 60,
+  ART_DURATION_MIN: 6,
+  ART_DURATION_RANGE: 8,
+  ART_DELAY_RANGE: 4,
+  PARTICLE_SIZE_MIN: 2,
+  PARTICLE_SIZE_RANGE: 6,
+  PARTICLE_DURATION_MIN: 3,
+  PARTICLE_DURATION_RANGE: 8,
+  PARTICLE_DELAY_RANGE: 6,
+  PARTICLE_OPACITY_MIN: 0.2,
+  PARTICLE_OPACITY_RANGE: 0.8,
+  PARTICLE_MOVE_RANGE: 40,
+} as const;
+
+const ART_TYPES = ['morphing', 'spiral', 'wave', 'bloom'] as const;
+const ART_COLORS = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3'] as const;
+const PARTICLE_COLORS = [
+  '#ff6b6b',
+  '#4ecdc4',
+  '#45b7d1',
+  '#8b5cf6',
+  '#f59e0b',
+  '#ef4444',
+  '#10b981',
+] as const;
 
 // 創建一個簡單的偽隨機數生成器，確保服務器端和客戶端一致
 function seededRandom(seed: number) {
@@ -15,6 +49,7 @@ export default function Contact() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const [isClient, setIsClient] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     setIsClient(true);
@@ -23,55 +58,47 @@ export default function Contact() {
   // 預先生成藝術元素的位置和屬性
   const artElements = useMemo(
     () =>
-      Array.from({ length: 8 }, (_, i) => ({
+      Array.from({ length: ANIMATION_CONFIG.ART_ELEMENTS_COUNT }, (_, i) => ({
         id: i,
         left: seededRandom(i * 1.1) * 80 + 10,
         top: seededRandom(i * 1.2) * 70 + 15,
-        size: seededRandom(i * 1.3) * 60 + 40,
+        size:
+          seededRandom(i * 1.3) * ANIMATION_CONFIG.ART_SIZE_RANGE + ANIMATION_CONFIG.ART_SIZE_MIN,
         rotation: seededRandom(i * 1.4) * 360,
-        duration: 6 + seededRandom(i * 1.5) * 8,
-        delay: seededRandom(i * 1.6) * 4,
-        type: ['morphing', 'spiral', 'wave', 'bloom'][
-          Math.floor(seededRandom(i * 1.7) * 4)
-        ],
-        color: [
-          '#ff6b6b',
-          '#4ecdc4',
-          '#45b7d1',
-          '#96ceb4',
-          '#feca57',
-          '#ff9ff3',
-        ][Math.floor(seededRandom(i * 1.8) * 6)],
+        duration:
+          ANIMATION_CONFIG.ART_DURATION_MIN +
+          seededRandom(i * 1.5) * ANIMATION_CONFIG.ART_DURATION_RANGE,
+        delay: seededRandom(i * 1.6) * ANIMATION_CONFIG.ART_DELAY_RANGE,
+        type: ART_TYPES[Math.floor(seededRandom(i * 1.7) * ART_TYPES.length)],
+        color: ART_COLORS[Math.floor(seededRandom(i * 1.8) * ART_COLORS.length)],
       })),
-    [],
+    []
   );
 
   const particles = useMemo(
     () =>
-      Array.from({ length: 35 }, (_, i) => ({
+      Array.from({ length: ANIMATION_CONFIG.PARTICLES_COUNT }, (_, i) => ({
         id: i,
         x: seededRandom(i * 2.1) * 100,
         y: seededRandom(i * 2.2) * 100,
-        size: seededRandom(i * 2.3) * 6 + 2,
-        duration: 3 + seededRandom(i * 2.4) * 8,
-        delay: seededRandom(i * 2.5) * 6,
-        opacity: seededRandom(i * 2.6) * 0.8 + 0.2,
-        color: [
-          '#ff6b6b',
-          '#4ecdc4',
-          '#45b7d1',
-          '#8b5cf6',
-          '#f59e0b',
-          '#ef4444',
-          '#10b981',
-        ][Math.floor(seededRandom(i * 2.7) * 7)],
-        moveX: (seededRandom(i * 2.8) - 0.5) * 40,
-        moveY: (seededRandom(i * 2.9) - 0.5) * 40,
+        size:
+          seededRandom(i * 2.3) * ANIMATION_CONFIG.PARTICLE_SIZE_RANGE +
+          ANIMATION_CONFIG.PARTICLE_SIZE_MIN,
+        duration:
+          ANIMATION_CONFIG.PARTICLE_DURATION_MIN +
+          seededRandom(i * 2.4) * ANIMATION_CONFIG.PARTICLE_DURATION_RANGE,
+        delay: seededRandom(i * 2.5) * ANIMATION_CONFIG.PARTICLE_DELAY_RANGE,
+        opacity:
+          seededRandom(i * 2.6) * ANIMATION_CONFIG.PARTICLE_OPACITY_RANGE +
+          ANIMATION_CONFIG.PARTICLE_OPACITY_MIN,
+        color: PARTICLE_COLORS[Math.floor(seededRandom(i * 2.7) * PARTICLE_COLORS.length)],
+        moveX: (seededRandom(i * 2.8) - 0.5) * ANIMATION_CONFIG.PARTICLE_MOVE_RANGE,
+        moveY: (seededRandom(i * 2.9) - 0.5) * ANIMATION_CONFIG.PARTICLE_MOVE_RANGE,
       })),
-    [],
+    []
   );
 
-  const contactInfo = [
+  const contactInfo: ContactInfo[] = [
     {
       icon: '📧',
       title: 'Email',
@@ -115,9 +142,7 @@ export default function Contact() {
               animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
               transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
             >
-              <h3 className="text-outer-space dark:text-fawn mb-8 text-2xl font-bold">
-                聯絡資訊
-              </h3>
+              <h3 className="text-outer-space dark:text-fawn mb-8 text-2xl font-bold">聯絡資訊</h3>
 
               <div className="mb-12 space-y-6">
                 {contactInfo.map((info, index) => (
@@ -125,11 +150,10 @@ export default function Contact() {
                     key={info.title}
                     href={info.link}
                     target={info.link.startsWith('http') ? '_blank' : undefined}
+                    rel={info.link.startsWith('http') ? 'noopener noreferrer' : undefined}
                     className="group flex items-center space-x-4 rounded-lg bg-white p-4 shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800/50"
                     initial={{ opacity: 0, y: 20 }}
-                    animate={
-                      isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
-                    }
+                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                     transition={{
                       duration: 0.6,
                       delay: 0.4 + index * 0.1,
@@ -178,69 +202,19 @@ export default function Contact() {
                   <div className="absolute inset-0">
                     <svg className="h-full w-full" viewBox="0 0 400 400">
                       <defs>
-                        <linearGradient
-                          id="wave1"
-                          x1="0%"
-                          y1="0%"
-                          x2="100%"
-                          y2="100%"
-                        >
-                          <stop
-                            offset="0%"
-                            stopColor="#ff6b6b"
-                            stopOpacity="0.4"
-                          />
-                          <stop
-                            offset="50%"
-                            stopColor="#4ecdc4"
-                            stopOpacity="0.2"
-                          />
-                          <stop
-                            offset="100%"
-                            stopColor="#45b7d1"
-                            stopOpacity="0.1"
-                          />
+                        <linearGradient id="wave1" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#ff6b6b" stopOpacity="0.4" />
+                          <stop offset="50%" stopColor="#4ecdc4" stopOpacity="0.2" />
+                          <stop offset="100%" stopColor="#45b7d1" stopOpacity="0.1" />
                         </linearGradient>
-                        <linearGradient
-                          id="wave2"
-                          x1="0%"
-                          y1="0%"
-                          x2="0%"
-                          y2="100%"
-                        >
-                          <stop
-                            offset="0%"
-                            stopColor="#8b5cf6"
-                            stopOpacity="0.5"
-                          />
-                          <stop
-                            offset="50%"
-                            stopColor="#06b6d4"
-                            stopOpacity="0.3"
-                          />
-                          <stop
-                            offset="100%"
-                            stopColor="#10b981"
-                            stopOpacity="0.2"
-                          />
+                        <linearGradient id="wave2" x1="0%" y1="0%" x2="0%" y2="100%">
+                          <stop offset="0%" stopColor="#8b5cf6" stopOpacity="0.5" />
+                          <stop offset="50%" stopColor="#06b6d4" stopOpacity="0.3" />
+                          <stop offset="100%" stopColor="#10b981" stopOpacity="0.2" />
                         </linearGradient>
-                        <linearGradient
-                          id="wave3"
-                          x1="0%"
-                          y1="0%"
-                          x2="100%"
-                          y2="0%"
-                        >
-                          <stop
-                            offset="0%"
-                            stopColor="#f59e0b"
-                            stopOpacity="0.3"
-                          />
-                          <stop
-                            offset="100%"
-                            stopColor="#ef4444"
-                            stopOpacity="0.1"
-                          />
+                        <linearGradient id="wave3" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor="#f59e0b" stopOpacity="0.3" />
+                          <stop offset="100%" stopColor="#ef4444" stopOpacity="0.1" />
                         </linearGradient>
                       </defs>
 
@@ -278,7 +252,7 @@ export default function Contact() {
                   </div>
                   {/* 動態藝術元素 */}
                   <div className="absolute inset-0">
-                    {artElements.map((element) => (
+                    {artElements.map(element => (
                       <div
                         key={element.id}
                         className="absolute"
@@ -369,7 +343,7 @@ export default function Contact() {
 
                   {/* 漂浮粒子 */}
                   <div className="absolute inset-0">
-                    {particles.map((particle) => (
+                    {particles.map(particle => (
                       <div
                         key={particle.id}
                         className="absolute animate-bounce rounded-full"
@@ -413,8 +387,7 @@ export default function Contact() {
                         animationDirection: 'reverse',
                         filter: 'blur(2px)',
                         opacity: 0.7,
-                        transform:
-                          'perspective(600px) rotateX(10deg) rotateY(5deg)',
+                        transform: 'perspective(600px) rotateX(10deg) rotateY(5deg)',
                       }}
                     />
                     {/* 內層核心 */}

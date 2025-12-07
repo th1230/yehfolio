@@ -1,8 +1,8 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
+
 import SkillDetailPanel from './SkillDetailPanel';
 import SkillStarfield, { SKILL_SELECTED_EVENT } from './SkillStarCanvas';
 
@@ -26,16 +26,10 @@ export default function Skills() {
       setSelectedSkill(event.detail);
     };
 
-    window.addEventListener(
-      SKILL_SELECTED_EVENT,
-      handleSkillSelected as EventListener,
-    );
+    window.addEventListener(SKILL_SELECTED_EVENT, handleSkillSelected as EventListener);
 
     return () => {
-      window.removeEventListener(
-        SKILL_SELECTED_EVENT,
-        handleSkillSelected as EventListener,
-      );
+      window.removeEventListener(SKILL_SELECTED_EVENT, handleSkillSelected as EventListener);
     };
   }, []);
 

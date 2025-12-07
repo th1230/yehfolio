@@ -44,14 +44,17 @@ a:hover {
   transform: none !important;
 }
 
-/* 平滑的過渡效果 */
-* {
+/* 只為主題相關的屬性添加過渡效果，避免全局影響效能 */
+html {
   transition:
-    color 0.3s ease,
-    background-color 0.3s ease,
-    border-color 0.3s ease,
-    opacity 0.3s ease,
-    transform 0.3s ease;
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+body {
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
 }
 
 /* 禁用預設的聚焦環 */
@@ -65,4 +68,195 @@ input:focus-visible,
 textarea:focus-visible {
   outline: 2px solid var(--color-sandy-brown);
   outline-offset: 2px;
+}
+
+/* ============================================
+   四季動畫背景系統 - 性能優化與視覺效果
+   ============================================ */
+
+/* Canvas 性能優化 */
+canvas {
+  will-change: auto;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 季節切換按鈕動畫優化 */
+.seasonal-toggle-button {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+/* 確保主內容在動畫層之上 */
+main,
+header,
+nav,
+footer,
+section {
+  position: relative;
+  z-index: 10;
+}
+
+/* ============================================
+   自訂動畫關鍵影格
+   ============================================ */
+
+/* 緩慢脈衝動畫 - 用於季節按鈕 */
+@keyframes pulse-slow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* 緩慢彈跳動畫 - 用於選中指示器 */
+@keyframes bounce-slow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-25%);
+  }
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 2s ease-in-out infinite;
+}
+
+/* 淡入動畫 */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out;
+}
+
+/* 季節過渡動畫 */
+@keyframes season-transition {
+  0% {
+    opacity: 0;
+    filter: blur(20px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+.season-transition {
+  animation: season-transition 1.5s ease-out;
+}
+
+/* 漂浮動畫 - 用於裝飾元素 */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* 旋轉光暈效果 */
+@keyframes rotate-hue {
+  from {
+    filter: hue-rotate(0deg);
+  }
+  to {
+    filter: hue-rotate(360deg);
+  }
+}
+
+.animate-rotate-hue {
+  animation: rotate-hue 10s linear infinite;
+}
+
+/* ============================================
+   響應式設計優化
+   ============================================ */
+
+/* 小螢幕優化 */
+@media (max-width: 640px) {
+  canvas {
+    /* 在小螢幕上降低粒子密度以提升性能 */
+    image-rendering: optimizeSpeed;
+  }
+}
+
+/* 減少動畫偏好設定的使用者 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  canvas {
+    display: none;
+  }
+}
+
+/* 高對比度模式支援 */
+@media (prefers-contrast: high) {
+  .seasonal-toggle-button {
+    border: 2px solid currentColor;
+  }
+}
+
+/* ============================================
+   可訪問性增強
+   ============================================ */
+
+/* 鍵盤導航焦點樣式 */
+button:focus-visible {
+  outline: 3px solid var(--color-sandy-brown);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgba(245, 172, 114, 0.2);
+}
+
+/* 高對比度文字 */
+.high-contrast-text {
+  text-shadow:
+    1px 1px 2px rgba(0, 0, 0, 0.8),
+    -1px -1px 2px rgba(255, 255, 255, 0.3);
+}
+
+/* ============================================
+   效能提示
+   ============================================ */
+
+/* 為經常變化的元素添加 GPU 加速 */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* 避免重繪的優化 */
+.avoid-repaint {
+  contain: layout style paint;
 }

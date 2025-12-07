@@ -1,32 +1,11 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
-import { useRef, useState } from 'react';
-import {
-  FiExternalLink,
-  FiGithub,
-  FiX,
-  FiChevronLeft,
-  FiChevronRight,
-} from 'react-icons/fi';
+import { motion, useInView } from 'framer-motion';
+import { useRef, useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
+import { FiExternalLink, FiGithub, FiX, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
-interface Project {
-  id: string;
-  title: string;
-  description: string;
-  detailedDescription: string;
-  technologies: string[];
-  category: string;
-  duration: string;
-  role: string;
-  achievements: string[];
-  challenges: string[];
-  images?: string[];
-  liveUrl?: string;
-  githubUrl?: string;
-  features: string[];
-}
+import type { Project } from '@/types';
 
 export default function Projects() {
   const ref = useRef(null);
@@ -34,13 +13,17 @@ export default function Projects() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState('全部');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const projects: Project[] = [
     {
       id: 'corporate-content-platform',
       title: '企業內容平台',
-      description:
-        '公司對外內容展示與 SEO 優化網站，Lighthouse 效能分數平均達 95%',
+      description: '公司對外內容展示與 SEO 優化網站，Lighthouse 效能分數平均達 95%',
       detailedDescription: `此內容展示平台，包含前台與後台系統。前台使用 Razor 切版並搭配 JavaScript 完成功能效果，針對 SEO 與使用者體驗進行深入優化。為提升搜尋引擎收錄率與效能表現，整體系統通過 Google Lighthouse 與 PageSpeed Insights 的檢測，並針對圖片、字體、ARIA 標籤、Meta Tag 等多處細節進行微調，效能分數平均達 95 分以上，並成功通過 Facebook 分享偵錯工具、Twitter Card Validator、LINE 分享檢測等外部平台驗證。
       
       後台採 Angular 架構，實作文章、標籤、廣告等模組的管理功能。文章管理頁面支援 Tab 切換、分頁、狀態切換與草稿回復，並加入畫面預覽功能，提升操作便利性。同時也針對多狀態間邏輯關係進行驗證，確保切換邏輯與資料一致性。整體專案亦精確控制字體、間距與版面呈現進行精細調整，以滿足企業級的品牌呈現標準。`,
@@ -82,19 +65,11 @@ export default function Projects() {
     {
       id: 'financial-platform-phase3',
       title: '金融資訊平台（第三階段）',
-      description:
-        '參與金融平台第三階段開發，負責分類模組、共用元件整合與專案收尾優化',
+      description: '參與金融平台第三階段開發，負責分類模組、共用元件整合與專案收尾優化',
       detailedDescription: `本次參與金融資訊平台的第三階段開發，主要提供多類型基金查詢與資訊展示功能。我負責其中一個分類模組，包含各子頁面版面規劃、資料串接與互動邏輯實作，並支援其他分類模組的功能整合與樣式調整。該模組也實作了通用列印功能，並整合進既有的表格與查詢列元件中。
       
       開發過程中理解Nx Monorepo 架構使用方式與元件整合邏輯。在專案後期負責與後端協作，處理跨模組功能錯誤修正與共用元件調整，並協助優化頁面邏輯與元件彈性，確保平台上線品質與擴充性。`,
-      technologies: [
-        'Angular',
-        'TypeScript',
-        'SCSS',
-        'Highcharts',
-        'RxJS',
-        'Nx',
-      ],
+      technologies: ['Angular', 'TypeScript', 'SCSS', 'Highcharts', 'RxJS', 'Nx'],
       category: '實務專案',
       duration: '5個月',
       role: '前端開發工程師',
@@ -229,8 +204,7 @@ export default function Projects() {
     {
       id: 'custom-gpt-platform',
       title: '客製化 GPT 平台',
-      description:
-        '基於 Nuxt.js 開發的 GPT 對話平台，支援 SSE 串接與對話分享功能',
+      description: '基於 Nuxt.js 開發的 GPT 對話平台，支援 SSE 串接與對話分享功能',
       detailedDescription: `客戶希望能方便使用其自行 fine-tune 的 AI 模型，因此建立一個具備對話、儲存、分享功能的平台。我以 ChatGPT 為參考規劃版面，實作對話輸入框、逐字輸出、自動滾動與響應式設計。應客戶需求加入對話分享與評論功能，簡化操作流程。
     
     前端採 Nuxt.js + Vue 開發，與後端協作串接 OpenAI API，使用 SSE 流式傳輸處理逐字顯示。實作對話歷史記錄管理與狀態控制，讓使用者能查詢與回顧過往對話，整體聚焦於前端互動流程的建構與 UX 細節處理。`,
@@ -268,8 +242,7 @@ export default function Projects() {
     {
       id: 'line-liff-management',
       title: 'LINE LIFF 管理系統',
-      description:
-        'LINE LIFF 前台 + React 後台管理系統，支援模板管理與訊息發送',
+      description: 'LINE LIFF 前台 + React 後台管理系統，支援模板管理與訊息發送',
       detailedDescription:
         '本專案為企業內部系統的新版改造，後台使用 React 開發，負責管理訊息模板、設定發送條件與處理資料維護等功能。前台採用 LINE LIFF + Next.js 技術，讓使用者可透過 LINE 選單進入對應頁面，並串接 LIFF API 搭配後端進行登入驗證。前台介面以簡潔直覺為目標，支援不同模板內容的動態呈現與響應式設計。',
       technologies: ['Next.js', 'React', 'LINE LIFF'],
@@ -301,21 +274,19 @@ export default function Projects() {
   const filteredProjects =
     selectedCategory === '全部'
       ? projects
-      : projects.filter((project) => project.category === selectedCategory);
+      : projects.filter(project => project.category === selectedCategory);
 
   const nextImage = () => {
-    if (selectedProject?.images) {
-      setCurrentImageIndex((prev) =>
-        prev === selectedProject.images!.length - 1 ? 0 : prev + 1,
-      );
+    if (selectedProject?.images && selectedProject.images.length > 0) {
+      const images = selectedProject.images;
+      setCurrentImageIndex(prev => (prev === images.length - 1 ? 0 : prev + 1));
     }
   };
 
   const prevImage = () => {
-    if (selectedProject?.images) {
-      setCurrentImageIndex((prev) =>
-        prev === 0 ? selectedProject.images!.length - 1 : prev - 1,
-      );
+    if (selectedProject?.images && selectedProject.images.length > 0) {
+      const images = selectedProject.images;
+      setCurrentImageIndex(prev => (prev === 0 ? images.length - 1 : prev - 1));
     }
   };
 
@@ -335,28 +306,19 @@ export default function Projects() {
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (!selectedProject) return;
 
+    const images = selectedProject.images;
+
     if (event.key === 'Escape') {
       closeModal();
-    } else if (
-      event.key === 'ArrowLeft' &&
-      selectedProject.images &&
-      selectedProject.images.length > 1
-    ) {
+    } else if (event.key === 'ArrowLeft' && images && images.length > 1) {
       prevImage();
-    } else if (
-      event.key === 'ArrowRight' &&
-      selectedProject.images &&
-      selectedProject.images.length > 1
-    ) {
+    } else if (event.key === 'ArrowRight' && images && images.length > 1) {
       nextImage();
     }
   };
 
   return (
-    <section
-      id="projects"
-      className="bg-gray-50 px-4 py-20 dark:bg-gray-900/30"
-    >
+    <section id="projects" className="bg-gray-50 px-4 py-20 dark:bg-gray-900/30">
       <div className="mx-auto max-w-7xl">
         <motion.div
           ref={ref}
@@ -374,11 +336,13 @@ export default function Projects() {
           {/* 分類篩選 */}
           <motion.div
             className="mb-12 flex flex-wrap justify-center gap-4"
+            role="group"
+            aria-label="專案分類篩選"
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
           >
-            {categories.map((category) => (
+            {categories.map(category => (
               <motion.button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
@@ -387,6 +351,8 @@ export default function Projects() {
                     ? 'border-sandy-brown bg-sandy-brown text-white'
                     : 'border-outer-space/20 dark:border-apricot/20 text-outer-space dark:text-apricot hover:border-sandy-brown hover:text-sandy-brown'
                 }`}
+                aria-pressed={selectedCategory === category}
+                aria-label={`篩選 ${category} 專案`}
                 whileHover={{ y: -2 }}
                 whileTap={{ y: 0 }}
               >
@@ -398,20 +364,26 @@ export default function Projects() {
           {/* 專案網格 */}
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {filteredProjects.map((project, index) => (
-              <motion.div
+              <motion.article
                 key={project.id}
-                className="cursor-pointer overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg transition-all duration-300 hover:shadow-2xl dark:border-gray-700 dark:bg-gray-800/50"
+                className="cursor-pointer overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl dark:border-gray-700 dark:bg-gray-800/50"
                 initial={{ opacity: 0, y: 50 }}
-                animate={
-                  isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }
-                }
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
                 transition={{
-                  duration: 0.6,
-                  delay: 0.1 * index,
+                  duration: 0.5,
+                  delay: Math.min(0.05 * index, 0.3),
                   ease: 'easeOut',
                 }}
-                whileHover={{ y: -5 }}
                 onClick={() => openModal(project)}
+                role="button"
+                tabIndex={0}
+                aria-label={`查看 ${project.title} 專案詳情`}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openModal(project);
+                  }
+                }}
               >
                 <div className="from-sandy-brown/10 to-fawn/10 relative flex h-48 items-center justify-center overflow-hidden bg-gradient-to-br">
                   {project.images && project.images.length > 0 ? (
@@ -451,7 +423,7 @@ export default function Projects() {
                   </p>
 
                   <div className="mb-4 flex flex-wrap gap-2">
-                    {project.technologies.slice(0, 3).map((tech) => (
+                    {project.technologies.slice(0, 3).map(tech => (
                       <span
                         key={tech}
                         className="bg-sandy-brown/10 text-sandy-brown rounded-full px-2 py-1 text-xs"
@@ -470,254 +442,265 @@ export default function Projects() {
                     <span className="text-outer-space/60 dark:text-apricot/60 text-sm">
                       {project.duration}
                     </span>
-                    <span className="text-sandy-brown text-sm font-medium">
-                      點擊查看詳情 →
-                    </span>
+                    <span className="text-sandy-brown text-sm font-medium">點擊查看詳情 →</span>
                   </div>
                 </div>
-              </motion.div>
+              </motion.article>
             ))}
           </div>
         </motion.div>
       </div>
 
       {/* 專案詳情彈窗 */}
-      {selectedProject && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
-          onKeyDown={handleKeyDown}
-          tabIndex={-1}
-        >
-          <motion.div
-            className="max-h-[90vh] w-full max-w-4xl rounded-xl bg-white p-6 dark:bg-gray-800"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.3 }}
+      {selectedProject &&
+        mounted &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-title"
+            onKeyDown={handleKeyDown}
+            onClick={e => {
+              if (e.target === e.currentTarget) closeModal();
+            }}
           >
-            <div className="sticky top-0 flex items-center justify-between border-b border-gray-200 bg-white pb-6 dark:border-gray-700 dark:bg-gray-800">
-              <h2 className="text-outer-space dark:text-apricot text-2xl font-bold">
-                {selectedProject.title}
-              </h2>
-              <button
-                onClick={closeModal}
-                className="cursor-pointer rounded-full p-2 transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
-              >
-                <FiX className="text-outer-space dark:text-apricot h-6 w-6" />
-              </button>
-            </div>
+            <motion.div
+              className="max-h-[90vh] w-full max-w-4xl rounded-xl bg-white p-6 dark:bg-gray-800"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="sticky top-0 flex items-center justify-between border-b border-gray-200 bg-white pb-6 dark:border-gray-700 dark:bg-gray-800">
+                <h2
+                  id="modal-title"
+                  className="text-outer-space dark:text-apricot text-2xl font-bold"
+                >
+                  {selectedProject.title}
+                </h2>
+                <button
+                  onClick={closeModal}
+                  className="cursor-pointer rounded-full p-2 transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
+                  aria-label="關閉專案詳情"
+                >
+                  <FiX className="text-outer-space dark:text-apricot h-6 w-6" />
+                </button>
+              </div>
 
-            <div className="max-h-[400px] overflow-y-auto pt-6">
-              {/* 圖片輪播區域 */}
-              {selectedProject.images && selectedProject.images.length > 0 && (
-                <div className="relative mb-[84px]">
-                  <div className="aspect-video overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-700">
-                    <img
-                      src={selectedProject.images[currentImageIndex]}
-                      alt={`${selectedProject.title} - 圖片 ${
-                        currentImageIndex + 1
-                      }`}
-                      className="h-full w-full object-contain"
-                    />
+              <div className="max-h-[400px] overflow-y-auto pt-6">
+                {/* 圖片輪播區域 */}
+                {selectedProject.images && selectedProject.images.length > 0 && (
+                  <div className="relative mb-[84px]">
+                    <div className="aspect-video overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-700">
+                      <img
+                        src={selectedProject.images[currentImageIndex]}
+                        alt={`${selectedProject.title} - 圖片 ${currentImageIndex + 1}`}
+                        className="h-full w-full object-contain"
+                      />
+                    </div>
+
+                    {selectedProject.images.length > 1 && (
+                      <>
+                        <button
+                          onClick={prevImage}
+                          className="absolute top-1/2 left-2 -translate-y-1/2 transform cursor-pointer rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
+                          aria-label="上一張圖片"
+                        >
+                          <FiChevronLeft className="h-6 w-6" />
+                        </button>
+                        <button
+                          onClick={nextImage}
+                          className="absolute top-1/2 right-2 -translate-y-1/2 transform cursor-pointer rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
+                          aria-label="下一張圖片"
+                        >
+                          <FiChevronRight className="h-6 w-6" />
+                        </button>
+
+                        <div className="absolute right-0 -bottom-[60px] left-0">
+                          <div className="mt-4 flex justify-center space-x-2">
+                            {selectedProject.images.map((_, index) => (
+                              <button
+                                key={index}
+                                onClick={() => setCurrentImageIndex(index)}
+                                className={`h-3 w-3 cursor-pointer rounded-full transition-colors ${
+                                  index === currentImageIndex
+                                    ? 'bg-sandy-brown'
+                                    : 'bg-gray-300 dark:bg-gray-600'
+                                }`}
+                                aria-label={`切換到第 ${index + 1} 張圖片`}
+                                aria-current={index === currentImageIndex}
+                              />
+                            ))}
+                          </div>
+                          <div className="mt-2 text-center">
+                            <span className="text-outer-space/60 dark:text-apricot/60 text-sm">
+                              {currentImageIndex + 1} /{selectedProject.images.length}
+                            </span>
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </div>
+                )}
 
-                  {selectedProject.images.length > 1 && (
-                    <>
-                      <button
-                        onClick={prevImage}
-                        className="absolute top-1/2 left-2 -translate-y-1/2 transform cursor-pointer rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
-                      >
-                        <FiChevronLeft className="h-6 w-6" />
-                      </button>
-                      <button
-                        onClick={nextImage}
-                        className="absolute top-1/2 right-2 -translate-y-1/2 transform cursor-pointer rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
-                      >
-                        <FiChevronRight className="h-6 w-6" />
-                      </button>
+                {/* 專案基本資訊 */}
+                <div className="mb-6 grid gap-6 md:grid-cols-2">
+                  <div>
+                    <h3 className="text-outer-space dark:text-apricot mb-2 text-lg font-semibold">
+                      專案概述
+                    </h3>
+                    <p className="text-outer-space/80 dark:text-apricot/80 mb-4 whitespace-pre-line">
+                      {selectedProject.detailedDescription}
+                    </p>
 
-                      <div className="absolute right-0 -bottom-[60px] left-0">
-                        <div className="mt-4 flex justify-center space-x-2">
-                          {selectedProject.images.map((_, index) => (
-                            <button
-                              key={index}
-                              onClick={() => setCurrentImageIndex(index)}
-                              className={`h-3 w-3 cursor-pointer rounded-full transition-colors ${
-                                index === currentImageIndex
-                                  ? 'bg-sandy-brown'
-                                  : 'bg-gray-300 dark:bg-gray-600'
-                              }`}
-                            />
-                          ))}
-                        </div>
-                        <div className="mt-2 text-center">
-                          <span className="text-outer-space/60 dark:text-apricot/60 text-sm">
-                            {currentImageIndex + 1} /
-                            {selectedProject.images.length}
-                          </span>
-                        </div>
+                    <div className="space-y-2">
+                      <div className="flex">
+                        <span className="text-outer-space dark:text-apricot w-20 font-medium">
+                          類型：
+                        </span>
+                        <span className="text-outer-space/80 dark:text-apricot/80">
+                          {selectedProject.category}
+                        </span>
                       </div>
-                    </>
+                      <div className="flex">
+                        <span className="text-outer-space dark:text-apricot w-20 font-medium">
+                          期間：
+                        </span>
+                        <span className="text-outer-space/80 dark:text-apricot/80">
+                          {selectedProject.duration}
+                        </span>
+                      </div>
+                      <div className="flex">
+                        <span className="text-outer-space dark:text-apricot w-20 font-medium">
+                          角色：
+                        </span>
+                        <span className="text-outer-space/80 dark:text-apricot/80">
+                          {selectedProject.role}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-outer-space dark:text-apricot mb-2 text-lg font-semibold">
+                      使用技術
+                    </h3>
+                    <div className="mb-4 flex flex-wrap gap-2">
+                      {selectedProject.technologies.map(tech => (
+                        <span
+                          key={tech}
+                          className="bg-sandy-brown/10 text-sandy-brown rounded-full px-3 py-1 text-sm"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+
+                    <h3 className="text-outer-space dark:text-apricot mb-2 text-lg font-semibold">
+                      主要功能
+                    </h3>
+                    <ul className="space-y-1">
+                      {selectedProject.features.map((feature, index) => (
+                        <li
+                          key={index}
+                          className="text-outer-space/80 dark:text-apricot/80 text-sm"
+                        >
+                          • {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                {/* 成就與挑戰 */}
+                <div className="mb-6 grid gap-6 md:grid-cols-2">
+                  <div>
+                    <h3 className="text-outer-space dark:text-apricot mb-2 text-lg font-semibold">
+                      主要成就
+                    </h3>
+                    <ul className="space-y-2">
+                      {selectedProject.achievements.map((achievement, index) => (
+                        <li
+                          key={index}
+                          className="text-outer-space/80 dark:text-apricot/80 flex items-start text-sm"
+                        >
+                          <span className="mr-2 text-green-500">✓</span>
+                          {achievement}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h3 className="text-outer-space dark:text-apricot mb-2 text-lg font-semibold">
+                      技術挑戰
+                    </h3>
+                    <ul className="space-y-2">
+                      {selectedProject.challenges.map((challenge, index) => (
+                        <li
+                          key={index}
+                          className="text-outer-space/80 dark:text-apricot/80 flex items-start text-sm"
+                        >
+                          <span className="text-sandy-brown mr-2">⚡</span>
+                          {challenge}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                {/* 連結區域 */}
+                <div className="flex flex-wrap gap-4 border-t border-gray-200 pt-4 dark:border-gray-700">
+                  {selectedProject.liveUrl ? (
+                    <a
+                      href={selectedProject.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-sandy-brown hover:bg-sandy-brown/90 flex items-center space-x-2 rounded-lg px-4 py-2 text-white transition-colors"
+                    >
+                      <FiExternalLink className="h-4 w-4" />
+                      <span>查看網站</span>
+                    </a>
+                  ) : (
+                    <div className="flex items-center space-x-2 rounded-lg bg-gray-100 px-4 py-2 dark:bg-gray-700">
+                      <FiExternalLink className="h-4 w-4 text-gray-400" />
+                      <span className="text-outer-space/60 dark:text-apricot/60 text-sm">
+                        內部系統無法公開訪問
+                      </span>
+                    </div>
                   )}
-                </div>
-              )}
 
-              {/* 專案基本資訊 */}
-              <div className="mb-6 grid gap-6 md:grid-cols-2">
-                <div>
-                  <h3 className="text-outer-space dark:text-apricot mb-2 text-lg font-semibold">
-                    專案概述
-                  </h3>
-                  <p className="text-outer-space/80 dark:text-apricot/80 mb-4 whitespace-pre-line">
-                    {selectedProject.detailedDescription}
-                  </p>
-
-                  <div className="space-y-2">
-                    <div className="flex">
-                      <span className="text-outer-space dark:text-apricot w-20 font-medium">
-                        類型：
-                      </span>
-                      <span className="text-outer-space/80 dark:text-apricot/80">
-                        {selectedProject.category}
+                  {selectedProject.githubUrl ? (
+                    <a
+                      href={selectedProject.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-outer-space dark:text-apricot flex items-center space-x-2 rounded-lg border border-gray-300 px-4 py-2 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700"
+                    >
+                      <FiGithub className="h-4 w-4" />
+                      <span>查看程式碼</span>
+                    </a>
+                  ) : (
+                    <div className="flex items-center space-x-2 rounded-lg bg-gray-100 px-4 py-2 dark:bg-gray-700">
+                      <FiGithub className="h-4 w-4 text-gray-400" />
+                      <span className="text-outer-space/60 dark:text-apricot/60 text-sm">
+                        商業專案代碼不公開
                       </span>
                     </div>
-                    <div className="flex">
-                      <span className="text-outer-space dark:text-apricot w-20 font-medium">
-                        期間：
-                      </span>
-                      <span className="text-outer-space/80 dark:text-apricot/80">
-                        {selectedProject.duration}
-                      </span>
-                    </div>
-                    <div className="flex">
-                      <span className="text-outer-space dark:text-apricot w-20 font-medium">
-                        角色：
-                      </span>
-                      <span className="text-outer-space/80 dark:text-apricot/80">
-                        {selectedProject.role}
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                  )}
 
-                <div>
-                  <h3 className="text-outer-space dark:text-apricot mb-2 text-lg font-semibold">
-                    使用技術
-                  </h3>
-                  <div className="mb-4 flex flex-wrap gap-2">
-                    {selectedProject.technologies.map((tech) => (
-                      <span
-                        key={tech}
-                        className="bg-sandy-brown/10 text-sandy-brown rounded-full px-3 py-1 text-sm"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-
-                  <h3 className="text-outer-space dark:text-apricot mb-2 text-lg font-semibold">
-                    主要功能
-                  </h3>
-                  <ul className="space-y-1">
-                    {selectedProject.features.map((feature, index) => (
-                      <li
-                        key={index}
-                        className="text-outer-space/80 dark:text-apricot/80 text-sm"
-                      >
-                        • {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              {/* 成就與挑戰 */}
-              <div className="mb-6 grid gap-6 md:grid-cols-2">
-                <div>
-                  <h3 className="text-outer-space dark:text-apricot mb-2 text-lg font-semibold">
-                    主要成就
-                  </h3>
-                  <ul className="space-y-2">
-                    {selectedProject.achievements.map((achievement, index) => (
-                      <li
-                        key={index}
-                        className="text-outer-space/80 dark:text-apricot/80 flex items-start text-sm"
-                      >
-                        <span className="mr-2 text-green-500">✓</span>
-                        {achievement}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div>
-                  <h3 className="text-outer-space dark:text-apricot mb-2 text-lg font-semibold">
-                    技術挑戰
-                  </h3>
-                  <ul className="space-y-2">
-                    {selectedProject.challenges.map((challenge, index) => (
-                      <li
-                        key={index}
-                        className="text-outer-space/80 dark:text-apricot/80 flex items-start text-sm"
-                      >
-                        <span className="text-sandy-brown mr-2">⚡</span>
-                        {challenge}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              {/* 連結區域 */}
-              <div className="flex flex-wrap gap-4 border-t border-gray-200 pt-4 dark:border-gray-700">
-                {selectedProject.liveUrl ? (
-                  <a
-                    href={selectedProject.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-sandy-brown hover:bg-sandy-brown/90 flex items-center space-x-2 rounded-lg px-4 py-2 text-white transition-colors"
-                  >
-                    <FiExternalLink className="h-4 w-4" />
-                    <span>查看網站</span>
-                  </a>
-                ) : (
-                  <div className="flex items-center space-x-2 rounded-lg bg-gray-100 px-4 py-2 dark:bg-gray-700">
-                    <FiExternalLink className="h-4 w-4 text-gray-400" />
-                    <span className="text-outer-space/60 dark:text-apricot/60 text-sm">
-                      內部系統無法公開訪問
+                  <div className="flex items-center space-x-2 rounded-lg bg-blue-50 px-4 py-2 dark:bg-blue-900/20">
+                    <span className="text-sm text-blue-600 dark:text-blue-400">
+                      💡 如需了解更多技術細節，歡迎聯絡討論
                     </span>
                   </div>
-                )}
-
-                {selectedProject.githubUrl ? (
-                  <a
-                    href={selectedProject.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-outer-space dark:text-apricot flex items-center space-x-2 rounded-lg border border-gray-300 px-4 py-2 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700"
-                  >
-                    <FiGithub className="h-4 w-4" />
-                    <span>查看程式碼</span>
-                  </a>
-                ) : (
-                  <div className="flex items-center space-x-2 rounded-lg bg-gray-100 px-4 py-2 dark:bg-gray-700">
-                    <FiGithub className="h-4 w-4 text-gray-400" />
-                    <span className="text-outer-space/60 dark:text-apricot/60 text-sm">
-                      商業專案代碼不公開
-                    </span>
-                  </div>
-                )}
-
-                <div className="flex items-center space-x-2 rounded-lg bg-blue-50 px-4 py-2 dark:bg-blue-900/20">
-                  <span className="text-sm text-blue-600 dark:text-blue-400">
-                    💡 如需了解更多技術細節，歡迎聯絡討論
-                  </span>
                 </div>
               </div>
-            </div>
-          </motion.div>
-        </div>
-      )}
+            </motion.div>
+          </div>,
+          document.body
+        )}
     </section>
   );
 }

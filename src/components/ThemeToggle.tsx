@@ -1,30 +1,39 @@
 'use client';
 
-import { useTheme } from '@/contexts/ThemeContext';
 import { motion } from 'framer-motion';
+
+import { useTheme } from '@/contexts/ThemeContext';
+import { springConfigs, useReducedMotion, hoverEffects, tapEffects } from '@/utils/animations';
 
 export default function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
+  const prefersReducedMotion = useReducedMotion();
 
   return (
     <motion.button
       onClick={toggleTheme}
-      className="relative flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-gray-200 bg-white shadow-lg transition-all duration-300 hover:shadow-xl dark:border-gray-600 dark:bg-gray-800"
-      whileTap={{ scale: 0.9 }}
-      whileHover={{ scale: 1.05 }}
+      className="relative flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-gray-200 bg-white transition-all duration-300 hover:shadow-xl dark:border-gray-600 dark:bg-gray-800"
+      whileTap={prefersReducedMotion ? {} : tapEffects.shrink}
+      whileHover={
+        prefersReducedMotion
+          ? {}
+          : {
+              ...hoverEffects.scale,
+              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
+            }
+      }
       aria-label="切換主題"
+      style={{ willChange: 'transform' }}
     >
       <motion.div
         className="flex items-center justify-center"
         animate={{
           rotate: theme === 'dark' ? 180 : 0,
         }}
-        transition={{
-          type: 'spring',
-          stiffness: 200,
-          damping: 20,
-          duration: 0.6,
-        }}
+        transition={
+          prefersReducedMotion ? { duration: 0.01 } : { duration: 0.3, ease: 'easeInOut' }
+        }
+        style={{ willChange: 'transform' }}
       >
         {theme === 'light' ? (
           <svg

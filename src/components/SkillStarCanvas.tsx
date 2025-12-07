@@ -1,7 +1,10 @@
 'use client';
 
 import { memo, useCallback, useEffect, useRef } from 'react';
+
 import { createGalaxyBands } from '../utils/galaxy-bands';
+
+/* eslint-disable react-hooks/exhaustive-deps */
 
 /**
  * Skill Starfield 2.0
@@ -235,7 +238,7 @@ const SkillStarfield = memo(() => {
     if (!canvas) return;
 
     // 隨機散佈技能星星在畫布中
-    nodesRef.current = skillsData.map((s) => {
+    nodesRef.current = skillsData.map(s => {
       const x = (Math.random() - 0.5) * 800; // 隨機x位置
       const y = (Math.random() - 0.5) * 400; // 隨機y位置
       const radius = 2 + ((s.level - 60) / 30) * 3; // 縮小：70 ➜ 2px, 100 ➜ 5px
@@ -262,9 +265,9 @@ const SkillStarfield = memo(() => {
     meteorsRef.current = [];
 
     // 初始化隨機銀河群
-    galaxyBandsRef.current = createGalaxyBands().map((band) => ({
+    galaxyBandsRef.current = createGalaxyBands().map(band => ({
       ...band,
-      particles: band.particles.map((star) => ({
+      particles: band.particles.map(star => ({
         x: star.x,
         y: star.y,
         size: star.size,
@@ -276,7 +279,7 @@ const SkillStarfield = memo(() => {
 
     // 重置銀河背景渲染標記
     galaxyRenderedRef.current = false;
-  }, []);
+  }, [skillsData]); // skillsData 是静態資料，不會改變
 
   /* ---- 繪製 ---- */
   const drawStar = (
@@ -286,7 +289,7 @@ const SkillStarfield = memo(() => {
     r: number,
     twinkle: number,
     isSkillStar = false,
-    hovered = false,
+    hovered = false
   ) => {
     ctx.save();
     ctx.translate(x, y);
@@ -296,7 +299,10 @@ const SkillStarfield = memo(() => {
     const opacity = baseOpacity * (0.5 + 0.5 * twinkle);
 
     // 技能星星更亮，有更大的光暈
-    const glowSize = isSkillStar ? (hovered ? r * 3 : r * 2) : r * 1.2;
+    let glowSize = r * 1.2;
+    if (isSkillStar) {
+      glowSize = hovered ? r * 3 : r * 2;
+    }
 
     const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, glowSize);
     grad.addColorStop(0, `rgba(255, 255, 255, ${opacity})`);
@@ -344,7 +350,7 @@ const SkillStarfield = memo(() => {
   };
 
   const updateMeteors = () => {
-    meteorsRef.current = meteorsRef.current.filter((meteor) => {
+    meteorsRef.current = meteorsRef.current.filter(meteor => {
       if (!meteor.active) return false;
 
       meteor.progress += meteor.speed;
@@ -378,7 +384,7 @@ const SkillStarfield = memo(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    meteorsRef.current.forEach((meteor) => {
+    meteorsRef.current.forEach(meteor => {
       if (meteor.tail.length < 2) return;
 
       ctx.save();
@@ -405,13 +411,7 @@ const SkillStarfield = memo(() => {
         ctx.globalAlpha = 1;
         ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
         ctx.beginPath();
-        ctx.arc(
-          head.x + canvas.width / 2,
-          head.y + canvas.height / 2,
-          2,
-          0,
-          Math.PI * 2,
-        );
+        ctx.arc(head.x + canvas.width / 2, head.y + canvas.height / 2, 2, 0, Math.PI * 2);
         ctx.fill();
       }
 
@@ -441,33 +441,25 @@ const SkillStarfield = memo(() => {
     galaxyCtx.clearRect(0, 0, galaxyCanvas.width, galaxyCanvas.height);
 
     // 繪製銀河帶到背景canvas的中心
-    galaxyBandsRef.current.forEach((band) => {
+    galaxyBandsRef.current.forEach(band => {
       galaxyCtx.save();
 
       // 移動到銀河中心並旋轉（以大畫布的中心為基準）
-      galaxyCtx.translate(
-        band.x + galaxyCanvas.width / 2,
-        band.y + galaxyCanvas.height / 2,
-      );
+      galaxyCtx.translate(band.x + galaxyCanvas.width / 2, band.y + galaxyCanvas.height / 2);
       galaxyCtx.rotate(band.rotation);
 
       // 畫銀河中的每一顆星星
-      band.particles.forEach((particle) => {
+      band.particles.forEach(particle => {
         // 星星核心 - 使用粒子自帶的顏色
-        const color = (particle as any).color || 'hsl(200, 80%, 70%)';
-        const finalOpacity = Math.max(
-          0,
-          Math.min(1, particle.opacity * band.opacity),
-        );
+        const color = (particle as { color?: string }).color || 'hsl(200, 80%, 70%)';
+        const finalOpacity = Math.max(0, Math.min(1, particle.opacity * band.opacity));
 
         // 轉換 HSL 顏色為 RGBA
         let fillColor;
         if (color.startsWith('hsl')) {
           // 確保透明度值是有效的數字
           const clampedOpacity = isNaN(finalOpacity) ? 0.5 : finalOpacity;
-          fillColor = color
-            .replace('hsl(', 'hsla(')
-            .replace(')', `, ${clampedOpacity})`);
+          fillColor = color.replace('hsl(', 'hsla(').replace(')', `, ${clampedOpacity})`);
         } else {
           const clampedOpacity = isNaN(finalOpacity) ? 0.5 : finalOpacity;
           fillColor = `rgba(255, 255, 255, ${clampedOpacity})`;
@@ -489,13 +481,10 @@ const SkillStarfield = memo(() => {
             0,
             particle.x,
             particle.y,
-            glowSize,
+            glowSize
           );
           const safeGlowOpacity = isNaN(glowOpacity) ? 0.1 : glowOpacity;
-          glowGrad.addColorStop(
-            0,
-            fillColor.replace(/[\d.]+\)$/, `${safeGlowOpacity})`),
-          );
+          glowGrad.addColorStop(0, fillColor.replace(/[\d.]+\)$/, `${safeGlowOpacity})`));
           glowGrad.addColorStop(1, 'transparent');
           galaxyCtx.fillStyle = glowGrad;
           galaxyCtx.beginPath();
@@ -507,10 +496,7 @@ const SkillStarfield = memo(() => {
         if (particle.size > 0.8) {
           const strokeOpacity = Math.max(0, Math.min(1, finalOpacity * 0.6));
           const safeStrokeOpacity = isNaN(strokeOpacity) ? 0.3 : strokeOpacity;
-          galaxyCtx.strokeStyle = fillColor.replace(
-            /[\d.]+\)$/,
-            `${safeStrokeOpacity})`,
-          );
+          galaxyCtx.strokeStyle = fillColor.replace(/[\d.]+\)$/, `${safeStrokeOpacity})`);
           galaxyCtx.lineWidth = 0.3;
 
           const spikeLength = particle.size * 4;
@@ -560,17 +546,11 @@ const SkillStarfield = memo(() => {
       // 根據用戶的拖曳偏移調整擷取位置
       const sourceX = Math.max(
         0,
-        Math.min(
-          galaxyCanvas.width - canvas.width,
-          centerOffsetX + offset.current.x,
-        ),
+        Math.min(galaxyCanvas.width - canvas.width, centerOffsetX + offset.current.x)
       );
       const sourceY = Math.max(
         0,
-        Math.min(
-          galaxyCanvas.height - canvas.height,
-          centerOffsetY + offset.current.y,
-        ),
+        Math.min(galaxyCanvas.height - canvas.height, centerOffsetY + offset.current.y)
       );
 
       // 從大背景中擷取對應的區域繪製到主畫布
@@ -583,7 +563,7 @@ const SkillStarfield = memo(() => {
         0,
         0, // 繪製到主畫布的位置
         canvas.width,
-        canvas.height, // 繪製的大小
+        canvas.height // 繪製的大小
       );
     }
   };
@@ -607,10 +587,7 @@ const SkillStarfield = memo(() => {
     ctx.save();
     ctx.translate(canvas.width / 2, canvas.height / 2);
     ctx.scale(zoom.current, zoom.current);
-    ctx.translate(
-      -canvas.width / 2 - offset.current.x,
-      -canvas.height / 2 - offset.current.y,
-    );
+    ctx.translate(-canvas.width / 2 - offset.current.x, -canvas.height / 2 - offset.current.y);
 
     // ---- 流星邏輯 ----
     const now = Date.now();
@@ -622,18 +599,18 @@ const SkillStarfield = memo(() => {
     updateMeteors();
 
     // ---- 更新閃爍效果 ----
-    nodesRef.current.forEach((n) => {
+    nodesRef.current.forEach(n => {
       n.twinkle += n.twinkleSpeed;
       if (n.twinkle > 1) n.twinkle = 0;
     });
 
-    backgroundStarsRef.current.forEach((s) => {
+    backgroundStarsRef.current.forEach(s => {
       s.twinkle += s.twinkleSpeed;
       if (s.twinkle > 1) s.twinkle = 0;
     });
 
     // ---- 畫背景星星 ----
-    backgroundStarsRef.current.forEach((s) => {
+    backgroundStarsRef.current.forEach(s => {
       const screenX = s.x + canvas.width / 2;
       const screenY = s.y + canvas.height / 2;
       const twinkleValue = Math.sin(s.twinkle * Math.PI * 2) * 0.5 + 0.5;
@@ -644,7 +621,7 @@ const SkillStarfield = memo(() => {
     drawMeteors(ctx);
 
     // ---- 畫連線 (hover 節點與同 category) ----
-    const hovered = nodesRef.current.find((n) => n.hovered);
+    const hovered = nodesRef.current.find(n => n.hovered);
     if (hovered) {
       ctx.strokeStyle = `rgba(255, 255, 255, 0.6)`;
       ctx.lineWidth = 2;
@@ -652,12 +629,9 @@ const SkillStarfield = memo(() => {
       ctx.shadowBlur = 5;
       ctx.setLineDash([]);
       ctx.beginPath();
-      nodesRef.current.forEach((n) => {
+      nodesRef.current.forEach(n => {
         if (n !== hovered && n.category === hovered.category) {
-          ctx.moveTo(
-            hovered.x + canvas.width / 2,
-            hovered.y + canvas.height / 2,
-          );
+          ctx.moveTo(hovered.x + canvas.width / 2, hovered.y + canvas.height / 2);
           ctx.lineTo(n.x + canvas.width / 2, n.y + canvas.height / 2);
         }
       });
@@ -666,19 +640,11 @@ const SkillStarfield = memo(() => {
     }
 
     // ---- 畫技能星星 ----
-    nodesRef.current.forEach((n) => {
+    nodesRef.current.forEach(n => {
       const screenX = n.x + canvas.width / 2;
       const screenY = n.y + canvas.height / 2;
       const twinkleValue = Math.sin(n.twinkle * Math.PI * 2) * 0.5 + 0.5;
-      drawStar(
-        ctx,
-        screenX,
-        screenY,
-        n.radius,
-        twinkleValue,
-        true,
-        n.hovered || n.selected,
-      );
+      drawStar(ctx, screenX, screenY, n.radius, twinkleValue, true, n.hovered || n.selected);
     });
 
     ctx.restore();
@@ -686,21 +652,18 @@ const SkillStarfield = memo(() => {
     // ---- 繪製技術名稱 (在變換之外，使用螢幕座標) ----
     if (hovered) {
       const relatedNodes = nodesRef.current.filter(
-        (n) =>
-          n === hovered || (n.category === hovered.category && n !== hovered),
+        n => n === hovered || (n.category === hovered.category && n !== hovered)
       );
 
-      relatedNodes.forEach((node) => {
+      relatedNodes.forEach(node => {
         const worldX = node.x + canvas.width / 2;
         const worldY = node.y + canvas.height / 2;
 
         // 將世界座標轉換為螢幕座標
         const screenX =
-          (worldX - canvas.width / 2 - offset.current.x) * zoom.current +
-          canvas.width / 2;
+          (worldX - canvas.width / 2 - offset.current.x) * zoom.current + canvas.width / 2;
         const screenY =
-          (worldY - canvas.height / 2 - offset.current.y) * zoom.current +
-          canvas.height / 2;
+          (worldY - canvas.height / 2 - offset.current.y) * zoom.current + canvas.height / 2;
 
         // 檢查是否在可視範圍內
         if (
@@ -737,16 +700,10 @@ const SkillStarfield = memo(() => {
     if (!canvas) return null;
 
     // 將螢幕座標轉換為世界座標
-    const worldX =
-      (sx - canvas.width / 2) / zoom.current +
-      canvas.width / 2 +
-      offset.current.x;
-    const worldY =
-      (sy - canvas.height / 2) / zoom.current +
-      canvas.height / 2 +
-      offset.current.y;
+    const worldX = (sx - canvas.width / 2) / zoom.current + canvas.width / 2 + offset.current.x;
+    const worldY = (sy - canvas.height / 2) / zoom.current + canvas.height / 2 + offset.current.y;
 
-    return nodesRef.current.find((n) => {
+    return nodesRef.current.find(n => {
       // 技能星星的世界座標
       const starWorldX = n.x + canvas.width / 2;
       const starWorldY = n.y + canvas.height / 2;
@@ -771,7 +728,7 @@ const SkillStarfield = memo(() => {
       last.current = { x: e.clientX, y: e.clientY };
       return;
     }
-    nodesRef.current.forEach((n) => (n.hovered = false));
+    nodesRef.current.forEach(n => (n.hovered = false));
     const node = hitNode(sx, sy);
     if (node) node.hovered = true;
   }, []);
@@ -797,28 +754,17 @@ const SkillStarfield = memo(() => {
     const mouseY = e.clientY - rect.top;
 
     // 計算縮放前的世界座標
-    const worldX =
-      (mouseX - canvas.width / 2) / zoom.current +
-      canvas.width / 2 +
-      offset.current.x;
+    const worldX = (mouseX - canvas.width / 2) / zoom.current + canvas.width / 2 + offset.current.x;
     const worldY =
-      (mouseY - canvas.height / 2) / zoom.current +
-      canvas.height / 2 +
-      offset.current.y;
+      (mouseY - canvas.height / 2) / zoom.current + canvas.height / 2 + offset.current.y;
 
     // 更新縮放級別
     const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
     const newZoom = Math.max(0.3, Math.min(3, zoom.current * zoomFactor));
 
     // 計算縮放後需要調整的偏移量
-    const newWorldX =
-      (mouseX - canvas.width / 2) / newZoom +
-      canvas.width / 2 +
-      offset.current.x;
-    const newWorldY =
-      (mouseY - canvas.height / 2) / newZoom +
-      canvas.height / 2 +
-      offset.current.y;
+    const newWorldX = (mouseX - canvas.width / 2) / newZoom + canvas.width / 2 + offset.current.x;
+    const newWorldY = (mouseY - canvas.height / 2) / newZoom + canvas.height / 2 + offset.current.y;
 
     // 調整偏移量以保持滑鼠位置不變
     offset.current.x += worldX - newWorldX;
@@ -831,7 +777,7 @@ const SkillStarfield = memo(() => {
     const rect = (e.target as HTMLCanvasElement).getBoundingClientRect();
     const sx = e.clientX - rect.left;
     const sy = e.clientY - rect.top;
-    nodesRef.current.forEach((n) => (n.selected = false));
+    nodesRef.current.forEach(n => (n.selected = false));
     const node = hitNode(sx, sy);
     if (node) {
       node.selected = true;
@@ -847,7 +793,7 @@ const SkillStarfield = memo(() => {
             applications: node.applications,
             relatedLinks: node.relatedLinks,
           },
-        }),
+        })
       );
     }
   }, []);
@@ -897,10 +843,7 @@ const SkillStarfield = memo(() => {
 
   /* ---- Render ---- */
   return (
-    <div
-      className="relative overflow-hidden rounded-2xl p-4"
-      style={{ background: '#020817' }}
-    >
+    <div className="relative overflow-hidden rounded-2xl p-4" style={{ background: '#020817' }}>
       <canvas
         ref={canvasRef}
         className="h-[600px] w-full cursor-grab active:cursor-grabbing"

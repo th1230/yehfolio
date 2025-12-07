@@ -135,15 +135,12 @@ function genBarGalaxy({
     if (distFromCenter > barA * 1.5) continue; // 超出棒段合理範圍則捨棄
 
     // Z 軸：棒段較厚，中心最厚
-    const z =
-      (Math.random() - 0.5) *
-      diskThickness *
-      (1 - (distFromCenter / barA) * 0.5);
+    const z = (Math.random() - 0.5) * diskThickness * (1 - (distFromCenter / barA) * 0.5);
 
     const size = 0.4 + Math.random() * 0.6; // 棒段星星可以大一點
     const opacity = Math.max(
       0,
-      Math.min(1, (1 - distFromCenter / barA) * (0.6 + Math.random() * 0.4)),
+      Math.min(1, (1 - distFromCenter / barA) * (0.6 + Math.random() * 0.4))
     );
     out.push({
       x,
@@ -179,25 +176,16 @@ function genBarGalaxy({
     if (distFromCenter > diskRmax || distFromCenter < barA * 0.8) continue; // 不要與棒段重疊太多
 
     // 讓星星更傾向於在旋臂「內部」
-    const keepOnArm = Math.exp(
-      -Math.pow(thetaOffset / (TAU * armSpread * 0.5), 2) * 5,
-    ); // 高斯分佈，中心密度高
+    const keepOnArm = Math.exp(-Math.pow(thetaOffset / (TAU * armSpread * 0.5), 2) * 5); // 高斯分佈，中心密度高
     if (Math.random() > keepOnArm) continue;
 
     // Z 軸：旋臂在盤面內，比棒段薄
-    const z =
-      (Math.random() - 0.5) *
-      diskThickness *
-      0.6 *
-      Math.exp(-distFromCenter / diskRmax); // 越遠越薄
+    const z = (Math.random() - 0.5) * diskThickness * 0.6 * Math.exp(-distFromCenter / diskRmax); // 越遠越薄
 
     const size = 0.3 + Math.random() * 0.7; // 旋臂星星可以更亮、更大
     const opacity = Math.max(
       0.01,
-      Math.min(
-        1,
-        (1 - distFromCenter / diskRmax) * (0.7 + Math.random() * 0.3),
-      ),
+      Math.min(1, (1 - distFromCenter / diskRmax) * (0.7 + Math.random() * 0.3))
     ); // 旋臂星星通常更顯眼
     out.push({
       x,
@@ -222,8 +210,7 @@ function genBarGalaxy({
     const z = r_halo * Math.cos(phi_halo);
 
     const distFromCenter = Math.hypot(x, y, z);
-    if (distFromCenter > diskRmax * 2 || distFromCenter < diskRmax * 0.5)
-      continue; // 光暈主要在盤面之外
+    if (distFromCenter > diskRmax * 2 || distFromCenter < diskRmax * 0.5) continue; // 光暈主要在盤面之外
 
     // 亮度衰減，越遠越暗，整體稀疏
     const keep = Math.exp(-distFromCenter / (diskRmax * 1.5)) * 0.5 + 0.05;
@@ -232,10 +219,7 @@ function genBarGalaxy({
     const size = 0.1 + Math.random() * 0.2; // 光暈星星非常小且暗
     const opacity = Math.max(
       0.01,
-      Math.min(
-        1,
-        (1 - distFromCenter / (diskRmax * 2)) * (0.1 + Math.random() * 0.1),
-      ),
+      Math.min(1, (1 - distFromCenter / (diskRmax * 2)) * (0.1 + Math.random() * 0.1))
     );
     out.push({
       x,
@@ -252,28 +236,20 @@ function genBarGalaxy({
 }
 
 /* 5. 不規則 -------------------------------------------------------------- */
-function genIrregular({
-  Rmax,
-  starCount,
-}: {
-  Rmax: number;
-  starCount: number;
-}): Star[] {
+function genIrregular({ Rmax, starCount }: { Rmax: number; starCount: number }): Star[] {
   const centers = [
     { x: 0, y: 0, w: 0.5 },
     { x: 60, y: -40, w: 0.25 },
     { x: -50, y: 80, w: 0.15 },
     { x: 80, y: 70, w: 0.1 },
   ];
-  const cum = centers.map((c, i) =>
-    centers.slice(0, i + 1).reduce((s, m) => s + m.w, 0),
-  );
+  const cum = centers.map((c, i) => centers.slice(0, i + 1).reduce((s, m) => s + m.w, 0));
   const out: Star[] = [];
 
   while (out.length < starCount) {
     /* 抽中心 */
     const r = Math.random();
-    const idx = cum.findIndex((c) => r <= c);
+    const idx = cum.findIndex(c => r <= c);
     const c = centers[idx];
 
     /* 極座標隨機 */
@@ -286,10 +262,7 @@ function genIrregular({
 
     const dist = Math.hypot(x, y) / Rmax;
     const size = 0.2 + Math.random() * 0.7;
-    const opacity = Math.max(
-      0.01,
-      Math.min(1, (1 - dist) * (0.3 + Math.random() * 0.5)),
-    );
+    const opacity = Math.max(0.01, Math.min(1, (1 - dist) * (0.3 + Math.random() * 0.5)));
 
     out.push({
       x,
@@ -344,7 +317,7 @@ function genEllipticalGalaxy({
     const size = 0.2 + Math.random() * 0.3; // 橢圓星系星星普遍較小且均勻
     const opacity = Math.max(
       0.01,
-      Math.min(1, (1 - distFromCenter / maxDist) * (0.3 + Math.random() * 0.4)),
+      Math.min(1, (1 - distFromCenter / maxDist) * (0.3 + Math.random() * 0.4))
     ); // 整體透明度可以更低，模擬更稀疏
 
     out.push({

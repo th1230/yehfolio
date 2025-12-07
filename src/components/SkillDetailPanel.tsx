@@ -1,71 +1,85 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { memo } from 'react';
 
-type SkillDetail = {
-  name: string;
-  level: number;
-  category: string;
-  icon: string;
-  description: string;
-  applications: string;
-  relatedLinks: string;
-  color: string;
-} | null;
+import { springConfigs, useReducedMotion, scaleIn } from '@/utils/animations';
+
+import type { SkillDetail } from '@/types';
 
 interface SkillDetailPanelProps {
-  selectedSkill: SkillDetail;
+  selectedSkill: SkillDetail | null;
 }
 
 const SkillDetailPanel = memo(({ selectedSkill }: SkillDetailPanelProps) => {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
-    <div className="rounded-2xl bg-white p-4 shadow-lg dark:bg-gray-800/50">
-      {selectedSkill ? (
-        <motion.div
-          key={selectedSkill.name}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          className="space-y-4"
-        >
-          {/* 技能標題 */}
-          <div className="mb-4 flex items-center">
-            <div className="mr-3 flex h-8 w-8 items-center justify-center">
-              <img
-                src={selectedSkill.icon}
-                alt={selectedSkill.name}
-                className="h-full w-full object-contain"
-              />
+    <div className="rounded-2xl bg-white p-4 shadow-lg transition-all duration-300 hover:shadow-xl dark:bg-gray-800/50">
+      <AnimatePresence mode="popLayout" initial={false}>
+        {selectedSkill ? (
+          <motion.div
+            key={selectedSkill.name}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={prefersReducedMotion ? { duration: 0.01 } : { duration: 0.15 }}
+            className="space-y-4"
+          >
+            {/* 技能標題 */}
+            <div className="mb-4 flex items-center">
+              <div className="mr-3 flex h-8 w-8 items-center justify-center">
+                <img
+                  src={selectedSkill.icon}
+                  alt={`${selectedSkill.name} icon`}
+                  className="h-full w-full object-contain"
+                  width={32}
+                  height={32}
+                  loading="lazy"
+                />
+              </div>
+              <div>
+                <h3 className="text-outer-space dark:text-apricot text-lg font-bold">
+                  {selectedSkill.name}
+                </h3>
+                <p className="text-outer-space/70 dark:text-apricot/70 text-xs">
+                  {selectedSkill.category}
+                </p>
+              </div>
             </div>
-            <div>
-              <h3 className="text-outer-space dark:text-apricot text-lg font-bold">
-                {selectedSkill.name}
-              </h3>
-              <p className="text-outer-space/70 dark:text-apricot/70 text-xs">
-                {selectedSkill.category}
+
+            {/* 技能描述 */}
+            <div className="space-y-3">
+              <p className="text-outer-space/80 dark:text-apricot/80 text-sm leading-relaxed">
+                {selectedSkill.description}
               </p>
             </div>
-          </div>
-
-          {/* 技能描述 */}
-          <div className="space-y-3">
-            <p className="text-outer-space/80 dark:text-apricot/80 text-sm leading-relaxed">
-              {selectedSkill.description}
+          </motion.div>
+        ) : (
+          <motion.div
+            key="empty"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={prefersReducedMotion ? { duration: 0.01 } : { duration: 0.15 }}
+            className="flex flex-col items-center justify-center py-8 text-center"
+          >
+            <motion.div
+              className="mb-3 text-3xl"
+              animate={prefersReducedMotion ? {} : { rotate: [0, 10, -10, 0], scale: [1, 1.1, 1] }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              ⭐
+            </motion.div>
+            <h3 className="text-outer-space dark:text-apricot mb-2 text-lg font-bold">
+              選擇技能星星
+            </h3>
+            <p className="text-outer-space/70 dark:text-apricot/70 text-sm">
+              點擊左側的技能星星查看詳細資訊
             </p>
-          </div>
-        </motion.div>
-      ) : (
-        <div className="flex flex-col items-center justify-center py-8 text-center">
-          <div className="mb-3 text-3xl">⭐</div>
-          <h3 className="text-outer-space dark:text-apricot mb-2 text-lg font-bold">
-            選擇技能星星
-          </h3>
-          <p className="text-outer-space/70 dark:text-apricot/70 text-sm">
-            點擊左側的技能星星查看詳細資訊
-          </p>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 });

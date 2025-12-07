@@ -30,7 +30,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-outer-space py-16 text-white dark:bg-gray-900">
+    <footer className="bg-outer-space relative z-10 py-16 text-white dark:bg-gray-900">
       <div className="mx-auto max-w-7xl px-4">
         <div className="mb-12 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
           {/* Brand Section */}
@@ -41,9 +41,7 @@ export default function Footer() {
             viewport={{ once: true }}
             className="lg:col-span-2"
           >
-            <h3 className="dark:text-apricot mb-4 text-2xl font-bold text-white">
-              YehFolio
-            </h3>
+            <h3 className="dark:text-apricot mb-4 text-2xl font-bold text-white">YehFolio</h3>
             <p className="dark:text-apricot mb-6 leading-relaxed text-white">
               專注於創造美麗與功能並存的數位體驗，將創意轉化為實用的解決方案。
             </p>
@@ -62,9 +60,7 @@ export default function Footer() {
               }}
               viewport={{ once: true }}
             >
-              <h4 className="text-apricot mb-4 text-lg font-semibold">
-                {section.title}
-              </h4>
+              <h4 className="text-apricot mb-4 text-lg font-semibold">{section.title}</h4>
               <ul className="space-y-3">
                 {section.links.map((link, linkIndex) => (
                   <motion.li

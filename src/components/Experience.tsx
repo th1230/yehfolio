@@ -1,19 +1,20 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
+
+import { springConfigs, useReducedMotion, staggerContainer } from '@/utils/animations';
 
 export default function Experience() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const prefersReducedMotion = useReducedMotion();
 
   const timelineEvents = [
     {
       period: '2025',
       title: '人事系統功能擴充與架構升級',
-      description:
-        '負責企業內部人資平台的功能擴充與架構升級，提升整體系統維護性與可擴展性',
+      description: '負責企業內部人資平台的功能擴充與架構升級，提升整體系統維護性與可擴展性',
       technologies: [
         'Angular 11 → 19',
         'TypeScript',
@@ -50,15 +51,8 @@ export default function Experience() {
     {
       period: '2024',
       title: '金融資訊申報平台',
-      description:
-        '參與金融申報系統開發與整合，提升報表列印與資料展示功能的穩定性與一致性',
-      technologies: [
-        'Angular',
-        'TypeScript',
-        'RxJS',
-        'Angular Material',
-        'Tailwind CSS',
-      ],
+      description: '參與金融申報系統開發與整合，提升報表列印與資料展示功能的穩定性與一致性',
+      technologies: ['Angular', 'TypeScript', 'RxJS', 'Angular Material', 'Tailwind CSS'],
       achievements: [
         '開發多頁共用列印功能，支援不同報表格式',
         '參與頁面切板、資料串接與錯誤排查',
@@ -70,14 +64,7 @@ export default function Experience() {
       title: '企業內容平台開發',
       description:
         '打造企業官方內容展示與管理平台，結合高效 SEO 與效能優化技術，支援行銷曝光與內容管理',
-      technologies: [
-        'Razor',
-        'Angular',
-        'TypeScript',
-        'RxJS',
-        'GA',
-        'Lighthouse',
-      ],
+      technologies: ['Razor', 'Angular', 'TypeScript', 'RxJS', 'GA', 'Lighthouse'],
       achievements: [
         '建構後台文章、標籤、廣告等多模組管理功能',
         '前台實作 Lazy Loading、RWD 與 SEO 優化，Lighthouse SEO 分數 95+',
@@ -99,34 +86,55 @@ export default function Experience() {
   ];
 
   return (
-    <section
-      id="experience"
-      className="bg-gray-50 px-4 py-20 dark:bg-gray-900/30"
-    >
+    <section id="experience" className="bg-gray-50 px-4 py-20 dark:bg-gray-900/30">
       <div className="mx-auto max-w-6xl">
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
+          transition={
+            prefersReducedMotion ? { duration: 0.01 } : { ...springConfigs.gentle, delay: 0.1 }
+          }
         >
-          <h2 className="text-outer-space dark:text-apricot mb-16 text-center text-4xl font-bold md:text-5xl">
+          <motion.h2
+            className="text-outer-space dark:text-apricot mb-16 text-center text-4xl font-bold md:text-5xl"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
+            transition={
+              prefersReducedMotion ? { duration: 0.01 } : { ...springConfigs.bouncy, delay: 0.2 }
+            }
+          >
             工作經驗
-          </h2>
+          </motion.h2>
 
           {/* 工作經驗 - 幾何藝術時間線 */}
           <div className="mb-16">
-            <h3 className="text-outer-space dark:text-fawn mb-12 text-center text-2xl font-bold">
+            <motion.h3
+              className="text-outer-space dark:text-fawn mb-12 text-center text-2xl font-bold"
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={
+                prefersReducedMotion ? { duration: 0.01 } : { ...springConfigs.gentle, delay: 0.3 }
+              }
+            >
               專業經驗軌跡
-            </h3>
+            </motion.h3>
 
             <div className="relative mx-auto max-w-5xl px-4 md:px-8">
               {/* 主要時間軸 - 桌面版垂直居中，手機版左側 */}
               <motion.div
                 className="from-sandy-brown via-fawn to-sandy-brown absolute top-0 left-[34px] w-1 rounded-full bg-gradient-to-b shadow-lg md:left-1/2 md:-translate-x-1/2 md:transform"
-                initial={{ height: 0 }}
-                animate={isInView ? { height: '100%' } : { height: 0 }}
-                transition={{ duration: 1.5, delay: 0.5 }}
+                initial={{ height: 0, opacity: 0 }}
+                animate={isInView ? { height: '100%', opacity: 1 } : { height: 0, opacity: 0 }}
+                transition={
+                  prefersReducedMotion
+                    ? { duration: 0.01 }
+                    : {
+                        height: { duration: 1.2, delay: 0.4, ease: [0.43, 0.13, 0.23, 0.96] },
+                        opacity: { duration: 0.3, delay: 0.4 },
+                      }
+                }
+                style={{ willChange: 'height, opacity' }}
               />
 
               {/* 背景幾何裝飾 - 手機版隱藏 */}
@@ -183,31 +191,39 @@ export default function Experience() {
                   <motion.div
                     key={index}
                     className="relative mb-16 md:mb-20"
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={
-                      isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }
+                    initial={{ opacity: 0, y: 60 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
+                    transition={
+                      prefersReducedMotion
+                        ? { duration: 0.01 }
+                        : {
+                            ...springConfigs.gentle,
+                            delay: 0.6 + index * 0.15,
+                          }
                     }
-                    transition={{
-                      duration: 0.8,
-                      delay: index * 0.2,
-                      ease: 'easeOut',
-                    }}
                   >
                     {/* 時間節點 - 手機版左側對齊，桌面版居中 */}
                     <motion.div
                       className="absolute top-8 left-5 z-20 -translate-x-1/2 transform md:left-1/2"
-                      initial={{ scale: 0, rotate: -90 }}
-                      animate={
-                        isInView
-                          ? { scale: 1, rotate: 0 }
-                          : { scale: 0, rotate: -90 }
+                      initial={{ scale: 0, rotate: -180 }}
+                      animate={isInView ? { scale: 1, rotate: 0 } : { scale: 0, rotate: -180 }}
+                      transition={
+                        prefersReducedMotion
+                          ? { duration: 0.01 }
+                          : {
+                              ...springConfigs.bouncy,
+                              delay: 0.7 + index * 0.15,
+                            }
                       }
-                      transition={{
-                        duration: 0.6,
-                        delay: index * 0.2 + 0.5,
-                        type: 'spring',
-                        stiffness: 200,
-                      }}
+                      whileHover={
+                        prefersReducedMotion
+                          ? {}
+                          : {
+                              scale: 1.1,
+                              transition: springConfigs.instant,
+                            }
+                      }
+                      style={{ willChange: 'transform' }}
                     >
                       {/* 外層圓形 */}
                       <div
@@ -231,44 +247,61 @@ export default function Experience() {
 
                     {/* 連接線 - 手機版簡化，桌面版雙向 */}
                     <motion.div
-                      className={`absolute top-13 h-0.5 w-8 md:top-14 md:w-12 ${
+                      className={`absolute top-13 h-0.5 md:top-14 md:h-1 ${
                         colorScheme.bg
-                      } ${'left-10'} ${
-                        isLeft ? 'md:left-[45%]' : 'md:left-1/2'
-                      }`}
-                      initial={{ width: 0 }}
-                      animate={isInView ? { width: 32 } : { width: 0 }}
-                      transition={{ duration: 0.5, delay: index * 0.2 + 0.8 }}
+                      } ${'left-10'} ${isLeft ? 'md:left-[45%]' : 'md:left-1/2'}`}
+                      initial={{ width: 0, opacity: 0 }}
+                      animate={isInView ? { width: '3rem', opacity: 1 } : { width: 0, opacity: 0 }}
+                      transition={
+                        prefersReducedMotion
+                          ? { duration: 0.01 }
+                          : {
+                              width: { duration: 0.4, delay: 0.85 + index * 0.15 },
+                              opacity: { duration: 0.2, delay: 0.85 + index * 0.15 },
+                            }
+                      }
+                      style={{ willChange: 'width, opacity' }}
                     />
 
                     {/* 內容卡片 - 手機版統一左對齊，桌面版左右交替 */}
                     <motion.div
                       className={`pl-16 md:pl-0 ${
-                        // 手機版統一左對齊
                         isLeft ? 'md:mr-auto' : 'md:mr-0 md:ml-auto'
                       } max-w-sm md:max-w-md`}
-                      initial={{ opacity: 0, x: -50 }}
+                      initial={{ opacity: 0, x: isLeft ? -30 : 30 }}
                       animate={
-                        isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }
+                        isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: isLeft ? -30 : 30 }
                       }
-                      transition={{ duration: 0.2 }}
-                      whileHover={{ scale: 1.02, y: -3 }}
+                      transition={
+                        prefersReducedMotion
+                          ? { duration: 0.01 }
+                          : {
+                              ...springConfigs.gentle,
+                              delay: 0.9 + index * 0.15,
+                            }
+                      }
+                      whileHover={
+                        prefersReducedMotion
+                          ? {}
+                          : {
+                              scale: 1.03,
+                              y: -5,
+                              transition: springConfigs.instant,
+                            }
+                      }
+                      style={{ willChange: 'transform' }}
                     >
                       {/* 卡片主體 */}
                       <div className="relative w-full overflow-hidden rounded-2xl border border-gray-100 bg-white p-4 shadow-xl md:p-6 dark:border-gray-700 dark:bg-gray-800/90">
                         {/* 頂部色彩條 */}
-                        <div
-                          className={`absolute top-0 right-0 left-0 h-1 ${colorScheme.bg}`}
-                        />
+                        <div className={`absolute top-0 right-0 left-0 h-1 ${colorScheme.bg}`} />
 
                         {/* 角落裝飾 - 手機版固定右上角 */}
                         <div
                           className={`absolute top-3 right-3 md:top-4 md:right-4 ${
                             // 桌面版根據位置調整
-                            'md:' + (isLeft ? 'right-4' : 'left-4')
-                          } h-2 w-2 md:h-3 md:w-3 ${
-                            colorScheme.bg
-                          } rounded-full opacity-60`}
+                            `md:${isLeft ? 'right-4' : 'left-4'}`
+                          } h-2 w-2 md:h-3 md:w-3 ${colorScheme.bg} rounded-full opacity-60`}
                         />
 
                         <div className="relative z-10">
@@ -276,7 +309,7 @@ export default function Experience() {
                           <h4
                             className={`text-outer-space dark:text-apricot mb-2 text-left text-lg font-bold md:text-xl ${
                               // 桌面版根據位置調整
-                              'md:' + (isLeft ? 'text-left' : 'text-right')
+                              `md:${isLeft ? 'text-left' : 'text-right'}`
                             }`}
                           >
                             {event.title}
@@ -286,7 +319,7 @@ export default function Experience() {
                           <p
                             className={`text-outer-space/70 dark:text-apricot/70 mb-4 text-left text-sm leading-relaxed ${
                               // 桌面版根據位置調整
-                              'md:' + (isLeft ? 'text-left' : 'text-right')
+                              `md:${isLeft ? 'text-left' : 'text-right'}`
                             }`}
                           >
                             {event.description}
@@ -297,21 +330,12 @@ export default function Experience() {
                             <h5
                               className={`text-outer-space dark:text-apricot mb-3 flex items-center justify-start text-sm font-semibold ${
                                 // 桌面版根據位置調整
-                                'md:' +
-                                (isLeft ? 'justify-start' : 'justify-end')
+                                `md:${isLeft ? 'justify-start' : 'justify-end'}`
                               }`}
                             >
                               <span className="mr-2 md:mr-2">🎯</span>
-                              <span
-                                className={`md:${isLeft ? 'block' : 'hidden'}`}
-                              >
-                                核心成就
-                              </span>
-                              <span
-                                className={`hidden md:${
-                                  isLeft ? 'hidden' : 'block'
-                                } md:ml-2`}
-                              >
+                              <span className={`md:${isLeft ? 'block' : 'hidden'}`}>核心成就</span>
+                              <span className={`hidden md:${isLeft ? 'hidden' : 'block'} md:ml-2`}>
                                 核心成就
                               </span>
                             </h5>
@@ -321,14 +345,10 @@ export default function Experience() {
                                   key={idx}
                                   className={`flex items-start ${
                                     // 桌面版根據位置調整
-                                    'md:' + (isLeft ? '' : 'flex-row-reverse')
+                                    `md:${isLeft ? '' : 'flex-row-reverse'}`
                                   }`}
                                   initial={{ opacity: 0, x: -20 }}
-                                  animate={
-                                    isInView
-                                      ? { opacity: 1, x: 0 }
-                                      : { opacity: 0, x: -20 }
-                                  }
+                                  animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
                                   transition={{
                                     delay: index * 0.2 + idx * 0.1 + 1,
                                   }}
@@ -338,14 +358,13 @@ export default function Experience() {
                                       colorScheme.bg
                                     } mt-2 mr-3 rounded-full ${
                                       // 桌面版根據位置調整
-                                      'md:' + (isLeft ? 'mr-3' : 'ml-3')
+                                      `md:${isLeft ? 'mr-3' : 'ml-3'}`
                                     }`}
                                   />
                                   <p
                                     className={`text-outer-space/70 dark:text-apricot/70 text-left text-xs leading-relaxed ${
                                       // 桌面版根據位置調整
-                                      'md:' +
-                                      (isLeft ? 'text-left' : 'text-right')
+                                      `md:${isLeft ? 'text-left' : 'text-right'}`
                                     }`}
                                   >
                                     {achievement}
@@ -359,7 +378,7 @@ export default function Experience() {
                           <div
                             className={`flex flex-wrap justify-start gap-2 ${
                               // 桌面版根據位置調整
-                              'md:' + (isLeft ? 'justify-start' : 'justify-end')
+                              `md:${isLeft ? 'justify-start' : 'justify-end'}`
                             }`}
                           >
                             {event.technologies.map((tech, techIndex) => (
@@ -368,9 +387,7 @@ export default function Experience() {
                                 className={`rounded-full px-2 py-1 text-xs font-medium md:px-3 ${colorScheme.bgLight} ${colorScheme.text} ${colorScheme.border} border dark:${colorScheme.bgDark} dark:${colorScheme.textDark}`}
                                 initial={{ opacity: 0, scale: 0.8 }}
                                 animate={
-                                  isInView
-                                    ? { opacity: 1, scale: 1 }
-                                    : { opacity: 0, scale: 0.8 }
+                                  isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }
                                 }
                                 transition={{
                                   delay: index * 0.2 + techIndex * 0.05 + 1.2,
@@ -395,9 +412,7 @@ export default function Experience() {
               <motion.div
                 className="absolute bottom-0 left-9 flex -translate-x-1/2 transform items-center justify-center md:left-1/2"
                 initial={{ opacity: 0, scale: 0 }}
-                animate={
-                  isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }
-                }
+                animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
                 transition={{ delay: 1.5, duration: 0.6 }}
               >
                 <div className="from-sandy-brown to-fawn relative h-6 w-6 rounded-full border-2 border-white bg-gradient-to-br shadow-lg md:h-8 md:w-8 dark:border-gray-800">
