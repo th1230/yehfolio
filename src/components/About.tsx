@@ -91,7 +91,7 @@ export default function About() {
                     : { ...springConfigs.gentle, delay: 0.5 }
                 }
               >
-                淡江大學畢業，主力使用
+                淡江大學畢業，具備
                 <motion.span
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
@@ -111,9 +111,9 @@ export default function About() {
                         }
                   }
                 >
-                  Angular
+                  Angular、Vue 與 React
                 </motion.span>
-                進行專案開發，曾參與多項功能實作與系統前端設計，具備實務開發經驗。
+                的完整專案開發經驗，曾參與多項功能實作與系統前端設計，能靈活運用主流框架解決問題。
               </motion.p>
 
               <motion.p

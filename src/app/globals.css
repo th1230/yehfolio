@@ -71,6 +71,77 @@ textarea:focus-visible {
 }
 
 /* ============================================
+   客製化 Scrollbar - 符合品牌風格
+   ============================================ */
+
+/* 專案彈窗滾動條樣式 */
+.scrollable-content {
+  /* 啟用硬體加速與平滑滾動 */
+  -webkit-overflow-scrolling: touch;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  /* 優化滾動效能 */
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+}
+
+/* Webkit 瀏覽器 (Chrome, Safari, Edge) */
+.scrollable-content::-webkit-scrollbar {
+  width: 10px;
+}
+
+.scrollable-content::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+}
+
+.scrollable-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #f5ac72 0%, #f8bd7f 100%);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: background 0.2s ease;
+}
+
+.scrollable-content::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #f8bd7f 0%, #facfad 100%);
+  background-clip: padding-box;
+}
+
+.scrollable-content::-webkit-scrollbar-thumb:active {
+  background: #f5ac72;
+}
+
+/* Dark mode scrollbar */
+.dark .scrollable-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.dark .scrollable-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #facfad 0%, #f8bd7f 100%);
+  background-clip: padding-box;
+}
+
+.dark .scrollable-content::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #f8bd7f 0%, #f5ac72 100%);
+  background-clip: padding-box;
+}
+
+.dark .scrollable-content::-webkit-scrollbar-thumb:active {
+  background: #facfad;
+}
+
+/* Firefox 滾動條樣式 */
+.scrollable-content {
+  scrollbar-width: thin;
+  scrollbar-color: #f5ac72 rgba(0, 0, 0, 0.05);
+}
+
+.dark .scrollable-content {
+  scrollbar-color: #facfad rgba(255, 255, 255, 0.05);
+}
+
+/* ============================================
    四季動畫背景系統 - 性能優化與視覺效果
    ============================================ */
 

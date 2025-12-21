@@ -43,7 +43,7 @@ export default function Footer() {
           >
             <h3 className="dark:text-apricot mb-4 text-2xl font-bold text-white">YehFolio</h3>
             <p className="dark:text-apricot mb-6 leading-relaxed text-white">
-              專注於創造美麗與功能並存的數位體驗，將創意轉化為實用的解決方案。
+              打造兼具美感與實用性的數位體驗，把創意做成真正能用的東西。
             </p>
           </motion.div>
 
