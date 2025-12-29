@@ -7,9 +7,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 const baseUrl =
-  process.env.NODE_ENV === 'production'
-    ? 'https://th1230.github.io/yehfolio'
-    : 'http://localhost:3000';
+  process.env.NODE_ENV === 'production' ? 'https://portfolio.yehnext.com' : 'http://localhost:3000';
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -65,8 +63,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const isProd = process.env.NODE_ENV === 'production';
-
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Person',
@@ -82,7 +78,6 @@ export default function RootLayout({
   return (
     <html lang="zh-TW">
       <head>
-        {isProd && <base href="/yehfolio/" />}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

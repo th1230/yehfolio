@@ -57,13 +57,12 @@ export default function SeasonalBackground() {
     if (!ctx) return;
 
     // 載入樹葉圖片
-    const basePath = process.env.NODE_ENV === 'production' ? '/yehfolio' : '';
     const imageFiles = [
-      `${basePath}/images/autumn/maple-1.png`,
-      `${basePath}/images/autumn/maple-2.png`,
-      `${basePath}/images/autumn/maple-3.png`,
-      `${basePath}/images/autumn/ginkgo-1.png`,
-      `${basePath}/images/autumn/ginkgo-2.png`,
+      `/images/autumn/maple-1.png`,
+      `/images/autumn/maple-2.png`,
+      `/images/autumn/maple-3.png`,
+      `/images/autumn/ginkgo-1.png`,
+      `/images/autumn/ginkgo-2.png`,
     ];
 
     let loadedCount = 0;

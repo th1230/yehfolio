@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizeCss: false,
   },
-  basePath: process.env.NODE_ENV === 'production' ? '/yehfolio' : '',
+  basePath: '',
 };
 
 export default nextConfig;
