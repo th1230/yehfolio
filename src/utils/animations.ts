@@ -1,93 +1,69 @@
-import { useEffect, useState } from 'react';
-
-import type { Transition, Variant } from 'framer-motion';
+import gsap from 'gsap';
+import { useEffect, useState, useRef, RefObject } from 'react';
 
 /**
- * 預定義的 Spring 動畫配置
- * 針對不同場景優化的彈簧動畫參數
+ * 預定義的 Spring 動畫配置 (GSAP 版本)
+ * 針對不同場景優化的緩動參數
  */
 export const springConfigs = {
   // 溫和流暢 - 適合大元素移動
   gentle: {
-    type: 'spring' as const,
-    damping: 20,
-    stiffness: 150,
-    mass: 0.8,
+    duration: 0.6,
+    ease: 'power2.out',
   },
   // 彈跳活潑 - 適合強調效果
   bouncy: {
-    type: 'spring' as const,
-    damping: 10,
-    stiffness: 200,
-    mass: 0.5,
+    duration: 0.5,
+    ease: 'back.out(1.7)',
   },
   // 快速響應 - 適合互動反饋
   snappy: {
-    type: 'spring' as const,
-    damping: 15,
-    stiffness: 300,
-    mass: 0.6,
+    duration: 0.3,
+    ease: 'power3.out',
   },
   // 緩慢優雅 - 適合背景動畫
   slow: {
-    type: 'spring' as const,
-    damping: 25,
-    stiffness: 100,
-    mass: 1,
+    duration: 0.8,
+    ease: 'power1.out',
   },
   // 極快速 - 適合微互動
   instant: {
-    type: 'spring' as const,
-    damping: 12,
-    stiffness: 400,
-    mass: 0.4,
+    duration: 0.2,
+    ease: 'power4.out',
   },
 } as const;
 
 /**
  * 預定義的緩動曲線
- * 基於常見的動畫曲線優化
  */
 export const easings = {
-  // 平滑過渡
-  smooth: [0.43, 0.13, 0.23, 0.96] as const,
-  // 標準 easeInOutCubic
-  easeInOutCubic: [0.65, 0, 0.35, 1] as const,
-  // 預期效果（先後退再前進）
-  anticipate: [0.36, 0, 0.66, -0.56] as const,
-  // 快速開始，緩慢結束
-  easeOut: [0.16, 1, 0.3, 1] as const,
-  // 緩慢開始，快速結束
-  easeIn: [0.4, 0, 1, 1] as const,
-  // 彈性效果
-  elastic: [0.68, -0.55, 0.265, 1.55] as const,
+  smooth: 'power2.inOut',
+  easeInOutCubic: 'power2.inOut',
+  anticipate: 'back.inOut(1.7)',
+  easeOut: 'power2.out',
+  easeIn: 'power2.in',
+  elastic: 'elastic.out(1, 0.3)',
 } as const;
 
 /**
  * 預定義的過渡配置
- * 常用的動畫時長和緩動組合
  */
 export const transitions = {
-  // 快速淡入
   quickFade: {
     duration: 0.3,
     ease: easings.easeOut,
   },
-  // 標準淡入
   fade: {
     duration: 0.5,
     ease: easings.smooth,
   },
-  // 慢速淡入
   slowFade: {
     duration: 0.8,
     ease: easings.easeInOutCubic,
   },
-  // 彈跳進入
   bounceIn: {
     ...springConfigs.bouncy,
   },
-  // 平滑滑入
   slideIn: {
     duration: 0.6,
     ease: easings.smooth,
@@ -96,39 +72,38 @@ export const transitions = {
 
 /**
  * 預定義的動畫變體
- * 可重用的進入/退出動畫模式
  */
-export const fadeInUp: { initial: Variant; animate: Variant; exit?: Variant } = {
+export const fadeInUp = {
   initial: { opacity: 0, y: 30 },
   animate: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: -30 },
 };
 
-export const fadeInDown: { initial: Variant; animate: Variant; exit?: Variant } = {
+export const fadeInDown = {
   initial: { opacity: 0, y: -30 },
   animate: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: 30 },
 };
 
-export const fadeInLeft: { initial: Variant; animate: Variant; exit?: Variant } = {
+export const fadeInLeft = {
   initial: { opacity: 0, x: -50 },
   animate: { opacity: 1, x: 0 },
   exit: { opacity: 0, x: 50 },
 };
 
-export const fadeInRight: { initial: Variant; animate: Variant; exit?: Variant } = {
+export const fadeInRight = {
   initial: { opacity: 0, x: 50 },
   animate: { opacity: 1, x: 0 },
   exit: { opacity: 0, x: -50 },
 };
 
-export const scaleIn: { initial: Variant; animate: Variant; exit?: Variant } = {
+export const scaleIn = {
   initial: { opacity: 0, scale: 0.8 },
   animate: { opacity: 1, scale: 1 },
   exit: { opacity: 0, scale: 0.8 },
 };
 
-export const slideInUp: { initial: Variant; animate: Variant; exit?: Variant } = {
+export const slideInUp = {
   initial: { y: '100%', opacity: 0 },
   animate: { y: 0, opacity: 1 },
   exit: { y: '100%', opacity: 0 },
@@ -136,18 +111,13 @@ export const slideInUp: { initial: Variant; animate: Variant; exit?: Variant } =
 
 /**
  * Stagger 動畫配置生成器
- * 為列表項目創建依序出現的效果
  */
 export const staggerContainer = (staggerChildren = 0.1, delayChildren = 0) => ({
-  animate: {
-    transition: {
-      staggerChildren,
-      delayChildren,
-    },
-  },
+  staggerChildren,
+  delayChildren,
 });
 
-export const staggerItem = (delay = 0): Transition => ({
+export const staggerItem = (delay = 0) => ({
   ...springConfigs.gentle,
   delay,
 });
@@ -156,33 +126,23 @@ export const staggerItem = (delay = 0): Transition => ({
  * Hover 效果預設配置
  */
 export const hoverEffects = {
-  // 輕微上浮
   lift: {
     y: -4,
-    transition: springConfigs.snappy,
   },
-  // 輕微放大
   scale: {
     scale: 1.05,
-    transition: springConfigs.snappy,
   },
-  // 組合效果：上浮 + 放大
   liftAndScale: {
     y: -4,
     scale: 1.03,
-    transition: springConfigs.snappy,
   },
-  // 3D 傾斜效果
   tilt: {
     rotateX: 5,
     rotateY: 5,
     scale: 1.02,
-    transition: springConfigs.snappy,
   },
-  // 發光效果（需配合 CSS）
   glow: {
     scale: 1.02,
-    transition: springConfigs.snappy,
   },
 };
 
@@ -190,15 +150,12 @@ export const hoverEffects = {
  * Tap 效果預設配置
  */
 export const tapEffects = {
-  // 輕微縮小
   shrink: {
     scale: 0.95,
   },
-  // 明顯縮小
   press: {
     scale: 0.9,
   },
-  // 輕微下沉
   sink: {
     y: 2,
     scale: 0.98,
@@ -207,7 +164,6 @@ export const tapEffects = {
 
 /**
  * 檢測用戶是否偏好減少動畫
- * 遵循無障礙設計原則
  */
 export function useReducedMotion(): boolean {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
@@ -220,13 +176,10 @@ export function useReducedMotion(): boolean {
       setPrefersReducedMotion(event.matches);
     };
 
-    // 現代瀏覽器使用 addEventListener
     if (mediaQuery.addEventListener) {
       mediaQuery.addEventListener('change', handleChange);
       return () => mediaQuery.removeEventListener('change', handleChange);
-    }
-    // 舊版瀏覽器回退
-    else {
+    } else {
       mediaQuery.addListener(handleChange);
       return () => mediaQuery.removeListener(handleChange);
     }
@@ -236,27 +189,199 @@ export function useReducedMotion(): boolean {
 }
 
 /**
- * 獲取條件化的過渡配置
- * 根據 reducedMotion 偏好返回簡化或完整動畫
+ * GSAP 版本的 useInView hook
  */
-export function getTransition(transition: Transition, reducedMotion: boolean): Transition {
-  if (reducedMotion) {
-    return {
-      duration: 0.01,
+export function useInView(
+  ref: RefObject<HTMLElement | null>,
+  options: { once?: boolean; margin?: string; amount?: number } = {}
+): boolean {
+  const [isInView, setIsInView] = useState(false);
+  const { once = false, margin = '0px', amount = 0 } = options;
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          if (once) {
+            observer.unobserve(element);
+          }
+        } else if (!once) {
+          setIsInView(false);
+        }
+      },
+      {
+        rootMargin: margin,
+        threshold: amount,
+      }
+    );
+
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, [ref, once, margin, amount]);
+
+  return isInView;
+}
+
+/**
+ * GSAP 動畫 hook - 進入視口時播放動畫
+ */
+export function useGsapInView(
+  ref: RefObject<HTMLElement | null>,
+  animation: gsap.TweenVars,
+  options: { once?: boolean; margin?: string; delay?: number } = {}
+) {
+  const isInView = useInView(ref, {
+    once: options.once ?? true,
+    margin: options.margin ?? '-100px',
+  });
+  const hasAnimated = useRef(false);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    if (isInView && !hasAnimated.current) {
+      gsap.to(element, {
+        ...animation,
+        delay: options.delay ?? 0,
+      });
+      if (options.once !== false) {
+        hasAnimated.current = true;
+      }
+    }
+  }, [isInView, animation, options.delay, options.once, ref]);
+
+  return isInView;
+}
+
+/**
+ * GSAP hover 效果 hook
+ */
+export function useGsapHover(
+  ref: RefObject<HTMLElement | null>,
+  hoverAnimation: gsap.TweenVars,
+  options: { disabled?: boolean } = {}
+) {
+  useEffect(() => {
+    const element = ref.current;
+    if (!element || options.disabled) return;
+
+    const originalValues: gsap.TweenVars = {};
+    Object.keys(hoverAnimation).forEach(key => {
+      if (key !== 'duration' && key !== 'ease') {
+        originalValues[key] = gsap.getProperty(element, key);
+      }
+    });
+
+    const handleMouseEnter = () => {
+      gsap.to(element, {
+        ...hoverAnimation,
+        duration: hoverAnimation.duration ?? 0.3,
+        ease: hoverAnimation.ease ?? 'power2.out',
+      });
     };
-  }
-  return transition;
+
+    const handleMouseLeave = () => {
+      gsap.to(element, {
+        ...originalValues,
+        duration: hoverAnimation.duration ?? 0.3,
+        ease: hoverAnimation.ease ?? 'power2.out',
+      });
+    };
+
+    element.addEventListener('mouseenter', handleMouseEnter);
+    element.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      element.removeEventListener('mouseenter', handleMouseEnter);
+      element.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, [ref, hoverAnimation, options.disabled]);
+}
+
+/**
+ * GSAP tap 效果 hook
+ */
+export function useGsapTap(
+  ref: RefObject<HTMLElement | null>,
+  tapAnimation: gsap.TweenVars,
+  options: { disabled?: boolean } = {}
+) {
+  useEffect(() => {
+    const element = ref.current;
+    if (!element || options.disabled) return;
+
+    const handleMouseDown = () => {
+      gsap.to(element, {
+        ...tapAnimation,
+        duration: 0.1,
+        ease: 'power2.out',
+      });
+    };
+
+    const handleMouseUp = () => {
+      gsap.to(element, {
+        scale: 1,
+        y: 0,
+        duration: 0.2,
+        ease: 'power2.out',
+      });
+    };
+
+    element.addEventListener('mousedown', handleMouseDown);
+    element.addEventListener('mouseup', handleMouseUp);
+    element.addEventListener('mouseleave', handleMouseUp);
+
+    return () => {
+      element.removeEventListener('mousedown', handleMouseDown);
+      element.removeEventListener('mouseup', handleMouseUp);
+      element.removeEventListener('mouseleave', handleMouseUp);
+    };
+  }, [ref, tapAnimation, options.disabled]);
+}
+
+/**
+ * GSAP scroll progress hook
+ */
+export function useScrollProgress(containerRef: RefObject<HTMLElement | null>): number {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const rect = container.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const elementHeight = rect.height;
+
+      const total = elementHeight + windowHeight;
+      let currentProgress = 1 - (rect.top + elementHeight) / total;
+      currentProgress = Math.max(0, Math.min(1, currentProgress));
+
+      setProgress(currentProgress);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [containerRef]);
+
+  return progress;
 }
 
 /**
  * 視差滾動計算輔助函數
  */
 export const parallaxConfig = {
-  // 輕微視差
   subtle: { offset: 30 },
-  // 中等視差
   medium: { offset: 60 },
-  // 強烈視差
   strong: { offset: 100 },
 };
 
@@ -264,19 +389,17 @@ export const parallaxConfig = {
  * 3D Transform 效果預設
  */
 export const transform3D = {
-  // 卡片翻轉效果
   cardFlip: {
     rotateY: 180,
-    transition: {
-      duration: 0.6,
-      ease: easings.easeInOutCubic,
-    },
+    duration: 0.6,
+    ease: easings.easeInOutCubic,
   },
-  // 透視傾斜
   perspectiveTilt: (x: number, y: number) => ({
     rotateX: y * 0.1,
     rotateY: x * 0.1,
-    transition: springConfigs.instant,
+    scale: 1.02,
+    duration: 0.2,
+    ease: 'power4.out',
   }),
 };
 
@@ -288,19 +411,19 @@ export const modalAnimations = {
     initial: { opacity: 0 },
     animate: { opacity: 1 },
     exit: { opacity: 0 },
-    transition: { duration: 0.3 },
+    duration: 0.3,
   },
   content: {
     initial: { opacity: 0, scale: 0.9, y: 20 },
     animate: { opacity: 1, scale: 1, y: 0 },
     exit: { opacity: 0, scale: 0.9, y: 20 },
-    transition: springConfigs.gentle,
+    ...springConfigs.gentle,
   },
   slideUp: {
     initial: { y: '100%' },
     animate: { y: 0 },
     exit: { y: '100%' },
-    transition: springConfigs.snappy,
+    ...springConfigs.snappy,
   },
 };
 
@@ -312,18 +435,48 @@ export const pageTransitions = {
     initial: { opacity: 0 },
     animate: { opacity: 1 },
     exit: { opacity: 0 },
-    transition: transitions.fade,
+    ...transitions.fade,
   },
   slideLeft: {
     initial: { x: '100%', opacity: 0 },
     animate: { x: 0, opacity: 1 },
     exit: { x: '-100%', opacity: 0 },
-    transition: transitions.slideIn,
+    ...transitions.slideIn,
   },
   slideRight: {
     initial: { x: '-100%', opacity: 0 },
     animate: { x: 0, opacity: 1 },
     exit: { x: '100%', opacity: 0 },
-    transition: transitions.slideIn,
+    ...transitions.slideIn,
   },
 };
+
+/**
+ * GSAP 動畫執行函數
+ */
+export function animateElement(
+  element: HTMLElement | null,
+  to: gsap.TweenVars,
+  from?: gsap.TweenVars
+) {
+  if (!element) return;
+  if (from) {
+    gsap.fromTo(element, from, to);
+  } else {
+    gsap.to(element, to);
+  }
+}
+
+/**
+ * GSAP stagger 動畫
+ */
+export function animateStagger(
+  elements: HTMLElement[] | NodeListOf<Element> | string,
+  to: gsap.TweenVars,
+  stagger: number = 0.1
+) {
+  gsap.to(elements, {
+    ...to,
+    stagger,
+  });
+}

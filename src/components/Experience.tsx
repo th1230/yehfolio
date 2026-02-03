@@ -1,16 +1,45 @@
 'use client';
 
-import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import gsap from 'gsap';
+import { useRef, useState, useEffect } from 'react';
 
-import { springConfigs, useReducedMotion } from '@/utils/animations';
+import { useReducedMotion, useInView } from '@/utils/animations';
+
+import GradientTitle from './GradientTitle';
+
+interface TimelineEvent {
+  period: string;
+  title: string;
+  description: string;
+  technologies: string[];
+  achievements: string[];
+}
 
 export default function Experience() {
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const prefersReducedMotion = useReducedMotion();
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isHovering, setIsHovering] = useState(false);
 
-  const timelineEvents = [
+  const leftColumnRef = useRef<HTMLDivElement>(null);
+  const rightColumnRef = useRef<HTMLDivElement>(null);
+  const progressRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const bgCard1Ref = useRef<HTMLDivElement>(null);
+  const bgCard2Ref = useRef<HTMLDivElement>(null);
+
+  const getTimelineDotClassName = (isActive: boolean, isPast: boolean) => {
+    if (isActive) {
+      return 'border-sandy-brown bg-sandy-brown shadow-md shadow-sandy-brown/30 dark:border-fawn dark:bg-fawn dark:shadow-fawn/30';
+    }
+    if (isPast) {
+      return 'border-fawn bg-fawn dark:border-apricot dark:bg-apricot';
+    }
+    return 'border-outer-space/20 bg-white dark:border-apricot/30 dark:bg-outer-space';
+  };
+
+  const timelineEvents: TimelineEvent[] = [
     {
       period: '2025',
       title: '人事系統功能擴充與架構升級',
@@ -85,343 +114,331 @@ export default function Experience() {
     },
   ];
 
+  const activeEvent = timelineEvents[activeIndex];
+
+  useEffect(() => {
+    if (!isInView) return;
+    const duration = prefersReducedMotion ? 0.01 : 0.6;
+
+    if (ref.current) {
+      gsap.fromTo(ref.current, { opacity: 0 }, { opacity: 1, duration });
+    }
+
+    if (leftColumnRef.current) {
+      gsap.fromTo(
+        leftColumnRef.current,
+        { opacity: 0, x: -30 },
+        { opacity: 1, x: 0, duration: prefersReducedMotion ? 0.01 : 0.5, delay: 0.2 }
+      );
+    }
+
+    if (rightColumnRef.current) {
+      gsap.fromTo(
+        rightColumnRef.current,
+        { opacity: 0, x: 30 },
+        { opacity: 1, x: 0, duration: prefersReducedMotion ? 0.01 : 0.5, delay: 0.4 }
+      );
+    }
+  }, [isInView, prefersReducedMotion]);
+
+  useEffect(() => {
+    if (progressRef.current && !prefersReducedMotion) {
+      const height = `calc(${((activeIndex + 1) / timelineEvents.length) * 100}% - 32px)`;
+      gsap.to(progressRef.current, {
+        height,
+        duration: 0.5,
+        ease: 'power2.out',
+      });
+    }
+  }, [activeIndex, prefersReducedMotion, timelineEvents.length]);
+
+  useEffect(() => {
+    if (cardRef.current && !prefersReducedMotion) {
+      gsap.fromTo(
+        cardRef.current,
+        { opacity: 0, x: 20 },
+        { opacity: 1, x: 0, duration: 0.3, ease: 'power2.inOut' }
+      );
+    }
+  }, [activeIndex, prefersReducedMotion]);
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    if (bgCard1Ref.current) {
+      bgCard1Ref.current.style.transform = isHovering
+        ? 'translate3d(8px, 8px, 0)'
+        : 'translate3d(4px, 4px, 0)';
+    }
+
+    if (bgCard2Ref.current) {
+      bgCard2Ref.current.style.transform = isHovering
+        ? 'translate3d(4px, 4px, 0)'
+        : 'translate3d(2px, 2px, 0)';
+    }
+  }, [isHovering, prefersReducedMotion]);
+
+  const handleButtonHover = (el: HTMLButtonElement, isEnter: boolean) => {
+    if (prefersReducedMotion) return;
+    gsap.to(el, {
+      x: isEnter ? 4 : 0,
+      duration: 0.2,
+    });
+  };
+
   return (
-    <section id="experience" className="bg-gray-50 px-4 py-20 dark:bg-gray-900/30">
-      <div className="mx-auto max-w-6xl">
-        <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          transition={
-            prefersReducedMotion ? { duration: 0.01 } : { ...springConfigs.gentle, delay: 0.1 }
-          }
-        >
-          <motion.h2
-            className="text-outer-space dark:text-apricot mb-16 text-center text-4xl font-bold md:text-5xl"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
-            transition={
-              prefersReducedMotion ? { duration: 0.01 } : { ...springConfigs.bouncy, delay: 0.2 }
-            }
-          >
-            工作經驗
-          </motion.h2>
-
-          {/* 工作經驗 - 幾何藝術時間線 */}
-          <div className="mb-16">
-            <motion.h3
-              className="text-outer-space dark:text-fawn mb-12 text-center text-2xl font-bold"
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={
-                prefersReducedMotion ? { duration: 0.01 } : { ...springConfigs.gentle, delay: 0.3 }
-              }
+    <section id="experience" className="relative overflow-hidden px-4 py-24 md:py-32">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute top-0 bottom-0 left-0 w-12 opacity-[0.03] md:w-16 dark:opacity-[0.05]">
+          {Array.from({ length: 20 }).map((_, i) => (
+            <div
+              key={i}
+              className="text-outer-space dark:text-apricot h-6 pr-2 text-right font-mono text-xs"
             >
-              專業經驗軌跡
-            </motion.h3>
+              {i + 1}
+            </div>
+          ))}
+        </div>
+      </div>
 
-            <div className="relative mx-auto max-w-5xl px-4 md:px-8">
-              {/* 主要時間軸 - 桌面版垂直居中，手機版左側 */}
-              <motion.div
-                className="from-sandy-brown via-fawn to-sandy-brown absolute top-0 left-[34px] w-1 rounded-full bg-gradient-to-b shadow-lg md:left-1/2 md:-translate-x-1/2 md:transform"
-                initial={{ height: 0, opacity: 0 }}
-                animate={isInView ? { height: '100%', opacity: 1 } : { height: 0, opacity: 0 }}
-                transition={
-                  prefersReducedMotion
-                    ? { duration: 0.01 }
-                    : {
-                        height: { duration: 1.2, delay: 0.4, ease: [0.43, 0.13, 0.23, 0.96] },
-                        opacity: { duration: 0.3, delay: 0.4 },
-                      }
-                }
-                style={{ willChange: 'height, opacity' }}
+      <div className="relative mx-auto max-w-6xl">
+        <div ref={ref} style={{ opacity: 0 }}>
+          <div className="mb-16 text-center md:mb-20">
+            <GradientTitle className="text-4xl font-bold md:text-5xl lg:text-6xl">
+              工作經驗
+            </GradientTitle>
+          </div>
+
+          <div className="grid gap-8 lg:grid-cols-[280px_1fr] lg:gap-12 xl:grid-cols-[320px_1fr]">
+            <div ref={leftColumnRef} className="relative" style={{ opacity: 0 }}>
+              <div className="from-sandy-brown/20 via-fawn/40 to-sandy-brown/20 dark:from-fawn/20 dark:via-apricot/40 dark:to-fawn/20 absolute top-4 bottom-4 left-[11px] w-0.5 bg-gradient-to-b md:left-[13px]" />
+
+              <div
+                ref={progressRef}
+                className="from-sandy-brown to-fawn dark:from-fawn dark:to-apricot absolute left-[11px] w-0.5 bg-gradient-to-b md:left-[13px]"
+                style={{ top: 16, height: 0 }}
               />
 
-              {/* 背景幾何裝飾 - 手機版隱藏 */}
-              <div className="pointer-events-none absolute inset-0 hidden overflow-hidden opacity-30 md:block">
-                {/* 圓環裝飾 */}
-                <div className="border-sandy-brown/30 absolute top-32 left-8 h-16 w-16 rounded-full border" />
-                <div className="border-fawn/30 absolute top-64 right-12 h-12 w-12 rounded-full border" />
-                <div className="border-sandy-brown/20 absolute bottom-32 left-16 h-20 w-20 rounded-full border" />
+              <div className="space-y-4">
+                {timelineEvents.map((event, index) => {
+                  const isActive = index === activeIndex;
+                  const isPast = index < activeIndex;
 
-                {/* 方形裝飾 */}
-                <div className="border-fawn/40 absolute top-96 right-8 h-8 w-8 rotate-45 transform border" />
-                <div className="bg-sandy-brown/20 absolute right-20 bottom-64 h-6 w-6 rotate-45 transform" />
-              </div>
-
-              {timelineEvents.map((event, index) => {
-                const isLeft = index % 2 === 0;
-                const colorSchemes = [
-                  {
-                    bg: 'bg-emerald-400',
-                    text: 'text-emerald-700',
-                    border: 'border-emerald-200',
-                    bgLight: 'bg-emerald-50',
-                    bgDark: 'bg-emerald-900/30',
-                    textDark: 'text-emerald-300',
-                  },
-                  {
-                    bg: 'bg-orange-400',
-                    text: 'text-orange-700',
-                    border: 'border-orange-200',
-                    bgLight: 'bg-orange-50',
-                    bgDark: 'bg-orange-900/30',
-                    textDark: 'text-orange-300',
-                  },
-                  {
-                    bg: 'bg-purple-400',
-                    text: 'text-purple-700',
-                    border: 'border-purple-200',
-                    bgLight: 'bg-purple-50',
-                    bgDark: 'bg-purple-900/30',
-                    textDark: 'text-purple-300',
-                  },
-                  {
-                    bg: 'bg-blue-400',
-                    text: 'text-blue-700',
-                    border: 'border-blue-200',
-                    bgLight: 'bg-blue-50',
-                    bgDark: 'bg-blue-900/30',
-                    textDark: 'text-blue-300',
-                  },
-                ];
-                const colorScheme = colorSchemes[index % colorSchemes.length];
-
-                return (
-                  <motion.div
-                    key={index}
-                    className="relative mb-16 md:mb-20"
-                    initial={{ opacity: 0, y: 60 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 60 }}
-                    transition={
-                      prefersReducedMotion
-                        ? { duration: 0.01 }
-                        : {
-                            ...springConfigs.gentle,
-                            delay: 0.6 + index * 0.15,
-                          }
-                    }
-                  >
-                    {/* 時間節點 - 手機版左側對齊，桌面版居中 */}
-                    <motion.div
-                      className="absolute top-8 left-5 z-20 -translate-x-1/2 transform md:left-1/2"
-                      initial={{ scale: 0, rotate: -180 }}
-                      animate={isInView ? { scale: 1, rotate: 0 } : { scale: 0, rotate: -180 }}
-                      transition={
-                        prefersReducedMotion
-                          ? { duration: 0.01 }
-                          : {
-                              ...springConfigs.bouncy,
-                              delay: 0.7 + index * 0.15,
-                            }
-                      }
-                      whileHover={
-                        prefersReducedMotion
-                          ? {}
-                          : {
-                              scale: 1.1,
-                              transition: springConfigs.instant,
-                            }
-                      }
-                      style={{ willChange: 'transform' }}
+                  return (
+                    <button
+                      key={index}
+                      onClick={() => setActiveIndex(index)}
+                      onMouseEnter={e => handleButtonHover(e.currentTarget, true)}
+                      onMouseLeave={e => handleButtonHover(e.currentTarget, false)}
+                      className={`group relative flex w-full items-center gap-4 rounded-xl py-3 pr-4 pl-10 text-left transition-all duration-300 md:gap-5 md:py-4 md:pr-5 md:pl-12 ${
+                        isActive
+                          ? 'bg-sandy-brown/10 dark:bg-fawn/10'
+                          : 'hover:bg-outer-space/5 dark:hover:bg-apricot/5'
+                      }`}
                     >
-                      {/* 外層圓形 */}
                       <div
-                        className={`relative h-10 w-10 md:h-12 md:w-12 ${colorScheme.bg} rounded-full border-3 border-white shadow-xl md:border-4 dark:border-gray-800`}
+                        className={`absolute top-1/2 left-0 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full border-2 transition-all duration-300 md:h-7 md:w-7 ${getTimelineDotClassName(
+                          isActive,
+                          isPast
+                        )}`}
                       >
-                        {/* 內層圓點 */}
-                        <div className="absolute inset-2 flex items-center justify-center rounded-full bg-white md:inset-3 dark:bg-gray-800">
-                          <div
-                            className={`h-1.5 w-1.5 md:h-2 md:w-2 ${colorScheme.bg} rounded-full`}
-                          />
-                        </div>
+                        {(isActive || isPast) && (
+                          <div className="dark:bg-outer-space h-1.5 w-1.5 rounded-full bg-white md:h-2 md:w-2" />
+                        )}
                       </div>
 
-                      {/* 時間標籤 - 手機版調整位置 */}
-                      <div
-                        className={`absolute -top-8 left-1/2 -translate-x-1/2 transform md:-top-10 ${colorScheme.bg} rounded-full px-2 py-1 text-xs font-bold whitespace-nowrap text-white shadow-lg md:px-3`}
-                      >
-                        {event.period}
-                      </div>
-                    </motion.div>
-
-                    {/* 連接線 - 手機版簡化，桌面版雙向 */}
-                    <motion.div
-                      className={`absolute top-13 h-0.5 md:top-14 md:h-1 ${
-                        colorScheme.bg
-                      } ${'left-10'} ${isLeft ? 'md:left-[45%]' : 'md:left-1/2'}`}
-                      initial={{ width: 0, opacity: 0 }}
-                      animate={isInView ? { width: '3rem', opacity: 1 } : { width: 0, opacity: 0 }}
-                      transition={
-                        prefersReducedMotion
-                          ? { duration: 0.01 }
-                          : {
-                              width: { duration: 0.4, delay: 0.85 + index * 0.15 },
-                              opacity: { duration: 0.2, delay: 0.85 + index * 0.15 },
-                            }
-                      }
-                      style={{ willChange: 'width, opacity' }}
-                    />
-
-                    {/* 內容卡片 - 手機版統一左對齊，桌面版左右交替 */}
-                    <motion.div
-                      className={`pl-16 md:pl-0 ${
-                        isLeft ? 'md:mr-auto' : 'md:mr-0 md:ml-auto'
-                      } max-w-sm md:max-w-md`}
-                      initial={{ opacity: 0, x: isLeft ? -30 : 30 }}
-                      animate={
-                        isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: isLeft ? -30 : 30 }
-                      }
-                      transition={
-                        prefersReducedMotion
-                          ? { duration: 0.01 }
-                          : {
-                              ...springConfigs.gentle,
-                              delay: 0.9 + index * 0.15,
-                            }
-                      }
-                      whileHover={
-                        prefersReducedMotion
-                          ? {}
-                          : {
-                              scale: 1.03,
-                              y: -5,
-                              transition: springConfigs.instant,
-                            }
-                      }
-                      style={{ willChange: 'transform' }}
-                    >
-                      {/* 卡片主體 */}
-                      <div className="relative w-full overflow-hidden rounded-2xl border border-gray-100 bg-white p-4 shadow-xl md:p-6 dark:border-gray-700 dark:bg-gray-800/90">
-                        {/* 頂部色彩條 */}
-                        <div className={`absolute top-0 right-0 left-0 h-1 ${colorScheme.bg}`} />
-
-                        {/* 角落裝飾 - 手機版固定右上角 */}
+                      <div className="min-w-0 flex-1">
                         <div
-                          className={`absolute top-3 right-3 md:top-4 md:right-4 ${
-                            // 桌面版根據位置調整
-                            `md:${isLeft ? 'right-4' : 'left-4'}`
-                          } h-2 w-2 md:h-3 md:w-3 ${colorScheme.bg} rounded-full opacity-60`}
-                        />
-
-                        <div className="relative z-10">
-                          {/* 專案標題 - 手機版左對齊 */}
-                          <h4
-                            className={`text-outer-space dark:text-apricot mb-2 text-left text-lg font-bold md:text-xl ${
-                              // 桌面版根據位置調整
-                              `md:${isLeft ? 'text-left' : 'text-right'}`
-                            }`}
-                          >
-                            {event.title}
-                          </h4>
-
-                          {/* 專案描述 - 手機版左對齊 */}
-                          <p
-                            className={`text-outer-space/70 dark:text-apricot/70 mb-4 text-left text-sm leading-relaxed ${
-                              // 桌面版根據位置調整
-                              `md:${isLeft ? 'text-left' : 'text-right'}`
-                            }`}
-                          >
-                            {event.description}
-                          </p>
-
-                          {/* 成就列表 - 手機版左對齊 */}
-                          <div className="mb-4">
-                            <h5
-                              className={`text-outer-space dark:text-apricot mb-3 flex items-center justify-start text-sm font-semibold ${
-                                // 桌面版根據位置調整
-                                `md:${isLeft ? 'justify-start' : 'justify-end'}`
-                              }`}
-                            >
-                              <span className="mr-2 md:mr-2">🎯</span>
-                              <span className={`md:${isLeft ? 'block' : 'hidden'}`}>核心成就</span>
-                              <span className={`hidden md:${isLeft ? 'hidden' : 'block'} md:ml-2`}>
-                                核心成就
-                              </span>
-                            </h5>
-                            <div className="space-y-2">
-                              {event.achievements.map((achievement, idx) => (
-                                <motion.div
-                                  key={idx}
-                                  className={`flex items-start ${
-                                    // 桌面版根據位置調整
-                                    `md:${isLeft ? '' : 'flex-row-reverse'}`
-                                  }`}
-                                  initial={{ opacity: 0, x: -20 }}
-                                  animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-                                  transition={{
-                                    delay: index * 0.2 + idx * 0.1 + 1,
-                                  }}
-                                >
-                                  <div
-                                    className={`h-1.5 w-1.5 flex-shrink-0 ${
-                                      colorScheme.bg
-                                    } mt-2 mr-3 rounded-full ${
-                                      // 桌面版根據位置調整
-                                      `md:${isLeft ? 'mr-3' : 'ml-3'}`
-                                    }`}
-                                  />
-                                  <p
-                                    className={`text-outer-space/70 dark:text-apricot/70 text-left text-xs leading-relaxed ${
-                                      // 桌面版根據位置調整
-                                      `md:${isLeft ? 'text-left' : 'text-right'}`
-                                    }`}
-                                  >
-                                    {achievement}
-                                  </p>
-                                </motion.div>
-                              ))}
-                            </div>
-                          </div>
-
-                          {/* 技術標籤 - 手機版左對齊 */}
-                          <div
-                            className={`flex flex-wrap justify-start gap-2 ${
-                              // 桌面版根據位置調整
-                              `md:${isLeft ? 'justify-start' : 'justify-end'}`
-                            }`}
-                          >
-                            {event.technologies.map((tech, techIndex) => (
-                              <motion.span
-                                key={tech}
-                                className={`rounded-full px-2 py-1 text-xs font-medium md:px-3 ${colorScheme.bgLight} ${colorScheme.text} ${colorScheme.border} border dark:${colorScheme.bgDark} dark:${colorScheme.textDark}`}
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                animate={
-                                  isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }
-                                }
-                                transition={{
-                                  delay: index * 0.2 + techIndex * 0.05 + 1.2,
-                                }}
-                                whileHover={{ scale: 1.05, y: -1 }}
-                              >
-                                {tech}
-                              </motion.span>
-                            ))}
-                          </div>
+                          className={`font-mono text-xs transition-colors duration-300 ${
+                            isActive
+                              ? 'text-sandy-brown dark:text-fawn'
+                              : 'text-outer-space/40 dark:text-apricot/40'
+                          }`}
+                        >
+                          {event.period}
+                        </div>
+                        <div
+                          className={`mt-1 text-sm leading-snug font-medium transition-colors duration-300 md:text-base ${
+                            isActive
+                              ? 'text-outer-space dark:text-apricot'
+                              : 'text-outer-space/60 dark:text-apricot/60'
+                          }`}
+                        >
+                          {event.title}
                         </div>
                       </div>
 
-                      {/* 卡片投影 */}
-                      <div className="absolute inset-0 -z-10 translate-x-1 translate-y-1 transform rounded-2xl bg-gray-200/20 dark:bg-gray-600/20" />
-                    </motion.div>
-                  </motion.div>
-                );
-              })}
+                      <div
+                        className={`ml-2 flex-shrink-0 transition-all duration-300 ${
+                          isActive
+                            ? 'translate-x-1 opacity-100'
+                            : 'opacity-0 group-hover:opacity-50'
+                        }`}
+                      >
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          className="text-sandy-brown dark:text-fawn"
+                        >
+                          <polyline points="9 18 15 12 9 6" />
+                        </svg>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
 
-              {/* 時間軸結束裝飾 */}
-              <motion.div
-                className="absolute bottom-0 left-9 flex -translate-x-1/2 transform items-center justify-center md:left-1/2"
-                initial={{ opacity: 0, scale: 0 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
-                transition={{ delay: 1.5, duration: 0.6 }}
-              >
-                <div className="from-sandy-brown to-fawn relative h-6 w-6 rounded-full border-2 border-white bg-gradient-to-br shadow-lg md:h-8 md:w-8 dark:border-gray-800">
-                  <div className="absolute inset-1 rounded-full bg-white md:inset-2 dark:bg-gray-800" />
+            <div
+              ref={rightColumnRef}
+              className="relative"
+              style={{ opacity: 0 }}
+              onMouseEnter={() => setIsHovering(true)}
+              onMouseLeave={() => setIsHovering(false)}
+            >
+              <div className="relative">
+                <div
+                  ref={bgCard1Ref}
+                  className="border-sandy-brown/10 bg-sandy-brown/5 dark:border-fawn/10 dark:bg-fawn/5 absolute -right-2 -bottom-2 h-full w-full rounded-2xl border transition-transform duration-300 will-change-transform"
+                  style={{ transform: 'translate3d(4px, 4px, 0)' }}
+                />
+                <div
+                  ref={bgCard2Ref}
+                  className="border-fawn/10 bg-fawn/5 dark:border-apricot/10 dark:bg-apricot/5 absolute -right-1 -bottom-1 h-full w-full rounded-2xl border transition-transform duration-300 will-change-transform"
+                  style={{ transform: 'translate3d(2px, 2px, 0)' }}
+                />
+
+                <div
+                  ref={cardRef}
+                  key={activeIndex}
+                  className="border-outer-space/10 dark:border-apricot/10 dark:bg-outer-space/95 relative overflow-hidden rounded-2xl border bg-white/95 shadow-lg backdrop-blur-sm"
+                >
+                  <div className="border-outer-space/5 bg-outer-space/[0.02] dark:border-apricot/5 dark:bg-apricot/[0.02] flex items-center gap-2 border-b px-4 py-3">
+                    <div className="flex gap-1.5">
+                      <div className="h-3 w-3 rounded-full bg-[#ff5f57]" />
+                      <div className="h-3 w-3 rounded-full bg-[#febc2e]" />
+                      <div className="h-3 w-3 rounded-full bg-[#28c840]" />
+                    </div>
+                    <div className="text-outer-space/40 dark:text-apricot/40 flex-1 text-center font-mono text-xs">
+                      experience_{activeIndex + 1}.tsx
+                    </div>
+                  </div>
+
+                  <div className="p-6 md:p-8">
+                    <div className="mb-6">
+                      <div className="bg-sandy-brown/10 text-sandy-brown dark:bg-fawn/10 dark:text-fawn mb-2 inline-block rounded-full px-3 py-1 font-mono text-xs">
+                        {activeEvent.period}
+                      </div>
+                      <h3 className="text-outer-space dark:text-apricot text-xl font-bold md:text-2xl">
+                        {activeEvent.title}
+                      </h3>
+                      <p className="text-outer-space/70 dark:text-apricot/70 mt-3 leading-relaxed">
+                        {activeEvent.description}
+                      </p>
+                    </div>
+
+                    <div className="mb-6">
+                      <div className="mb-3 flex items-center gap-2">
+                        <div className="bg-sandy-brown dark:bg-fawn h-4 w-1 rounded-full" />
+                        <span className="text-outer-space dark:text-apricot text-sm font-semibold">
+                          技術棧
+                        </span>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {activeEvent.technologies.map((tech, idx) => (
+                          <span
+                            key={tech}
+                            className="border-outer-space/10 bg-outer-space/[0.03] text-outer-space/80 hover:border-sandy-brown/30 hover:bg-sandy-brown/5 dark:border-apricot/10 dark:bg-apricot/[0.03] dark:text-apricot/80 dark:hover:border-fawn/30 dark:hover:bg-fawn/5 rounded-lg border px-3 py-1.5 font-mono text-xs transition-all hover:-translate-y-0.5"
+                            style={{
+                              animationDelay: `${idx * 0.03}s`,
+                            }}
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="mb-3 flex items-center gap-2">
+                        <div className="bg-fawn dark:bg-apricot h-4 w-1 rounded-full" />
+                        <span className="text-outer-space dark:text-apricot text-sm font-semibold">
+                          核心成就
+                        </span>
+                      </div>
+                      <ul className="space-y-3">
+                        {activeEvent.achievements.map((achievement, idx) => (
+                          <li key={idx} className="flex items-start gap-3">
+                            <span className="bg-sandy-brown dark:bg-fawn mt-2 flex h-1.5 w-1.5 flex-shrink-0 rounded-full" />
+                            <span className="text-outer-space/70 dark:text-apricot/70 text-sm leading-relaxed">
+                              {achievement}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="border-outer-space/5 dark:border-apricot/5 flex items-center justify-between border-t px-6 py-4">
+                    <button
+                      onClick={() => setActiveIndex(Math.max(0, activeIndex - 1))}
+                      disabled={activeIndex === 0}
+                      className="text-outer-space/50 hover:text-sandy-brown dark:text-apricot/50 dark:hover:text-fawn flex items-center gap-2 text-sm transition-colors disabled:opacity-30"
+                    >
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <polyline points="15 18 9 12 15 6" />
+                      </svg>
+                      上一個
+                    </button>
+                    <div className="flex gap-1.5">
+                      {timelineEvents.map((_, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => setActiveIndex(idx)}
+                          className={`h-1.5 rounded-full transition-all duration-300 ${
+                            idx === activeIndex
+                              ? 'bg-sandy-brown dark:bg-fawn w-6'
+                              : 'bg-outer-space/20 hover:bg-sandy-brown/50 dark:bg-apricot/20 dark:hover:bg-fawn/50 w-1.5'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    <button
+                      onClick={() =>
+                        setActiveIndex(Math.min(timelineEvents.length - 1, activeIndex + 1))
+                      }
+                      disabled={activeIndex === timelineEvents.length - 1}
+                      className="text-outer-space/50 hover:text-sandy-brown dark:text-apricot/50 dark:hover:text-fawn flex items-center gap-2 text-sm transition-colors disabled:opacity-30"
+                    >
+                      下一個
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <polyline points="9 18 15 12 9 6" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
-              </motion.div>
+              </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

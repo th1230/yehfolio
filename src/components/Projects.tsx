@@ -1,14 +1,23 @@
 'use client';
 
-import { motion, useInView, AnimatePresence } from 'framer-motion';
-import { useRef, useState, useEffect } from 'react';
+import gsap from 'gsap';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { FiExternalLink, FiGithub, FiX, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+
+import { useInView } from '@/utils/animations';
 
 import type { Project } from '@/types';
 
 export default function Projects() {
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const filterRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLElement | null)[]>([]);
+  const modalOverlayRef = useRef<HTMLDivElement>(null);
+  const modalContentRef = useRef<HTMLDivElement>(null);
+
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -100,8 +109,7 @@ export default function Projects() {
         '以課程為導向的才藝媒合平台，實作即時聊天、課程預約與 Google 登入功能，提升教學自由度與學習多樣性',
       detailedDescription: `才藝媒合平台聚焦於音樂、藝術、舞蹈等多元才藝領域，強調課程自由度與內容多樣性，讓老師可彈性設計課程、學生能依興趣媒合合適內容。本平台參考語言學習平台設計，並強化課程彈性與自由度，提升整體學習體驗。
       
-      前端採用 Angular 並整合 Tailwind CSS，後端以 Node.js + Express 搭配 MongoDB 實作。支援 Google OAuth + JWT 驗證機制、ECPay 金流串接與 WebSocket 即時聊天功能，並透過 Fullcalendar 呈現課程排程。API 文件由 Swagger 自動產出，完整涵蓋從登入、媒合、預約到支付的整體流程。
-      `,
+      前端採用 Angular 並整合 Tailwind CSS，後端以 Node.js + Express 搭配 MongoDB 實作。支援 Google OAuth + JWT 驗證機制、ECPay 金流串接與 WebSocket 即時聊天功能，並透過 Fullcalendar 呈現課程排程。API 文件由 Swagger 自動產出，完整涵蓋從登入、媒合、預約到支付的整體流程。`,
       technologies: [
         'Angular',
         'Node.js',
@@ -206,7 +214,7 @@ export default function Projects() {
       title: '客製化 GPT 平台',
       description: '基於 Nuxt.js 開發的 GPT 對話平台，支援 SSE 串接與對話分享功能',
       detailedDescription: `客戶希望能方便使用其自行 fine-tune 的 AI 模型，因此建立一個具備對話、儲存、分享功能的平台。我以 ChatGPT 為參考規劃版面，實作對話輸入框、逐字輸出、自動滾動與響應式設計。應客戶需求加入對話分享與評論功能，簡化操作流程。
-    
+      
     前端採 Nuxt.js + Vue 開發，與後端協作串接 OpenAI API，使用 SSE 流式傳輸處理逐字顯示。實作對話歷史記錄管理與狀態控制，讓使用者能查詢與回顧過往對話，整體聚焦於前端互動流程的建構與 UX 細節處理。`,
       technologies: ['Nuxt.js', 'Vue.js', 'SSE', 'OpenAI API'],
       category: '實務專案',
@@ -272,7 +280,7 @@ export default function Projects() {
       title: '日系風電商平台',
       description: '日系電商平台，採用 Nuxt 3 SSR 架構，整合 Orval 自動生成型別安全 API Client',
       detailedDescription: `採用 Nuxt 3 框架開發的現代化電商平台，提供完整的前後台系統。前台使用 Vue 3 Composition API 搭配 TypeScript 開發，透過 Orval 自動從 OpenAPI Specification 生成型別安全的 API Client，實現 28+ 個端點的自動化整合。架構設計採用 Composables 模式管理狀態（useAuth、useCart、useFavorites、useOrders 等），確保跨元件狀態共享與 SSR/CSR 一致性。
-  
+      
   後台管理系統涵蓋商品管理（商品資訊、款式、庫存）、分類管理、品牌管理、訂單管理、優惠券管理、輪播圖管理、評論管理等模組。整合 Google OAuth 2.0 第三方登入，並實作 API 快取機制（useApiCache）減少重複請求。SEO 優化方面設定完整的 Meta Tag、Schema.org 結構化資料、useSeoMeta 動態生成等。開發流程導入 ESLint、Prettier、Husky、Commitlint 確保程式碼品質，並使用 Docker Compose 進行容器化部署。`,
       technologies: [
         'Nuxt 3',
@@ -333,6 +341,80 @@ export default function Projects() {
       ? projects
       : projects.filter(project => project.category === selectedCategory);
 
+  useEffect(() => {
+    if (!isInView || !containerRef.current) return;
+
+    gsap.fromTo(
+      containerRef.current,
+      { opacity: 0, y: 50 },
+      { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }
+    );
+  }, [isInView]);
+
+  useEffect(() => {
+    if (!isInView || !filterRef.current) return;
+
+    gsap.fromTo(
+      filterRef.current,
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.6, delay: 0.2, ease: 'power3.out' }
+    );
+  }, [isInView]);
+
+  useEffect(() => {
+    if (!isInView) return;
+
+    cardRefs.current.forEach((card, index) => {
+      if (card) {
+        gsap.fromTo(
+          card,
+          { opacity: 0, y: 50 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            delay: Math.min(0.05 * index, 0.3),
+            ease: 'power3.out',
+          }
+        );
+      }
+    });
+  }, [isInView, selectedCategory]);
+
+  useEffect(() => {
+    if (selectedProject) {
+      gsap.fromTo(
+        modalOverlayRef.current,
+        { opacity: 0 },
+        { opacity: 1, duration: 0.2, ease: 'power2.out' }
+      );
+      gsap.fromTo(
+        modalContentRef.current,
+        { opacity: 0, scale: 0.95, y: 20 },
+        { opacity: 1, scale: 1, y: 0, duration: 0.3, delay: 0.1, ease: 'back.out(1.5)' }
+      );
+    }
+  }, [selectedProject]);
+
+  const handleCardHover = useCallback((card: HTMLElement, isEnter: boolean) => {
+    gsap.to(card, {
+      y: isEnter ? -4 : 0,
+      boxShadow: isEnter
+        ? '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+        : '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+      duration: 0.3,
+      ease: 'power2.out',
+    });
+  }, []);
+
+  const handleFilterHover = useCallback((btn: HTMLButtonElement, isEnter: boolean) => {
+    gsap.to(btn, {
+      y: isEnter ? -2 : 0,
+      duration: 0.2,
+      ease: 'power2.out',
+    });
+  }, []);
+
   const nextImage = () => {
     if (selectedProject?.images && selectedProject.images.length > 0) {
       const images = selectedProject.images;
@@ -353,13 +435,25 @@ export default function Projects() {
     document.body.style.overflow = 'hidden';
   };
 
-  const closeModal = () => {
-    setSelectedProject(null);
-    setCurrentImageIndex(0);
-    document.body.style.overflow = 'unset';
-  };
+  const closeModal = useCallback(() => {
+    gsap.to(modalContentRef.current, {
+      opacity: 0,
+      scale: 0.95,
+      y: 20,
+      duration: 0.2,
+      ease: 'power2.in',
+    });
+    gsap.to(modalOverlayRef.current, {
+      opacity: 0,
+      duration: 0.2,
+      onComplete: () => {
+        setSelectedProject(null);
+        setCurrentImageIndex(0);
+        document.body.style.overflow = 'unset';
+      },
+    });
+  }, []);
 
-  // 鍵盤支援
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (!selectedProject) return;
 
@@ -377,401 +471,381 @@ export default function Projects() {
   return (
     <section id="projects" className="bg-gray-50 px-4 py-20 dark:bg-gray-900/30">
       <div className="mx-auto max-w-7xl">
-        <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-        >
-          <h2 className="text-outer-space dark:text-apricot mb-8 text-center text-4xl font-bold md:text-5xl">
-            精選作品
-          </h2>
-          <p className="text-outer-space/80 dark:text-apricot/80 mx-auto mb-12 max-w-2xl text-center text-xl">
-            探索我的開發專案，從商業系統到創新應用，每個專案都體現了技術深度與實務經驗
-          </p>
+        <div ref={ref}>
+          <div ref={containerRef} style={{ opacity: 0 }}>
+            <h2 className="text-outer-space dark:text-apricot mb-8 text-center text-4xl font-bold md:text-5xl">
+              精選作品
+            </h2>
+            <p className="text-outer-space/80 dark:text-apricot/80 mx-auto mb-12 max-w-2xl text-center text-xl">
+              探索我的開發專案，從商業系統到創新應用，每個專案都體現了技術深度與實務經驗
+            </p>
 
-          {/* 分類篩選 */}
-          <motion.div
-            className="mb-12 flex flex-wrap justify-center gap-4"
-            role="group"
-            aria-label="專案分類篩選"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
-          >
-            {categories.map(category => (
-              <motion.button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`cursor-pointer rounded-full border-2 px-6 py-2 transition-all duration-300 ${
-                  selectedCategory === category
-                    ? 'border-sandy-brown bg-sandy-brown text-white'
-                    : 'border-outer-space/20 dark:border-apricot/20 text-outer-space dark:text-apricot hover:border-sandy-brown hover:text-sandy-brown'
-                }`}
-                aria-pressed={selectedCategory === category}
-                aria-label={`篩選 ${category} 專案`}
-                whileHover={{ y: -2 }}
-                whileTap={{ y: 0 }}
-              >
-                {category}
-              </motion.button>
-            ))}
-          </motion.div>
+            <div
+              ref={filterRef}
+              className="mb-12 flex flex-wrap justify-center gap-4"
+              role="group"
+              aria-label="專案分類篩選"
+              style={{ opacity: 0 }}
+            >
+              {categories.map(category => (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`cursor-pointer rounded-full border-2 px-6 py-2 transition-all duration-300 ${
+                    selectedCategory === category
+                      ? 'border-sandy-brown bg-sandy-brown text-white'
+                      : 'border-outer-space/20 text-outer-space hover:border-sandy-brown hover:text-sandy-brown dark:border-apricot/20 dark:text-apricot'
+                  }`}
+                  aria-pressed={selectedCategory === category}
+                  aria-label={`篩選 ${category} 專案`}
+                  onMouseEnter={e => handleFilterHover(e.currentTarget, true)}
+                  onMouseLeave={e => handleFilterHover(e.currentTarget, false)}
+                  onMouseDown={e => gsap.to(e.currentTarget, { y: 0, duration: 0.1 })}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
 
-          {/* 專案網格 */}
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {filteredProjects.map((project, index) => (
-              <motion.article
-                key={project.id}
-                className="cursor-pointer overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl dark:border-gray-700 dark:bg-gray-800/50"
-                initial={{ opacity: 0, y: 50 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-                transition={{
-                  duration: 0.5,
-                  delay: Math.min(0.05 * index, 0.3),
-                  ease: 'easeOut',
-                }}
-                onClick={() => openModal(project)}
-                role="button"
-                tabIndex={0}
-                aria-label={`查看 ${project.title} 專案詳情`}
-                onKeyDown={e => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    openModal(project);
-                  }
-                }}
-              >
-                <div className="from-sandy-brown/10 to-fawn/10 relative flex h-48 items-center justify-center overflow-hidden bg-gradient-to-br">
-                  {project.images && project.images.length > 0 ? (
-                    <>
-                      <img
-                        src={project.images[0]}
-                        alt={`${project.title} 預覽`}
-                        className="h-full w-full object-cover opacity-80"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                      <div className="absolute right-2 bottom-2">
-                        <span className="rounded bg-black/50 px-2 py-1 text-xs text-white">
-                          {project.images.length} 張圖片
+            <div ref={gridRef} className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {filteredProjects.map((project, index) => (
+                <article
+                  key={project.id}
+                  ref={el => {
+                    cardRefs.current[index] = el;
+                  }}
+                  className="cursor-pointer overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg transition-all duration-200 dark:border-gray-700 dark:bg-gray-800/50"
+                  style={{ opacity: 0 }}
+                  onClick={() => openModal(project)}
+                  onMouseEnter={e => handleCardHover(e.currentTarget, true)}
+                  onMouseLeave={e => handleCardHover(e.currentTarget, false)}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`查看 ${project.title} 專案詳情`}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      openModal(project);
+                    }
+                  }}
+                >
+                  <div className="from-sandy-brown/10 to-fawn/10 relative flex h-48 items-center justify-center overflow-hidden bg-gradient-to-br">
+                    {project.images && project.images.length > 0 ? (
+                      <>
+                        <img
+                          src={project.images[0]}
+                          alt={`${project.title} 預覽`}
+                          className="h-full w-full object-cover opacity-80"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                        <div className="absolute right-2 bottom-2">
+                          <span className="rounded bg-black/50 px-2 py-1 text-xs text-white">
+                            {project.images.length} 張圖片
+                          </span>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="text-center">
+                        <div className="bg-sandy-brown/20 mx-auto mb-2 flex h-16 w-16 items-center justify-center rounded-full">
+                          <span className="text-sandy-brown text-2xl font-bold">
+                            {project.title.charAt(0)}
+                          </span>
+                        </div>
+                        <span className="text-outer-space/60 dark:text-apricot/60 text-sm">
+                          {project.category}
                         </span>
                       </div>
-                    </>
-                  ) : (
-                    <div className="text-center">
-                      <div className="bg-sandy-brown/20 mx-auto mb-2 flex h-16 w-16 items-center justify-center rounded-full">
-                        <span className="text-sandy-brown text-2xl font-bold">
-                          {project.title.charAt(0)}
-                        </span>
-                      </div>
-                      <span className="text-outer-space/60 dark:text-apricot/60 text-sm">
-                        {project.category}
-                      </span>
-                    </div>
-                  )}
-                </div>
-
-                <div className="p-6">
-                  <h3 className="text-outer-space dark:text-apricot mb-3 text-xl font-bold">
-                    {project.title}
-                  </h3>
-                  <p className="text-outer-space/80 dark:text-apricot/80 mb-4 text-sm leading-relaxed">
-                    {project.description}
-                  </p>
-
-                  <div className="mb-4 flex flex-wrap gap-2">
-                    {project.technologies.slice(0, 3).map(tech => (
-                      <span
-                        key={tech}
-                        className="bg-sandy-brown/10 text-sandy-brown rounded-full px-2 py-1 text-xs"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                    {project.technologies.length > 3 && (
-                      <span className="text-outer-space/60 dark:text-apricot/60 rounded-full bg-gray-100 px-2 py-1 text-xs dark:bg-gray-700">
-                        +{project.technologies.length - 3}
-                      </span>
                     )}
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <span className="text-outer-space/60 dark:text-apricot/60 text-sm">
-                      {project.duration}
-                    </span>
-                    <span className="text-sandy-brown text-sm font-medium">點擊查看詳情 →</span>
+                  <div className="p-6">
+                    <h3 className="text-outer-space dark:text-apricot mb-3 text-xl font-bold">
+                      {project.title}
+                    </h3>
+                    <p className="text-outer-space/80 dark:text-apricot/80 mb-4 text-sm leading-relaxed">
+                      {project.description}
+                    </p>
+
+                    <div className="mb-4 flex flex-wrap gap-2">
+                      {project.technologies.slice(0, 3).map(tech => (
+                        <span
+                          key={tech}
+                          className="bg-sandy-brown/10 text-sandy-brown rounded-full px-2 py-1 text-xs"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                      {project.technologies.length > 3 && (
+                        <span className="text-outer-space/60 dark:text-apricot/60 rounded-full bg-gray-100 px-2 py-1 text-xs dark:bg-gray-700">
+                          +{project.technologies.length - 3}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <span className="text-outer-space/60 dark:text-apricot/60 text-sm">
+                        {project.duration}
+                      </span>
+                      <span className="text-sandy-brown text-sm font-medium">點擊查看詳情 →</span>
+                    </div>
                   </div>
-                </div>
-              </motion.article>
-            ))}
+                </article>
+              ))}
+            </div>
           </div>
-        </motion.div>
+        </div>
       </div>
 
-      {/* 專案詳情彈窗 */}
       {mounted &&
         createPortal(
-          <AnimatePresence>
-            {selectedProject && (
-              <motion.div
-                className="fixed inset-0 z-50 flex items-center justify-center p-4"
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="modal-title"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                onKeyDown={handleKeyDown}
-                onClick={e => {
-                  if (e.target === e.currentTarget) closeModal();
-                }}
-              >
-                {/* Backdrop */}
-                <div className="absolute inset-0 bg-black/50" />
+          selectedProject && (
+            <div
+              ref={modalOverlayRef}
+              className="fixed inset-0 z-50 flex items-center justify-center p-4"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="modal-title"
+              style={{ opacity: 0 }}
+              onKeyDown={handleKeyDown}
+              onClick={e => {
+                if (e.target === e.currentTarget) closeModal();
+              }}
+            >
+              <div className="absolute inset-0 bg-black/50" />
 
-                {/* Modal Content */}
-                <motion.div
-                  className="relative max-h-[90vh] w-full max-w-4xl overflow-hidden rounded-xl bg-white shadow-2xl dark:bg-gray-800"
-                  initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                  transition={{ duration: 0.2, ease: 'easeOut' }}
-                  style={{ willChange: 'transform, opacity' }}
+              <div
+                ref={modalContentRef}
+                className="relative max-h-[90vh] w-full max-w-4xl overflow-hidden rounded-xl bg-white shadow-2xl dark:bg-gray-800"
+                style={{ opacity: 0, willChange: 'transform, opacity' }}
+              >
+                <div className="sticky top-0 z-10 flex items-center justify-between border-b border-gray-200 bg-white px-6 py-4 dark:border-gray-700 dark:bg-gray-800">
+                  <h2
+                    id="modal-title"
+                    className="text-outer-space dark:text-apricot text-2xl font-bold"
+                  >
+                    {selectedProject.title}
+                  </h2>
+                  <button
+                    onClick={closeModal}
+                    className="cursor-pointer rounded-full p-2 transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
+                    aria-label="關閉專案詳情"
+                  >
+                    <FiX className="text-outer-space dark:text-apricot h-6 w-6" />
+                  </button>
+                </div>
+
+                <div
+                  className="scrollable-content max-h-[calc(90vh-80px)] overflow-y-auto px-6 py-6"
+                  style={{ willChange: 'transform' }}
                 >
-                  <div className="sticky top-0 z-10 flex items-center justify-between border-b border-gray-200 bg-white px-6 py-4 dark:border-gray-700 dark:bg-gray-800">
-                    <h2
-                      id="modal-title"
-                      className="text-outer-space dark:text-apricot text-2xl font-bold"
-                    >
-                      {selectedProject.title}
-                    </h2>
-                    <button
-                      onClick={closeModal}
-                      className="cursor-pointer rounded-full p-2 transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
-                      aria-label="關閉專案詳情"
-                    >
-                      <FiX className="text-outer-space dark:text-apricot h-6 w-6" />
-                    </button>
+                  {selectedProject.images && selectedProject.images.length > 0 && (
+                    <div className="relative mb-[84px]">
+                      <div className="aspect-video overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-700">
+                        <img
+                          src={selectedProject.images[currentImageIndex]}
+                          alt={`${selectedProject.title} - 圖片 ${currentImageIndex + 1}`}
+                          className="h-full w-full object-contain"
+                          loading="eager"
+                        />
+                      </div>
+
+                      {selectedProject.images.length > 1 && (
+                        <>
+                          <button
+                            onClick={prevImage}
+                            className="absolute top-1/2 left-2 -translate-y-1/2 transform cursor-pointer rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
+                            aria-label="上一張圖片"
+                          >
+                            <FiChevronLeft className="h-6 w-6" />
+                          </button>
+                          <button
+                            onClick={nextImage}
+                            className="absolute top-1/2 right-2 -translate-y-1/2 transform cursor-pointer rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
+                            aria-label="下一張圖片"
+                          >
+                            <FiChevronRight className="h-6 w-6" />
+                          </button>
+
+                          <div className="absolute right-0 -bottom-[60px] left-0">
+                            <div className="mt-4 flex justify-center space-x-2">
+                              {selectedProject.images.map((_, index) => (
+                                <button
+                                  key={index}
+                                  onClick={() => setCurrentImageIndex(index)}
+                                  className={`h-3 w-3 cursor-pointer rounded-full transition-colors ${
+                                    index === currentImageIndex
+                                      ? 'bg-sandy-brown'
+                                      : 'bg-gray-300 dark:bg-gray-600'
+                                  }`}
+                                  aria-label={`切換到第 ${index + 1} 張圖片`}
+                                  aria-current={index === currentImageIndex}
+                                />
+                              ))}
+                            </div>
+                            <div className="mt-2 text-center">
+                              <span className="text-outer-space/60 dark:text-apricot/60 text-sm">
+                                {currentImageIndex + 1} / {selectedProject.images.length}
+                              </span>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  )}
+
+                  <div className="mb-6 grid gap-6 md:grid-cols-2">
+                    <div>
+                      <h3 className="text-outer-space dark:text-apricot mb-2 text-lg font-semibold">
+                        專案概述
+                      </h3>
+                      <p className="text-outer-space/80 dark:text-apricot/80 mb-4 whitespace-pre-line">
+                        {selectedProject.detailedDescription}
+                      </p>
+
+                      <div className="space-y-2">
+                        <div className="flex">
+                          <span className="text-outer-space dark:text-apricot w-20 font-medium">
+                            類型：
+                          </span>
+                          <span className="text-outer-space/80 dark:text-apricot/80">
+                            {selectedProject.category}
+                          </span>
+                        </div>
+                        <div className="flex">
+                          <span className="text-outer-space dark:text-apricot w-20 font-medium">
+                            期間：
+                          </span>
+                          <span className="text-outer-space/80 dark:text-apricot/80">
+                            {selectedProject.duration}
+                          </span>
+                        </div>
+                        <div className="flex">
+                          <span className="text-outer-space dark:text-apricot w-20 font-medium">
+                            角色：
+                          </span>
+                          <span className="text-outer-space/80 dark:text-apricot/80">
+                            {selectedProject.role}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h3 className="text-outer-space dark:text-apricot mb-2 text-lg font-semibold">
+                        使用技術
+                      </h3>
+                      <div className="mb-4 flex flex-wrap gap-2">
+                        {selectedProject.technologies.map(tech => (
+                          <span
+                            key={tech}
+                            className="bg-sandy-brown/10 text-sandy-brown rounded-full px-3 py-1 text-sm"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+
+                      <h3 className="text-outer-space dark:text-apricot mb-2 text-lg font-semibold">
+                        主要功能
+                      </h3>
+                      <ul className="space-y-1">
+                        {selectedProject.features.map((feature, index) => (
+                          <li
+                            key={index}
+                            className="text-outer-space/80 dark:text-apricot/80 text-sm"
+                          >
+                            • {feature}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
 
-                  <div
-                    className="scrollable-content max-h-[calc(90vh-80px)] overflow-y-auto px-6 py-6"
-                    style={{ willChange: 'transform' }}
-                  >
-                    {/* 圖片輪播區域 */}
-                    {selectedProject.images && selectedProject.images.length > 0 && (
-                      <div className="relative mb-[84px]">
-                        <div className="aspect-video overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-700">
-                          <img
-                            src={selectedProject.images[currentImageIndex]}
-                            alt={`${selectedProject.title} - 圖片 ${currentImageIndex + 1}`}
-                            className="h-full w-full object-contain"
-                            loading="eager"
-                          />
-                        </div>
+                  <div className="mb-6 grid gap-6 md:grid-cols-2">
+                    <div>
+                      <h3 className="text-outer-space dark:text-apricot mb-2 text-lg font-semibold">
+                        主要成就
+                      </h3>
+                      <ul className="space-y-2">
+                        {selectedProject.achievements.map((achievement, index) => (
+                          <li
+                            key={index}
+                            className="text-outer-space/80 dark:text-apricot/80 flex items-start text-sm"
+                          >
+                            <span className="mr-2 text-green-500">✓</span>
+                            {achievement}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
 
-                        {selectedProject.images.length > 1 && (
-                          <>
-                            <button
-                              onClick={prevImage}
-                              className="absolute top-1/2 left-2 -translate-y-1/2 transform cursor-pointer rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
-                              aria-label="上一張圖片"
-                            >
-                              <FiChevronLeft className="h-6 w-6" />
-                            </button>
-                            <button
-                              onClick={nextImage}
-                              className="absolute top-1/2 right-2 -translate-y-1/2 transform cursor-pointer rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
-                              aria-label="下一張圖片"
-                            >
-                              <FiChevronRight className="h-6 w-6" />
-                            </button>
+                    <div>
+                      <h3 className="text-outer-space dark:text-apricot mb-2 text-lg font-semibold">
+                        技術挑戰
+                      </h3>
+                      <ul className="space-y-2">
+                        {selectedProject.challenges.map((challenge, index) => (
+                          <li
+                            key={index}
+                            className="text-outer-space/80 dark:text-apricot/80 flex items-start text-sm"
+                          >
+                            <span className="text-sandy-brown mr-2">⚡</span>
+                            {challenge}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
 
-                            <div className="absolute right-0 -bottom-[60px] left-0">
-                              <div className="mt-4 flex justify-center space-x-2">
-                                {selectedProject.images.map((_, index) => (
-                                  <button
-                                    key={index}
-                                    onClick={() => setCurrentImageIndex(index)}
-                                    className={`h-3 w-3 cursor-pointer rounded-full transition-colors ${
-                                      index === currentImageIndex
-                                        ? 'bg-sandy-brown'
-                                        : 'bg-gray-300 dark:bg-gray-600'
-                                    }`}
-                                    aria-label={`切換到第 ${index + 1} 張圖片`}
-                                    aria-current={index === currentImageIndex}
-                                  />
-                                ))}
-                              </div>
-                              <div className="mt-2 text-center">
-                                <span className="text-outer-space/60 dark:text-apricot/60 text-sm">
-                                  {currentImageIndex + 1} /{selectedProject.images.length}
-                                </span>
-                              </div>
-                            </div>
-                          </>
-                        )}
+                  <div className="flex flex-wrap gap-4 border-t border-gray-200 pt-4 dark:border-gray-700">
+                    {selectedProject.liveUrl ? (
+                      <a
+                        href={selectedProject.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-sandy-brown hover:bg-sandy-brown/90 flex items-center space-x-2 rounded-lg px-4 py-2 text-white transition-colors"
+                      >
+                        <FiExternalLink className="h-4 w-4" />
+                        <span>查看網站</span>
+                      </a>
+                    ) : (
+                      <div className="flex items-center space-x-2 rounded-lg bg-gray-100 px-4 py-2 dark:bg-gray-700">
+                        <FiExternalLink className="h-4 w-4 text-gray-400" />
+                        <span className="text-outer-space/60 dark:text-apricot/60 text-sm">
+                          內部系統無法公開訪問
+                        </span>
                       </div>
                     )}
 
-                    {/* 專案基本資訊 */}
-                    <div className="mb-6 grid gap-6 md:grid-cols-2">
-                      <div>
-                        <h3 className="text-outer-space dark:text-apricot mb-2 text-lg font-semibold">
-                          專案概述
-                        </h3>
-                        <p className="text-outer-space/80 dark:text-apricot/80 mb-4 whitespace-pre-line">
-                          {selectedProject.detailedDescription}
-                        </p>
-
-                        <div className="space-y-2">
-                          <div className="flex">
-                            <span className="text-outer-space dark:text-apricot w-20 font-medium">
-                              類型：
-                            </span>
-                            <span className="text-outer-space/80 dark:text-apricot/80">
-                              {selectedProject.category}
-                            </span>
-                          </div>
-                          <div className="flex">
-                            <span className="text-outer-space dark:text-apricot w-20 font-medium">
-                              期間：
-                            </span>
-                            <span className="text-outer-space/80 dark:text-apricot/80">
-                              {selectedProject.duration}
-                            </span>
-                          </div>
-                          <div className="flex">
-                            <span className="text-outer-space dark:text-apricot w-20 font-medium">
-                              角色：
-                            </span>
-                            <span className="text-outer-space/80 dark:text-apricot/80">
-                              {selectedProject.role}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div>
-                        <h3 className="text-outer-space dark:text-apricot mb-2 text-lg font-semibold">
-                          使用技術
-                        </h3>
-                        <div className="mb-4 flex flex-wrap gap-2">
-                          {selectedProject.technologies.map(tech => (
-                            <span
-                              key={tech}
-                              className="bg-sandy-brown/10 text-sandy-brown rounded-full px-3 py-1 text-sm"
-                            >
-                              {tech}
-                            </span>
-                          ))}
-                        </div>
-
-                        <h3 className="text-outer-space dark:text-apricot mb-2 text-lg font-semibold">
-                          主要功能
-                        </h3>
-                        <ul className="space-y-1">
-                          {selectedProject.features.map((feature, index) => (
-                            <li
-                              key={index}
-                              className="text-outer-space/80 dark:text-apricot/80 text-sm"
-                            >
-                              • {feature}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-
-                    {/* 成就與挑戰 */}
-                    <div className="mb-6 grid gap-6 md:grid-cols-2">
-                      <div>
-                        <h3 className="text-outer-space dark:text-apricot mb-2 text-lg font-semibold">
-                          主要成就
-                        </h3>
-                        <ul className="space-y-2">
-                          {selectedProject.achievements.map((achievement, index) => (
-                            <li
-                              key={index}
-                              className="text-outer-space/80 dark:text-apricot/80 flex items-start text-sm"
-                            >
-                              <span className="mr-2 text-green-500">✓</span>
-                              {achievement}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div>
-                        <h3 className="text-outer-space dark:text-apricot mb-2 text-lg font-semibold">
-                          技術挑戰
-                        </h3>
-                        <ul className="space-y-2">
-                          {selectedProject.challenges.map((challenge, index) => (
-                            <li
-                              key={index}
-                              className="text-outer-space/80 dark:text-apricot/80 flex items-start text-sm"
-                            >
-                              <span className="text-sandy-brown mr-2">⚡</span>
-                              {challenge}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-
-                    {/* 連結區域 */}
-                    <div className="flex flex-wrap gap-4 border-t border-gray-200 pt-4 dark:border-gray-700">
-                      {selectedProject.liveUrl ? (
-                        <a
-                          href={selectedProject.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="bg-sandy-brown hover:bg-sandy-brown/90 flex items-center space-x-2 rounded-lg px-4 py-2 text-white transition-colors"
-                        >
-                          <FiExternalLink className="h-4 w-4" />
-                          <span>查看網站</span>
-                        </a>
-                      ) : (
-                        <div className="flex items-center space-x-2 rounded-lg bg-gray-100 px-4 py-2 dark:bg-gray-700">
-                          <FiExternalLink className="h-4 w-4 text-gray-400" />
-                          <span className="text-outer-space/60 dark:text-apricot/60 text-sm">
-                            內部系統無法公開訪問
-                          </span>
-                        </div>
-                      )}
-
-                      {selectedProject.githubUrl ? (
-                        <a
-                          href={selectedProject.githubUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-outer-space dark:text-apricot flex items-center space-x-2 rounded-lg border border-gray-300 px-4 py-2 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700"
-                        >
-                          <FiGithub className="h-4 w-4" />
-                          <span>查看程式碼</span>
-                        </a>
-                      ) : (
-                        <div className="flex items-center space-x-2 rounded-lg bg-gray-100 px-4 py-2 dark:bg-gray-700">
-                          <FiGithub className="h-4 w-4 text-gray-400" />
-                          <span className="text-outer-space/60 dark:text-apricot/60 text-sm">
-                            商業專案代碼不公開
-                          </span>
-                        </div>
-                      )}
-
-                      <div className="flex items-center space-x-2 rounded-lg bg-blue-50 px-4 py-2 dark:bg-blue-900/20">
-                        <span className="text-sm text-blue-600 dark:text-blue-400">
-                          💡 如需了解更多技術細節，歡迎聯絡討論
+                    {selectedProject.githubUrl ? (
+                      <a
+                        href={selectedProject.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-outer-space dark:text-apricot flex items-center space-x-2 rounded-lg border border-gray-300 px-4 py-2 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700"
+                      >
+                        <FiGithub className="h-4 w-4" />
+                        <span>查看程式碼</span>
+                      </a>
+                    ) : (
+                      <div className="flex items-center space-x-2 rounded-lg bg-gray-100 px-4 py-2 dark:bg-gray-700">
+                        <FiGithub className="h-4 w-4 text-gray-400" />
+                        <span className="text-outer-space/60 dark:text-apricot/60 text-sm">
+                          商業專案代碼不公開
                         </span>
                       </div>
+                    )}
+
+                    <div className="flex items-center space-x-2 rounded-lg bg-blue-50 px-4 py-2 dark:bg-blue-900/20">
+                      <span className="text-sm text-blue-600 dark:text-blue-400">
+                        💡 如需了解更多技術細節，歡迎聯絡討論
+                      </span>
                     </div>
                   </div>
-                </motion.div>
-              </motion.div>
-            )}
-          </AnimatePresence>,
+                </div>
+              </div>
+            </div>
+          ),
           document.body
         )}
     </section>

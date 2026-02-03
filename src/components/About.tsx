@@ -1,417 +1,381 @@
 'use client';
 
-import { motion, useInView, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import gsap from 'gsap';
+import { useRef, useEffect, useState } from 'react';
 
-import { springConfigs, useReducedMotion } from '@/utils/animations';
+import { springConfigs, useReducedMotion, useInView, useScrollProgress } from '@/utils/animations';
+
+import GradientTitle from './GradientTitle';
+
+interface HighlightTextProps {
+  children: string;
+}
+
+function HighlightText({ children }: HighlightTextProps) {
+  const textRef = useRef<HTMLSpanElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (!textRef.current || prefersReducedMotion) return;
+
+    gsap.to(textRef.current, {
+      backgroundSize: isHovered ? '100% 100%' : '0% 100%',
+      color: isHovered ? '#fff' : '',
+      scale: isHovered ? 1.05 : 1,
+      y: isHovered ? -2 : 0,
+      duration: 0.3,
+      ease: 'back.out(1.5)',
+    });
+  }, [isHovered, prefersReducedMotion]);
+
+  return (
+    <span
+      ref={textRef}
+      className="text-fawn relative inline-block cursor-pointer px-1 font-semibold transition-colors"
+      style={{
+        background: 'linear-gradient(90deg, #f5ac72 0%, #f8bd7f 100%)',
+        backgroundSize: '0% 100%',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'left center',
+        borderRadius: '4px',
+        padding: '0 6px',
+      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {children}
+    </span>
+  );
+}
+
+function ElegantDecoration() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useReducedMotion();
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const orbsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    if (!containerRef.current || prefersReducedMotion) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = containerRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      setMousePos({
+        x: (e.clientX - rect.left - rect.width / 2) / rect.width,
+        y: (e.clientY - rect.top - rect.height / 2) / rect.height,
+      });
+    };
+
+    const container = containerRef.current;
+    container.addEventListener('mousemove', handleMouseMove);
+    return () => container.removeEventListener('mousemove', handleMouseMove);
+  }, [prefersReducedMotion]);
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    orbsRef.current.forEach((orb, index) => {
+      if (!orb) return;
+      const depth = (index + 1) * 15;
+      gsap.to(orb, {
+        x: mousePos.x * depth,
+        y: mousePos.y * depth,
+        duration: 0.8,
+        ease: 'power2.out',
+      });
+    });
+  }, [mousePos, prefersReducedMotion]);
+
+  const techLabels = ['React', 'Vue', 'Angular', 'TypeScript'];
+  const positions = [
+    { top: '10%', left: '15%' },
+    { top: '15%', right: '10%' },
+    { bottom: '20%', left: '10%' },
+    { bottom: '10%', right: '15%' },
+  ];
+
+  return (
+    <div ref={containerRef} className="relative flex h-80 w-full items-center justify-center">
+      <div className="relative h-56 w-56">
+        <div
+          ref={el => {
+            orbsRef.current[0] = el;
+          }}
+          className="border-apricot/30 dark:border-apricot/20 absolute inset-0 rounded-full border-2 border-dashed"
+          style={{
+            animation: prefersReducedMotion ? 'none' : 'spin 30s linear infinite',
+          }}
+        />
+
+        <div
+          ref={el => {
+            orbsRef.current[1] = el;
+          }}
+          className="border-fawn/25 dark:border-fawn/15 absolute inset-4 rounded-full border"
+          style={{
+            animation: prefersReducedMotion ? 'none' : 'spin 25s linear infinite reverse',
+          }}
+        />
+
+        <div
+          ref={el => {
+            orbsRef.current[2] = el;
+          }}
+          className="from-apricot/10 via-fawn/5 dark:from-apricot/8 dark:via-fawn/3 absolute inset-10 rounded-full bg-gradient-to-br to-transparent"
+          style={{
+            animation: prefersReducedMotion ? 'none' : 'breathe 4s ease-in-out infinite',
+          }}
+        />
+
+        <div
+          ref={el => {
+            orbsRef.current[3] = el;
+          }}
+          className="from-sandy-brown/60 via-apricot/40 to-fawn/30 dark:from-sandy-brown/40 dark:via-apricot/25 dark:to-fawn/15 absolute top-1/2 left-1/2 h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br"
+          style={{
+            animation: prefersReducedMotion ? 'none' : 'pulse-glow 3s ease-in-out infinite',
+          }}
+        />
+
+        {[0, 90, 180, 270].map((angle, i) => (
+          <div
+            key={i}
+            className="bg-apricot/70 dark:bg-apricot/50 absolute top-1/2 left-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full"
+            style={{
+              transform: `rotate(${angle}deg) translateX(112px)`,
+              animation: prefersReducedMotion ? 'none' : `orbit 20s linear infinite`,
+              animationDelay: `${i * -5}s`,
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="pointer-events-none absolute inset-0">
+        {techLabels.map((tech, i) => (
+          <span
+            key={tech}
+            className="text-outer-space/40 dark:text-apricot/30 hover:text-sandy-brown dark:hover:text-fawn pointer-events-auto absolute cursor-default text-sm font-medium transition-all duration-500"
+            style={{
+              ...positions[i],
+              animation: prefersReducedMotion
+                ? 'none'
+                : `float ${3 + i * 0.5}s ease-in-out infinite`,
+              animationDelay: `${i * 0.3}s`,
+            }}
+          >
+            {tech}
+          </span>
+        ))}
+      </div>
+
+      <style jsx>{`
+        @keyframes spin {
+          to {
+            transform: rotate(360deg);
+          }
+        }
+        @keyframes breathe {
+          0%,
+          100% {
+            transform: scale(1);
+            opacity: 0.6;
+          }
+          50% {
+            transform: scale(1.1);
+            opacity: 0.9;
+          }
+        }
+        @keyframes pulse-glow {
+          0%,
+          100% {
+            transform: translate(-50%, -50%) scale(1);
+            box-shadow: 0 0 20px rgba(245, 172, 114, 0.3);
+          }
+          50% {
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow: 0 0 40px rgba(245, 172, 114, 0.5);
+          }
+        }
+        @keyframes orbit {
+          to {
+            transform: rotate(calc(var(--start-angle, 0deg) + 360deg)) translateX(112px);
+          }
+        }
+        @keyframes float {
+          0%,
+          100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-8px);
+          }
+        }
+      `}</style>
+    </div>
+  );
+}
 
 export default function About() {
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const prefersReducedMotion = useReducedMotion();
 
-  // 視差滾動效果
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start end', 'end start'],
-  });
+  const titleLineRef = useRef<HTMLDivElement>(null);
+  const leftContentRef = useRef<HTMLDivElement>(null);
+  const rightContentRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const paragraphRefs = useRef<(HTMLParagraphElement | null)[]>([]);
 
-  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
-  const _opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
+  const scrollProgress = useScrollProgress(containerRef);
+
+  useEffect(() => {
+    if (prefersReducedMotion || !rightContentRef.current) return;
+    const y = 50 - scrollProgress * 100;
+    gsap.set(rightContentRef.current, { y });
+  }, [scrollProgress, prefersReducedMotion]);
+
+  useEffect(() => {
+    if (!isInView) return;
+    const duration = prefersReducedMotion ? 0.01 : springConfigs.gentle.duration;
+    const ease = prefersReducedMotion ? 'none' : springConfigs.gentle.ease;
+
+    if (ref.current) {
+      gsap.fromTo(
+        ref.current,
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration, ease, delay: 0.1 }
+      );
+    }
+
+    if (titleLineRef.current) {
+      gsap.fromTo(
+        titleLineRef.current,
+        { scaleX: 0, opacity: 0 },
+        {
+          scaleX: 1,
+          opacity: 1,
+          duration: prefersReducedMotion ? 0.01 : 0.8,
+          delay: 0.4,
+          ease: 'power3.out',
+        }
+      );
+    }
+
+    if (leftContentRef.current) {
+      gsap.fromTo(
+        leftContentRef.current,
+        { opacity: 0, x: -40, filter: 'blur(10px)' },
+        { opacity: 1, x: 0, filter: 'blur(0px)', duration, ease, delay: 0.3 }
+      );
+    }
+
+    if (rightContentRef.current) {
+      gsap.fromTo(
+        rightContentRef.current,
+        { opacity: 0, x: 40, filter: 'blur(10px)' },
+        { opacity: 1, x: 0, filter: 'blur(0px)', duration, ease, delay: 0.4 }
+      );
+    }
+
+    if (titleRef.current) {
+      gsap.fromTo(
+        titleRef.current,
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration, ease: springConfigs.snappy.ease, delay: 0.4 }
+      );
+    }
+
+    paragraphRefs.current.forEach((p, i) => {
+      if (p) {
+        gsap.fromTo(
+          p,
+          { opacity: 0, y: 20, filter: 'blur(5px)' },
+          { opacity: 1, y: 0, filter: 'blur(0px)', duration, ease, delay: 0.5 + i * 0.15 }
+        );
+      }
+    });
+  }, [isInView, prefersReducedMotion]);
+
+  const handleTitleHover = (isEnter: boolean) => {
+    if (!titleRef.current || prefersReducedMotion) return;
+
+    gsap.to(titleRef.current, {
+      scale: isEnter ? 1.02 : 1,
+      color: isEnter ? '#f5ac72' : '',
+      duration: 0.3,
+      ease: 'back.out(2)',
+    });
+  };
 
   return (
     <section id="about" ref={containerRef} className="bg-gray-50 px-4 py-20 dark:bg-gray-900/30">
       <div className="mx-auto max-w-6xl">
-        <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          transition={
-            prefersReducedMotion ? { duration: 0.01 } : { ...springConfigs.gentle, delay: 0.1 }
-          }
-        >
-          {' '}
-          <motion.h2
-            className="text-outer-space dark:text-apricot mb-16 text-center text-4xl font-bold md:text-5xl"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
-            transition={
-              prefersReducedMotion ? { duration: 0.01 } : { ...springConfigs.bouncy, delay: 0.2 }
-            }
-          >
-            關於我
-          </motion.h2>
-          <div className="grid items-center gap-12 md:grid-cols-2">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
-              transition={
-                prefersReducedMotion ? { duration: 0.01 } : { ...springConfigs.gentle, delay: 0.3 }
-              }
-            >
-              <motion.h3
-                className="text-outer-space dark:text-fawn mb-6 text-2xl font-bold"
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={
-                  prefersReducedMotion
-                    ? { duration: 0.01 }
-                    : { ...springConfigs.snappy, delay: 0.4 }
-                }
-              >
-                <motion.span
-                  initial={{ opacity: 0 }}
-                  animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-                  transition={
-                    prefersReducedMotion ? { duration: 0.01 } : { duration: 0.6, delay: 0.5 }
-                  }
-                  className="inline-block"
-                  whileHover={
-                    prefersReducedMotion
-                      ? {}
-                      : {
-                          scale: 1.05,
-                          color: '#f5ac72',
-                          transition: springConfigs.instant,
-                        }
-                  }
-                >
-                  前端工程師
-                </motion.span>
-              </motion.h3>
+        <div ref={ref} style={{ opacity: 0 }}>
+          <div className="mb-16 text-center">
+            <GradientTitle className="text-4xl font-bold md:text-5xl lg:text-6xl">
+              關於我
+            </GradientTitle>
+            <div
+              ref={titleLineRef}
+              className="via-sandy-brown mx-auto mt-4 h-1 w-32 origin-center rounded-full bg-gradient-to-r from-transparent to-transparent"
+              style={{ opacity: 0, transform: 'scaleX(0)' }}
+            />
+          </div>
 
-              <motion.p
+          <div className="grid items-center gap-12 md:grid-cols-2">
+            <div ref={leftContentRef} style={{ opacity: 0 }}>
+              <h3
+                ref={titleRef}
+                className="text-outer-space dark:text-fawn mb-6 inline-block cursor-pointer text-2xl font-bold transition-all"
+                style={{ opacity: 0 }}
+                onMouseEnter={() => handleTitleHover(true)}
+                onMouseLeave={() => handleTitleHover(false)}
+              >
+                前端工程師
+              </h3>
+
+              <p
+                ref={el => {
+                  paragraphRefs.current[0] = el;
+                }}
                 className="text-outer-space/80 dark:text-apricot/80 mb-6 text-lg leading-relaxed"
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={
-                  prefersReducedMotion
-                    ? { duration: 0.01 }
-                    : { ...springConfigs.gentle, delay: 0.5 }
-                }
+                style={{ opacity: 0 }}
               >
                 淡江大學畢業，具備
-                <motion.span
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-                  transition={
-                    prefersReducedMotion
-                      ? { duration: 0.01 }
-                      : { ...springConfigs.bouncy, delay: 0.7 }
-                  }
-                  className="text-fawn px-1 font-semibold"
-                  whileHover={
-                    prefersReducedMotion
-                      ? {}
-                      : {
-                          scale: 1.1,
-                          y: -2,
-                          transition: springConfigs.instant,
-                        }
-                  }
-                >
-                  Angular、Vue 與 React
-                </motion.span>
+                <HighlightText>Angular、Vue 與 React</HighlightText>
                 的完整專案開發經驗，曾參與多項功能實作與系統前端設計，能靈活運用主流框架解決問題。
-              </motion.p>
+              </p>
 
-              <motion.p
+              <p
+                ref={el => {
+                  paragraphRefs.current[1] = el;
+                }}
                 className="text-outer-space/80 dark:text-apricot/80 mb-6 text-lg leading-relaxed"
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={
-                  prefersReducedMotion
-                    ? { duration: 0.01 }
-                    : { ...springConfigs.gentle, delay: 0.6 }
-                }
+                style={{ opacity: 0 }}
               >
                 除了前端，也透過
-                <motion.span
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-                  transition={
-                    prefersReducedMotion
-                      ? { duration: 0.01 }
-                      : { ...springConfigs.snappy, delay: 0.8 }
-                  }
-                  className="text-fawn px-1 font-semibold"
-                  whileHover={
-                    prefersReducedMotion
-                      ? {}
-                      : {
-                          scale: 1.1,
-                          y: -2,
-                          transition: springConfigs.instant,
-                        }
-                  }
-                >
-                  side project
-                </motion.span>
+                <HighlightText>side project</HighlightText>
                 接觸後端開發，逐步理解資料處理與 API 設計，並強化對整體架構的理解。
-              </motion.p>
+              </p>
 
-              <motion.p
+              <p
+                ref={el => {
+                  paragraphRefs.current[2] = el;
+                }}
                 className="text-outer-space/80 dark:text-apricot/80 text-lg leading-relaxed"
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={
-                  prefersReducedMotion
-                    ? { duration: 0.01 }
-                    : { ...springConfigs.gentle, delay: 0.7 }
-                }
+                style={{ opacity: 0 }}
               >
                 開發過程中習慣邊做邊學，對技術更新會有基本的掌握，若遇到能解決問題的新工具，也會評估後嘗試導入。
-              </motion.p>
-            </motion.div>
+              </p>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
-              transition={
-                prefersReducedMotion ? { duration: 0.01 } : { ...springConfigs.gentle, delay: 0.4 }
-              }
-              style={{
-                y: prefersReducedMotion ? 0 : y,
-                perspective: 1000,
-              }}
-              className="relative flex h-96 items-center justify-center overflow-hidden"
-            >
-              {/* 脈動背景光暈 */}
-              <motion.div
-                animate={
-                  prefersReducedMotion
-                    ? {}
-                    : {
-                        scale: [1, 1.3, 1],
-                        opacity: [0.15, 0.35, 0.15],
-                      }
-                }
-                transition={{
-                  duration: 5,
-                  repeat: Infinity,
-                  ease: 'easeInOut',
-                }}
-                className="bg-gradient-radial from-apricot/20 via-fawn/10 dark:from-apricot/10 dark:via-fawn/5 absolute h-96 w-96 rounded-full to-transparent"
-                style={{ willChange: 'transform, opacity' }}
-              />
-
-              {/* 軌道環 */}
-              <motion.div
-                className="border-apricot/40 dark:border-apricot/20 absolute h-80 w-80 rounded-full border border-dashed"
-                animate={prefersReducedMotion ? {} : { rotate: 360 }}
-                transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
-              />
-              <motion.div
-                className="border-fawn/30 dark:border-fawn/15 absolute h-64 w-64 rounded-full border border-dotted"
-                animate={prefersReducedMotion ? {} : { rotate: -360 }}
-                transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-              />
-
-              {/* 主要幾何圖形 - 動態變形的多邊形 */}
-              <motion.div
-                animate={
-                  prefersReducedMotion
-                    ? {}
-                    : {
-                        rotate: 360,
-                        scale: [1, 1.15, 0.95, 1],
-                      }
-                }
-                transition={{
-                  rotate: { duration: 25, repeat: Infinity, ease: 'linear' },
-                  scale: { duration: 6, repeat: Infinity, ease: 'easeInOut' },
-                }}
-                className="absolute h-48 w-48"
-                style={{ willChange: 'transform' }}
-                whileHover={
-                  prefersReducedMotion
-                    ? {}
-                    : {
-                        scale: 1.1,
-                        rotateZ: 180,
-                        transition: springConfigs.bouncy,
-                      }
-                }
-              >
-                <motion.div
-                  animate={
-                    prefersReducedMotion
-                      ? {}
-                      : {
-                          clipPath: [
-                            'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
-                            'polygon(50% 10%, 90% 30%, 90% 70%, 50% 90%, 10% 70%, 10% 30%)',
-                            'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
-                          ],
-                        }
-                  }
-                  transition={{
-                    duration: 5,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}
-                  className="from-apricot/30 to-fawn/30 dark:from-apricot/15 dark:to-fawn/15 h-full w-full bg-gradient-to-br shadow-2xl backdrop-blur-sm"
-                  style={{ willChange: 'clip-path' }}
-                />
-              </motion.div>
-
-              {/* 內部螺旋三角形組 */}
-              <motion.div
-                animate={prefersReducedMotion ? {} : { rotate: -360 }}
-                transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
-                className="absolute h-32 w-32"
-                style={{ willChange: 'transform' }}
-              >
-                {[0, 120, 240].map((rotation, index) => (
-                  <motion.div
-                    key={index}
-                    animate={
-                      prefersReducedMotion
-                        ? {}
-                        : {
-                            rotate: rotation + 360,
-                            scale: [1, 1.3, 1],
-                          }
-                    }
-                    transition={{
-                      rotate: {
-                        duration: 12 + index * 2,
-                        repeat: Infinity,
-                        ease: 'linear',
-                      },
-                      scale: {
-                        duration: 2.5 + index * 0.5,
-                        repeat: Infinity,
-                        ease: 'easeInOut',
-                      },
-                    }}
-                    className="absolute top-12 left-12 h-8 w-8"
-                    style={{
-                      transformOrigin: '4px 4px',
-                      willChange: 'transform',
-                    }}
-                    whileHover={
-                      prefersReducedMotion
-                        ? {}
-                        : {
-                            scale: 1.5,
-                            transition: springConfigs.bouncy,
-                          }
-                    }
-                  >
-                    <div
-                      className={`h-full w-full ${(() => {
-                        if (index === 0) return 'bg-apricot/60';
-                        if (index === 1) return 'bg-fawn/60';
-                        return 'from-apricot/40 to-fawn/40 bg-gradient-to-br';
-                      })()} dark:opacity-60`}
-                      style={{
-                        clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
-                      }}
-                    />
-                  </motion.div>
-                ))}
-              </motion.div>
-
-              {/* 軌道運行的粒子 */}
-              <motion.div
-                animate={prefersReducedMotion ? {} : { rotate: 360 }}
-                transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
-                className="absolute h-72 w-72"
-                style={{ willChange: 'transform' }}
-              >
-                {[0, 60, 120, 180, 240, 300].map((angle, index) => (
-                  <motion.div
-                    key={index}
-                    animate={
-                      prefersReducedMotion
-                        ? {}
-                        : {
-                            scale: [0.6, 1.2, 0.6],
-                            opacity: [0.4, 1, 0.4],
-                          }
-                    }
-                    transition={{
-                      duration: 1.5 + index * 0.2,
-                      repeat: Infinity,
-                      ease: 'easeInOut',
-                      delay: index * 0.15,
-                    }}
-                    className="absolute h-3 w-3 rounded-full"
-                    style={{
-                      top: '50%',
-                      left: '50%',
-                      transformOrigin: '6px 6px',
-                      transform: `rotate(${angle}deg) translateX(144px) translateY(-6px)`,
-                      willChange: 'transform, opacity',
-                    }}
-                  >
-                    <div
-                      className={`h-full w-full rounded-full ${index % 2 === 0 ? 'bg-apricot' : 'bg-fawn'} shadow-lg dark:opacity-80`}
-                    />
-                  </motion.div>
-                ))}
-              </motion.div>
-
-              {/* 浮動的幾何裝飾 */}
-              <motion.div
-                animate={
-                  prefersReducedMotion
-                    ? {}
-                    : {
-                        y: [-12, 12, -12],
-                        rotate: [0, 180, 360],
-                      }
-                }
-                transition={{
-                  y: { duration: 5, repeat: Infinity, ease: 'easeInOut' },
-                  rotate: { duration: 15, repeat: Infinity, ease: 'linear' },
-                }}
-                className="bg-apricot/50 dark:bg-apricot/30 absolute top-8 right-8 h-6 w-6"
-                style={{
-                  clipPath: 'polygon(50% 0%, 0% 50%, 50% 100%, 100% 50%)',
-                  willChange: 'transform',
-                }}
-                whileHover={
-                  prefersReducedMotion
-                    ? {}
-                    : {
-                        scale: 1.4,
-                        rotate: 90,
-                        transition: springConfigs.bouncy,
-                      }
-                }
-              />
-
-              <motion.div
-                animate={
-                  prefersReducedMotion
-                    ? {}
-                    : {
-                        y: [12, -12, 12],
-                        x: [-6, 6, -6],
-                      }
-                }
-                transition={{
-                  duration: 7,
-                  repeat: Infinity,
-                  ease: 'easeInOut',
-                }}
-                className="bg-fawn/60 dark:bg-fawn/40 absolute bottom-12 left-12 h-4 w-4 rounded-full"
-                style={{ willChange: 'transform' }}
-                whileHover={
-                  prefersReducedMotion
-                    ? {}
-                    : {
-                        scale: 1.5,
-                        transition: springConfigs.bouncy,
-                      }
-                }
-              />
-            </motion.div>
+            <div ref={rightContentRef} style={{ opacity: 0 }} className="relative overflow-visible">
+              <ElegantDecoration />
+            </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

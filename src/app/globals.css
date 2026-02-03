@@ -1,5 +1,7 @@
 html {
   scroll-behavior: smooth;
+  --time-brightness: 0.5;
+  --current-hour: 12;
 }
 
 @import 'tailwindcss';
@@ -17,11 +19,28 @@ html {
   --font-mono: var(--font-geist-mono);
 }
 
+html:not(.dark) {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, #fef9f3 calc(var(--time-brightness) * 100%), #f8f4ef) 0%,
+    color-mix(in srgb, #fdfbf7 calc(var(--time-brightness) * 100%), #f5f1eb) 100%
+  );
+  transition: background 1s ease-out;
+}
+
+html.dark {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, #1a1f2e calc((1 - var(--time-brightness)) * 50%), #0f1219) 0%,
+    color-mix(in srgb, #141821 calc((1 - var(--time-brightness)) * 50%), #0a0d12) 100%
+  );
+  transition: background 1s ease-out;
+}
+
 body {
   overflow-x: hidden;
 }
 
-/* 禁用所有發光效果 */
 *,
 *::before,
 *::after {
@@ -29,7 +48,6 @@ body {
   text-shadow: none !important;
 }
 
-/* 自定義陰影效果，只使用柔和的陰影 */
 .shadow-lg {
   box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1) !important;
 }
@@ -38,13 +56,11 @@ body {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
 }
 
-/* 確保沒有放大效果的 hover 狀態 */
 button:hover,
 a:hover {
   transform: none !important;
 }
 
-/* 只為主題相關的屬性添加過渡效果，避免全局影響效能 */
 html {
   transition:
     color 0.2s ease,
@@ -57,12 +73,10 @@ body {
     background-color 0.2s ease;
 }
 
-/* 禁用預設的聚焦環 */
 *:focus {
   outline: none;
 }
 
-/* 自定義聚焦樣式 */
 button:focus-visible,
 input:focus-visible,
 textarea:focus-visible {
@@ -70,22 +84,14 @@ textarea:focus-visible {
   outline-offset: 2px;
 }
 
-/* ============================================
-   客製化 Scrollbar - 符合品牌風格
-   ============================================ */
-
-/* 專案彈窗滾動條樣式 */
 .scrollable-content {
-  /* 啟用硬體加速與平滑滾動 */
   -webkit-overflow-scrolling: touch;
   transform: translateZ(0);
   backface-visibility: hidden;
-  /* 優化滾動效能 */
   scroll-behavior: smooth;
   overscroll-behavior: contain;
 }
 
-/* Webkit 瀏覽器 (Chrome, Safari, Edge) */
 .scrollable-content::-webkit-scrollbar {
   width: 10px;
 }
@@ -112,7 +118,6 @@ textarea:focus-visible {
   background: #f5ac72;
 }
 
-/* Dark mode scrollbar */
 .dark .scrollable-content::-webkit-scrollbar-track {
   background: rgba(255, 255, 255, 0.05);
 }
@@ -131,7 +136,6 @@ textarea:focus-visible {
   background: #facfad;
 }
 
-/* Firefox 滾動條樣式 */
 .scrollable-content {
   scrollbar-width: thin;
   scrollbar-color: #f5ac72 rgba(0, 0, 0, 0.05);
@@ -141,11 +145,6 @@ textarea:focus-visible {
   scrollbar-color: #facfad rgba(255, 255, 255, 0.05);
 }
 
-/* ============================================
-   四季動畫背景系統 - 性能優化與視覺效果
-   ============================================ */
-
-/* Canvas 性能優化 */
 canvas {
   will-change: auto;
   transform: translateZ(0);
@@ -154,13 +153,11 @@ canvas {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* 季節切換按鈕動畫優化 */
 .seasonal-toggle-button {
   will-change: transform, opacity;
   transform: translateZ(0);
 }
 
-/* 確保主內容在動畫層之上 */
 main,
 header,
 nav,
@@ -170,11 +167,6 @@ section {
   z-index: 10;
 }
 
-/* ============================================
-   自訂動畫關鍵影格
-   ============================================ */
-
-/* 緩慢脈衝動畫 - 用於季節按鈕 */
 @keyframes pulse-slow {
   0%,
   100% {
@@ -189,7 +181,6 @@ section {
   animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* 緩慢彈跳動畫 - 用於選中指示器 */
 @keyframes bounce-slow {
   0%,
   100% {
@@ -204,7 +195,6 @@ section {
   animation: bounce-slow 2s ease-in-out infinite;
 }
 
-/* 淡入動畫 */
 @keyframes fade-in {
   from {
     opacity: 0;
@@ -220,7 +210,6 @@ section {
   animation: fade-in 0.6s ease-out;
 }
 
-/* 季節過渡動畫 */
 @keyframes season-transition {
   0% {
     opacity: 0;
@@ -236,7 +225,6 @@ section {
   animation: season-transition 1.5s ease-out;
 }
 
-/* 漂浮動畫 - 用於裝飾元素 */
 @keyframes float {
   0%,
   100% {
@@ -251,7 +239,6 @@ section {
   animation: float 3s ease-in-out infinite;
 }
 
-/* 旋轉光暈效果 */
 @keyframes rotate-hue {
   from {
     filter: hue-rotate(0deg);
@@ -265,19 +252,53 @@ section {
   animation: rotate-hue 10s linear infinite;
 }
 
-/* ============================================
-   響應式設計優化
-   ============================================ */
+@keyframes contact-float {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(12px, -18px) scale(1.05);
+  }
+  66% {
+    transform: translate(-8px, 10px) scale(0.97);
+  }
+}
 
-/* 小螢幕優化 */
+.animate-contact-float {
+  animation: contact-float 22s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes contact-gradient-shift {
+  0%,
+  100% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+}
+
+.animate-contact-gradient {
+  animation: contact-gradient-shift 5s ease-in-out infinite;
+}
+
+.contact-gradient-wash {
+  clip-path: circle(0% at 85% 10%);
+  transition: clip-path 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.group:hover .contact-gradient-wash {
+  clip-path: circle(150% at 85% 10%);
+}
+
 @media (max-width: 640px) {
   canvas {
-    /* 在小螢幕上降低粒子密度以提升性能 */
     image-rendering: optimizeSpeed;
   }
 }
 
-/* 減少動畫偏好設定的使用者 */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -292,42 +313,29 @@ section {
   }
 }
 
-/* 高對比度模式支援 */
 @media (prefers-contrast: high) {
   .seasonal-toggle-button {
     border: 2px solid currentColor;
   }
 }
 
-/* ============================================
-   可訪問性增強
-   ============================================ */
-
-/* 鍵盤導航焦點樣式 */
 button:focus-visible {
   outline: 3px solid var(--color-sandy-brown);
   outline-offset: 3px;
   box-shadow: 0 0 0 6px rgba(245, 172, 114, 0.2);
 }
 
-/* 高對比度文字 */
 .high-contrast-text {
   text-shadow:
     1px 1px 2px rgba(0, 0, 0, 0.8),
     -1px -1px 2px rgba(255, 255, 255, 0.3);
 }
 
-/* ============================================
-   效能提示
-   ============================================ */
-
-/* 為經常變化的元素添加 GPU 加速 */
 .gpu-accelerated {
   transform: translateZ(0);
   will-change: transform;
 }
 
-/* 避免重繪的優化 */
 .avoid-repaint {
   contain: layout style paint;
 }

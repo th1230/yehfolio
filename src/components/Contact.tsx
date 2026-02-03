@@ -1,434 +1,440 @@
 'use client';
 
-import { motion, useInView } from 'framer-motion';
-import { useRef, useMemo, useState, useEffect } from 'react';
-import { FaLinkedin, FaGithub } from 'react-icons/fa6';
+import gsap from 'gsap';
+import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
+import { useEffect, useRef, useState } from 'react';
 
-import type { ContactInfo } from '@/types';
+import { useInView } from '@/utils/animations';
 
-// 動畫配置常數
-const ANIMATION_CONFIG = {
-  ART_ELEMENTS_COUNT: 8,
-  PARTICLES_COUNT: 35,
-  ART_SIZE_MIN: 40,
-  ART_SIZE_RANGE: 60,
-  ART_DURATION_MIN: 6,
-  ART_DURATION_RANGE: 8,
-  ART_DELAY_RANGE: 4,
-  PARTICLE_SIZE_MIN: 2,
-  PARTICLE_SIZE_RANGE: 6,
-  PARTICLE_DURATION_MIN: 3,
-  PARTICLE_DURATION_RANGE: 8,
-  PARTICLE_DELAY_RANGE: 6,
-  PARTICLE_OPACITY_MIN: 0.2,
-  PARTICLE_OPACITY_RANGE: 0.8,
-  PARTICLE_MOVE_RANGE: 40,
-} as const;
+import GradientTitle from './GradientTitle';
 
-const ART_TYPES = ['morphing', 'spiral', 'wave', 'bloom'] as const;
-const ART_COLORS = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3'] as const;
-const PARTICLE_COLORS = [
-  '#ff6b6b',
-  '#4ecdc4',
-  '#45b7d1',
-  '#8b5cf6',
-  '#f59e0b',
-  '#ef4444',
-  '#10b981',
-] as const;
+gsap.registerPlugin(MotionPathPlugin);
 
-// 創建一個簡單的偽隨機數生成器，確保服務器端和客戶端一致
-function seededRandom(seed: number) {
-  const x = Math.sin(seed) * 10000;
-  return x - Math.floor(x);
+interface ContactItem {
+  id: string;
+  href: string;
+  color: string;
+  abstractPath: string;
+  concretePaths: string[];
+  label: string;
+  description: string;
 }
 
+const contactItems: ContactItem[] = [
+  {
+    id: 'email',
+    href: 'mailto:thomasyeayea@gmail.com',
+    color: '#f5ac72',
+    abstractPath: 'M 50 15 A 35 35 0 1 1 49.99 15 Z',
+    concretePaths: ['M 15 30 L 85 30 L 85 70 L 15 70 Z', 'M 15 30 L 50 52 L 85 30'],
+    label: 'Email',
+    description: 'thomasyeayea@gmail.com',
+  },
+  {
+    id: 'linkedin',
+    href: 'https://www.linkedin.com/in/jtunn-yue-yeh',
+    color: '#facfad',
+    abstractPath:
+      'M 28 20 L 72 20 Q 80 20 80 28 L 80 72 Q 80 80 72 80 L 28 80 Q 20 80 20 72 L 20 28 Q 20 20 28 20 Z',
+    concretePaths: [
+      'M 23 15 L 77 15 Q 85 15 85 23 L 85 77 Q 85 85 77 85 L 23 85 Q 15 85 15 77 L 15 23 Q 15 15 23 15 Z',
+      'M 32 28 A 4 4 0 1 1 31.99 28 Z',
+      'M 32 42 L 32 68',
+      'M 45 68 L 45 52 Q 45 42 58 42 Q 68 42 68 52 L 68 68',
+    ],
+    label: 'LinkedIn',
+    description: 'linkedin.com/in/jtunn-yue-yeh',
+  },
+  {
+    id: 'github',
+    href: 'https://github.com/th1230',
+    color: '#f8bd7f',
+    abstractPath: 'M 50 15 L 85 80 L 15 80 Z',
+    concretePaths: [
+      'M 50 8 C 28 8 10 26 10 48 C 10 66 21 81 37 86 Q 40 87 40 84 L 40 77 Q 28 80 25 72 Q 23 67 20 66 Q 16 63 20 63 Q 25 64 27 68 Q 32 75 41 71 Q 41.5 68 44 65 Q 34 64 24 46 Q 24 41 29 34 Q 28.5 33 30 22 Q 34 21 40 25 Q 44 24 52 23.5 Q 60 24 64 25 Q 70 21 74 22 Q 75.5 33 75 34 Q 80 41 80 46 Q 70 64 60 65 Q 64 70 64 75 L 64 84 Q 64 87 67 86 C 83 81 94 66 94 48 C 94 26 76 8 50 8 Z',
+    ],
+    label: 'GitHub',
+    description: 'github.com/th1230',
+  },
+];
+
 export default function Contact() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const titleLineRef = useRef<HTMLDivElement>(null);
+  const abstractPathRefs = useRef<Map<string, SVGPathElement>>(new Map());
+  const concreteGroupRefs = useRef<Map<string, SVGGElement>>(new Map());
+  const tracerRefs = useRef<Map<string, SVGCircleElement>>(new Map());
+  const containerRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+  const tracerTimelines = useRef<Map<string, gsap.core.Tween>>(new Map());
+
   const [isClient, setIsClient] = useState(false);
+  const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  // 預先生成藝術元素的位置和屬性
-  const artElements = useMemo(
-    () =>
-      Array.from({ length: ANIMATION_CONFIG.ART_ELEMENTS_COUNT }, (_, i) => ({
-        id: i,
-        left: seededRandom(i * 1.1) * 80 + 10,
-        top: seededRandom(i * 1.2) * 70 + 15,
-        size:
-          seededRandom(i * 1.3) * ANIMATION_CONFIG.ART_SIZE_RANGE + ANIMATION_CONFIG.ART_SIZE_MIN,
-        rotation: seededRandom(i * 1.4) * 360,
-        duration:
-          ANIMATION_CONFIG.ART_DURATION_MIN +
-          seededRandom(i * 1.5) * ANIMATION_CONFIG.ART_DURATION_RANGE,
-        delay: seededRandom(i * 1.6) * ANIMATION_CONFIG.ART_DELAY_RANGE,
-        type: ART_TYPES[Math.floor(seededRandom(i * 1.7) * ART_TYPES.length)],
-        color: ART_COLORS[Math.floor(seededRandom(i * 1.8) * ART_COLORS.length)],
-      })),
-    []
-  );
+  useEffect(() => {
+    if (!isInView || !isClient) return;
 
-  const particles = useMemo(
-    () =>
-      Array.from({ length: ANIMATION_CONFIG.PARTICLES_COUNT }, (_, i) => ({
-        id: i,
-        x: seededRandom(i * 2.1) * 100,
-        y: seededRandom(i * 2.2) * 100,
-        size:
-          seededRandom(i * 2.3) * ANIMATION_CONFIG.PARTICLE_SIZE_RANGE +
-          ANIMATION_CONFIG.PARTICLE_SIZE_MIN,
-        duration:
-          ANIMATION_CONFIG.PARTICLE_DURATION_MIN +
-          seededRandom(i * 2.4) * ANIMATION_CONFIG.PARTICLE_DURATION_RANGE,
-        delay: seededRandom(i * 2.5) * ANIMATION_CONFIG.PARTICLE_DELAY_RANGE,
-        opacity:
-          seededRandom(i * 2.6) * ANIMATION_CONFIG.PARTICLE_OPACITY_RANGE +
-          ANIMATION_CONFIG.PARTICLE_OPACITY_MIN,
-        color: PARTICLE_COLORS[Math.floor(seededRandom(i * 2.7) * PARTICLE_COLORS.length)],
-        moveX: (seededRandom(i * 2.8) - 0.5) * ANIMATION_CONFIG.PARTICLE_MOVE_RANGE,
-        moveY: (seededRandom(i * 2.9) - 0.5) * ANIMATION_CONFIG.PARTICLE_MOVE_RANGE,
-      })),
-    []
-  );
+    const timelinesRef = tracerTimelines.current;
+    const masterTl = gsap.timeline();
 
-  const contactInfo: ContactInfo[] = [
-    {
-      icon: '📧',
-      title: 'Email',
-      value: 'thomasyeayea@gmail.com',
-      link: 'mailto:thomasyeayea@gmail.com',
-    },
-    {
-      icon: <FaLinkedin className="text-xl" />,
-      title: 'LinkedIn',
-      value: 'LinkedIn Profile',
-      link: 'https://www.linkedin.com/in/jtunn-yue-yeh',
-    },
-    {
-      icon: <FaGithub className="text-xl" />,
-      title: 'GitHub',
-      value: 'GitHub Profile',
-      link: 'https://github.com/th1230',
-    },
-  ];
+    if (titleLineRef.current) {
+      masterTl.fromTo(
+        titleLineRef.current,
+        { scaleX: 0 },
+        { scaleX: 1, duration: 0.8, ease: 'power3.out' }
+      );
+    }
+
+    contactItems.forEach((item, index) => {
+      const abstractPath = abstractPathRefs.current.get(item.id);
+      const tracer = tracerRefs.current.get(item.id);
+      const container = containerRefs.current.get(item.id);
+      const concreteGroup = concreteGroupRefs.current.get(item.id);
+
+      if (!abstractPath || !tracer || !container) return;
+
+      const pathLength = abstractPath.getTotalLength();
+      gsap.set(abstractPath, {
+        strokeDasharray: pathLength,
+        strokeDashoffset: pathLength,
+      });
+      gsap.set(tracer, { opacity: 0 });
+      gsap.set(container, { opacity: 1 });
+      if (concreteGroup) {
+        gsap.set(concreteGroup, { opacity: 0 });
+      }
+
+      // 设置光球初始位置在路径起点
+      const startPoint = abstractPath.getPointAtLength(0);
+      gsap.set(tracer, {
+        x: startPoint.x,
+        y: startPoint.y,
+        xPercent: -50,
+        yPercent: -50,
+      });
+
+      const itemTl = gsap.timeline();
+
+      itemTl.to(abstractPath, {
+        strokeDashoffset: 0,
+        duration: 1.5,
+        ease: 'power2.inOut',
+      });
+
+      itemTl.to(tracer, { opacity: 1, duration: 0.2 }, 0.5);
+
+      itemTl.to(
+        tracer,
+        {
+          motionPath: {
+            path: abstractPath,
+            align: abstractPath,
+            alignOrigin: [0.5, 0.5],
+            start: 0,
+            end: 1,
+          },
+          duration: 1.5,
+          ease: 'power2.inOut',
+        },
+        0.5
+      );
+
+      masterTl.add(itemTl, index * 0.4);
+    });
+
+    masterTl.call(() => {
+      contactItems.forEach(item => {
+        const abstractPath = abstractPathRefs.current.get(item.id);
+        const tracer = tracerRefs.current.get(item.id);
+
+        if (!abstractPath || !tracer) return;
+
+        const loopTween = gsap.to(tracer, {
+          motionPath: {
+            path: abstractPath,
+            align: abstractPath,
+            alignOrigin: [0.5, 0.5],
+            start: 0,
+            end: 1,
+          },
+          duration: 3,
+          ease: 'none',
+          repeat: -1,
+        });
+        tracerTimelines.current.set(item.id, loopTween);
+      });
+    });
+
+    return () => {
+      masterTl.kill();
+      timelinesRef.forEach(tween => tween.kill());
+    };
+  }, [isInView, isClient]);
+
+  const handleMouseEnter = (id: string) => {
+    const item = contactItems.find(c => c.id === id);
+    const abstractPath = abstractPathRefs.current.get(id);
+    const concreteGroup = concreteGroupRefs.current.get(id);
+    const tracer = tracerRefs.current.get(id);
+    const container = containerRefs.current.get(id);
+
+    if (!item || !abstractPath || !concreteGroup || !tracer || !container) return;
+
+    const loopTween = tracerTimelines.current.get(id);
+    if (loopTween) {
+      loopTween.kill();
+      tracerTimelines.current.delete(id);
+    }
+    gsap.killTweensOf(tracer);
+
+    gsap.to(abstractPath, {
+      opacity: 0,
+      scale: 0.8,
+      duration: 0.4,
+      ease: 'power2.in',
+      transformOrigin: 'center center',
+    });
+
+    const concretePaths = concreteGroup.querySelectorAll('path');
+    concretePaths.forEach(p => {
+      const len = p.getTotalLength();
+      gsap.set(p, {
+        strokeDasharray: len,
+        strokeDashoffset: len,
+      });
+    });
+
+    gsap.to(concreteGroup, { opacity: 1, duration: 0.1 });
+
+    const pathDrawTl = gsap.timeline({
+      onComplete: () => {
+        const mainConcretePath = concretePaths[0];
+        if (mainConcretePath) {
+          const startPoint = mainConcretePath.getPointAtLength(0);
+          gsap.set(tracer, {
+            x: startPoint.x,
+            y: startPoint.y,
+            xPercent: -50,
+            yPercent: -50,
+          });
+
+          const newTween = gsap.to(tracer, {
+            motionPath: {
+              path: mainConcretePath,
+              align: mainConcretePath,
+              alignOrigin: [0.5, 0.5],
+              start: 0,
+              end: 1,
+            },
+            duration: 2.5,
+            ease: 'none',
+            repeat: -1,
+          });
+          tracerTimelines.current.set(`${id}-concrete`, newTween);
+        }
+      },
+    });
+
+    concretePaths.forEach((p, i) => {
+      pathDrawTl.to(
+        p,
+        {
+          strokeDashoffset: 0,
+          duration: 0.6,
+          ease: 'power2.out',
+        },
+        i * 0.1
+      );
+    });
+
+    gsap.to(container, {
+      scale: 1.1,
+      duration: 0.4,
+      ease: 'back.out(1.5)',
+    });
+  };
+
+  const handleMouseLeave = (id: string) => {
+    const abstractPath = abstractPathRefs.current.get(id);
+    const concreteGroup = concreteGroupRefs.current.get(id);
+    const tracer = tracerRefs.current.get(id);
+    const container = containerRefs.current.get(id);
+
+    if (!abstractPath || !concreteGroup || !tracer || !container) return;
+
+    const concreteTween = tracerTimelines.current.get(`${id}-concrete`);
+    if (concreteTween) {
+      concreteTween.kill();
+      tracerTimelines.current.delete(`${id}-concrete`);
+    }
+    gsap.killTweensOf(tracer);
+
+    gsap.to(concreteGroup, {
+      opacity: 0,
+      duration: 0.3,
+      ease: 'power2.in',
+    });
+
+    const transitionTl = gsap.timeline({
+      onComplete: () => {
+        const startPoint = abstractPath.getPointAtLength(0);
+        gsap.set(tracer, {
+          x: startPoint.x,
+          y: startPoint.y,
+          xPercent: -50,
+          yPercent: -50,
+        });
+
+        const loopTween = gsap.to(tracer, {
+          motionPath: {
+            path: abstractPath,
+            align: abstractPath,
+            alignOrigin: [0.5, 0.5],
+            start: 0,
+            end: 1,
+          },
+          duration: 3,
+          ease: 'none',
+          repeat: -1,
+        });
+        tracerTimelines.current.set(id, loopTween);
+      },
+    });
+
+    transitionTl.to(abstractPath, {
+      opacity: 1,
+      scale: 1,
+      duration: 0.5,
+      ease: 'power2.out',
+      transformOrigin: 'center center',
+    });
+
+    gsap.to(container, {
+      scale: 1,
+      duration: 0.3,
+      ease: 'power2.out',
+    });
+  };
+
+  const handleClick = (id: string) => {
+    const item = contactItems.find(c => c.id === id);
+    const container = containerRefs.current.get(id);
+
+    if (!item || !container) return;
+
+    const tl = gsap.timeline({
+      onComplete: () => {
+        window.open(item.href, item.href.startsWith('mailto') ? '_self' : '_blank');
+      },
+    });
+
+    tl.to(container, { scale: 1.2, duration: 0.12, ease: 'power2.in' })
+      .to(container, { scale: 1.05, duration: 0.12, ease: 'power2.out' })
+      .to(container, { scale: 1.15, duration: 0.1 })
+      .to(container, { scale: 1.1, duration: 0.1 });
+  };
 
   return (
-    <section id="contact" className="bg-gray-50 px-4 py-20 dark:bg-gray-900/30">
-      <div className="mx-auto max-w-7xl">
-        <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-        >
-          <h2 className="text-outer-space dark:text-apricot mb-8 text-center text-4xl font-bold md:text-5xl">
+    <section ref={sectionRef} id="contact" className="relative min-h-screen px-4 py-24 md:py-32">
+      <div className="relative mx-auto max-w-7xl">
+        <div className="mb-16 flex items-center gap-6">
+          <GradientTitle className="text-4xl font-bold md:text-5xl lg:text-6xl">
             聯絡我
-          </h2>
-          <p className="text-outer-space/80 dark:text-apricot/80 mx-auto mb-16 max-w-2xl text-center text-xl">
-            有想法想要實現？讓我們一起創造出色的數位體驗！
+          </GradientTitle>
+          <div
+            ref={titleLineRef}
+            className="from-sandy-brown/50 h-px flex-1 origin-left bg-gradient-to-r to-transparent"
+            style={{ transform: 'scaleX(0)' }}
+          />
+        </div>
+
+        <div className="mb-20 text-center">
+          <p className="mx-auto max-w-2xl text-lg text-gray-600 md:text-xl dark:text-gray-300">
+            對我的作品感興趣，或想要一起合作？
+            <br />
+            歡迎透過以下方式與我聯繫，我會盡快回覆您！
           </p>
+        </div>
 
-          <div className="grid gap-12 lg:grid-cols-2">
-            {/* 聯絡資訊 */}
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
-            >
-              <h3 className="text-outer-space dark:text-fawn mb-8 text-2xl font-bold">聯絡資訊</h3>
-
-              <div className="mb-12 space-y-6">
-                {contactInfo.map((info, index) => (
-                  <motion.a
-                    key={info.title}
-                    href={info.link}
-                    target={info.link.startsWith('http') ? '_blank' : undefined}
-                    rel={info.link.startsWith('http') ? 'noopener noreferrer' : undefined}
-                    className="group flex items-center space-x-4 rounded-lg bg-white p-4 shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800/50"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                    transition={{
-                      duration: 0.6,
-                      delay: 0.4 + index * 0.1,
-                      ease: 'easeOut',
-                    }}
-                    whileHover={{ y: -2 }}
+        {isClient && (
+          <div className="grid grid-cols-1 gap-16 md:grid-cols-3 md:gap-12">
+            {contactItems.map(item => (
+              <div key={item.id} className="flex flex-col items-center">
+                <div
+                  ref={el => {
+                    if (el) containerRefs.current.set(item.id, el);
+                  }}
+                  className="mb-6 flex cursor-pointer items-center justify-center transition-transform"
+                  style={{ opacity: 0 }}
+                  onMouseEnter={() => handleMouseEnter(item.id)}
+                  onMouseLeave={() => handleMouseLeave(item.id)}
+                  onClick={() => handleClick(item.id)}
+                >
+                  <svg
+                    viewBox="0 0 100 100"
+                    className="h-40 w-40 md:h-44 md:w-44 lg:h-48 lg:w-48"
+                    style={{ overflow: 'visible' }}
                   >
-                    <span className="flex items-center justify-center text-2xl">
-                      {typeof info.icon === 'string' ? info.icon : info.icon}
-                    </span>
-                    <div>
-                      <h4 className="text-outer-space dark:text-apricot font-medium">
-                        {info.title}
-                      </h4>
-                      <p className="text-outer-space/80 dark:text-apricot/80 group-hover:text-sandy-brown transition-colors duration-300">
-                        {info.value}
-                      </p>
-                    </div>
-                  </motion.a>
-                ))}
-              </div>
-            </motion.div>
+                    <path
+                      ref={el => {
+                        if (el) abstractPathRefs.current.set(item.id, el);
+                      }}
+                      d={item.abstractPath}
+                      fill="none"
+                      stroke={item.color}
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
 
-            {/* 創意互動藝術區塊 */}
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
-              transition={{ duration: 0.8, delay: 0.4, ease: 'easeOut' }}
-              className="relative h-[400px] overflow-hidden rounded-2xl shadow-2xl"
-              style={{
-                background:
-                  'radial-gradient(ellipse at center, #2a1b4f 0%, #1a0b2e 50%, #0d0418 100%)',
-                boxShadow:
-                  '0 20px 40px rgba(106, 17, 203, 0.3), 0 0 60px rgba(139, 69, 19, 0.2), inset 0 0 40px rgba(255, 255, 255, 0.05)',
-                transform: 'perspective(1000px) rotateX(2deg)',
-              }}
-            >
-              {!isClient ? (
-                // 服務器端和初始客戶端渲染時顯示的靜態背景
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-2xl text-white/30">載入中...</div>
+                    <g
+                      ref={el => {
+                        if (el) concreteGroupRefs.current.set(item.id, el);
+                      }}
+                      style={{ opacity: 0 }}
+                    >
+                      {item.concretePaths.map((d, i) => (
+                        <path
+                          key={i}
+                          d={d}
+                          fill="none"
+                          stroke={item.color}
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      ))}
+                    </g>
+
+                    <circle
+                      ref={el => {
+                        if (el) tracerRefs.current.set(item.id, el);
+                      }}
+                      r="5"
+                      fill={item.color}
+                      style={{
+                        filter: `drop-shadow(0 0 6px ${item.color})`,
+                        opacity: 0,
+                      }}
+                    />
+                  </svg>
                 </div>
-              ) : (
-                <>
-                  {/* 動態波浪背景 */}
-                  <div className="absolute inset-0">
-                    <svg className="h-full w-full" viewBox="0 0 400 400">
-                      <defs>
-                        <linearGradient id="wave1" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#ff6b6b" stopOpacity="0.4" />
-                          <stop offset="50%" stopColor="#4ecdc4" stopOpacity="0.2" />
-                          <stop offset="100%" stopColor="#45b7d1" stopOpacity="0.1" />
-                        </linearGradient>
-                        <linearGradient id="wave2" x1="0%" y1="0%" x2="0%" y2="100%">
-                          <stop offset="0%" stopColor="#8b5cf6" stopOpacity="0.5" />
-                          <stop offset="50%" stopColor="#06b6d4" stopOpacity="0.3" />
-                          <stop offset="100%" stopColor="#10b981" stopOpacity="0.2" />
-                        </linearGradient>
-                        <linearGradient id="wave3" x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor="#f59e0b" stopOpacity="0.3" />
-                          <stop offset="100%" stopColor="#ef4444" stopOpacity="0.1" />
-                        </linearGradient>
-                      </defs>
 
-                      {/* 多層流動的波浪 */}
-                      <path
-                        d="M0,200 Q100,120 200,200 T400,200 L400,400 L0,400 Z"
-                        fill="url(#wave1)"
-                        className="animate-pulse"
-                        style={{
-                          animationDuration: '4s',
-                          transform: 'translateZ(10px)',
-                        }}
-                      />
-                      <path
-                        d="M0,250 Q150,180 300,250 T600,250 L600,400 L0,400 Z"
-                        fill="url(#wave2)"
-                        className="animate-pulse"
-                        style={{
-                          animationDuration: '6s',
-                          animationDelay: '1s',
-                          transform: 'translateZ(20px)',
-                        }}
-                      />
-                      <path
-                        d="M0,300 Q200,220 400,300 T800,300 L800,400 L0,400 Z"
-                        fill="url(#wave3)"
-                        className="animate-pulse"
-                        style={{
-                          animationDuration: '8s',
-                          animationDelay: '2s',
-                          transform: 'translateZ(5px)',
-                        }}
-                      />
-                    </svg>
-                  </div>
-                  {/* 動態藝術元素 */}
-                  <div className="absolute inset-0">
-                    {artElements.map(element => (
-                      <div
-                        key={element.id}
-                        className="absolute"
-                        style={{
-                          left: `${element.left}%`,
-                          top: `${element.top}%`,
-                          width: `${element.size}px`,
-                          height: `${element.size}px`,
-                          animation: `spin ${element.duration}s linear infinite`,
-                          animationDelay: `${element.delay}s`,
-                        }}
-                      >
-                        {element.type === 'morphing' && (
-                          <div
-                            className="h-full w-full animate-bounce rounded-full"
-                            style={{
-                              background: `radial-gradient(circle, ${element.color}80, ${element.color}20)`,
-                              transform: 'scale(0.8)',
-                              animationDuration: `${element.duration * 0.7}s`,
-                            }}
-                          />
-                        )}
-
-                        {element.type === 'spiral' && (
-                          <div className="relative h-full w-full">
-                            <div
-                              className="absolute inset-0 rounded-full"
-                              style={{
-                                background: `conic-gradient(from 0deg, ${element.color}00, ${element.color}ff, ${element.color}00)`,
-                                animation: `spin ${element.duration * 0.5}s linear infinite reverse`,
-                              }}
-                            />
-                          </div>
-                        )}
-
-                        {element.type === 'wave' && (
-                          <svg className="h-full w-full" viewBox="0 0 100 100">
-                            <circle
-                              cx="50"
-                              cy="50"
-                              r="20"
-                              fill="none"
-                              stroke={element.color}
-                              strokeWidth="3"
-                              className="animate-ping"
-                              style={{
-                                animationDuration: `${element.duration}s`,
-                              }}
-                            />
-                            <circle
-                              cx="50"
-                              cy="50"
-                              r="35"
-                              fill="none"
-                              stroke={`${element.color}60`}
-                              strokeWidth="2"
-                              className="animate-ping"
-                              style={{
-                                animationDuration: `${element.duration * 1.5}s`,
-                                animationDelay: '0.5s',
-                              }}
-                            />
-                          </svg>
-                        )}
-
-                        {element.type === 'bloom' && (
-                          <div className="relative h-full w-full">
-                            {Array.from({ length: 6 }, (_, i) => (
-                              <div
-                                key={i}
-                                className="absolute h-6 w-2 animate-pulse rounded-full"
-                                style={{
-                                  background: element.color,
-                                  left: '50%',
-                                  top: '50%',
-                                  transformOrigin: '1px 24px',
-                                  transform: `rotate(${i * 60}deg) translateX(-1px)`,
-                                  animationDelay: `${i * 0.2}s`,
-                                  animationDuration: `${element.duration}s`,
-                                }}
-                              />
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* 漂浮粒子 */}
-                  <div className="absolute inset-0">
-                    {particles.map(particle => (
-                      <div
-                        key={particle.id}
-                        className="absolute animate-bounce rounded-full"
-                        style={{
-                          left: `${particle.x}%`,
-                          top: `${particle.y}%`,
-                          width: `${particle.size}px`,
-                          height: `${particle.size}px`,
-                          background: `radial-gradient(circle, ${particle.color}dd, ${particle.color}66, ${particle.color}22)`,
-                          opacity: particle.opacity,
-                          animationDelay: `${particle.delay}s`,
-                          animationDuration: `${particle.duration}s`,
-                          boxShadow: `0 0 ${particle.size * 2}px ${particle.color}66`,
-                          transform: `translate(${particle.moveX}px, ${particle.moveY}px) perspective(500px) rotateX(${particle.moveX * 0.5}deg)`,
-                        }}
-                      />
-                    ))}
-                  </div>
-
-                  {/* 中央發光圓形 */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    {/* 外層光暈 */}
-                    <div
-                      className="h-48 w-48 animate-spin rounded-full"
-                      style={{
-                        background:
-                          'conic-gradient(from 0deg, #ff6b6b, #4ecdc4, #45b7d1, #8b5cf6, #f59e0b, #ef4444, #ff6b6b)',
-                        animationDuration: '12s',
-                        filter: 'blur(8px)',
-                        opacity: 0.4,
-                        transform: 'perspective(800px) rotateX(15deg)',
-                      }}
-                    />
-                    {/* 中層彩虹環 */}
-                    <div
-                      className="absolute h-36 w-36 animate-spin rounded-full"
-                      style={{
-                        background:
-                          'conic-gradient(from 180deg, #8b5cf6, #06b6d4, #10b981, #f59e0b, #ef4444, #ec4899, #8b5cf6)',
-                        animationDuration: '8s',
-                        animationDirection: 'reverse',
-                        filter: 'blur(2px)',
-                        opacity: 0.7,
-                        transform: 'perspective(600px) rotateX(10deg) rotateY(5deg)',
-                      }}
-                    />
-                    {/* 內層核心 */}
-                    <div
-                      className="absolute h-24 w-24 animate-pulse rounded-full"
-                      style={{
-                        background:
-                          'radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(139,92,246,0.6) 40%, rgba(59,130,246,0.3) 70%, rgba(255,255,255,0.1) 100%)',
-                        animationDuration: '3s',
-                        boxShadow:
-                          '0 0 30px rgba(255,255,255,0.5), inset 0 0 20px rgba(139,92,246,0.3)',
-                        transform: 'perspective(400px) rotateX(5deg)',
-                      }}
-                    />
-                    {/* 中心光點 */}
-                    <div
-                      className="absolute h-8 w-8 animate-ping rounded-full"
-                      style={{
-                        background:
-                          'radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%)',
-                        animationDuration: '2s',
-                        boxShadow: '0 0 15px rgba(255,255,255,0.8)',
-                      }}
-                    />
-                  </div>
-
-                  {/* 微妙的網格裝飾 */}
-                  <div
-                    className="absolute inset-0 opacity-10"
-                    style={{
-                      backgroundImage: `
-                        linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
-                      `,
-                      backgroundSize: '30px 30px',
-                      animation: 'pulse 8s ease-in-out infinite',
-                      transform: 'perspective(1000px) rotateX(1deg)',
-                    }}
-                  />
-                </>
-              )}
-            </motion.div>
+                <div className="text-center">
+                  <h3
+                    className="text-xl font-semibold transition-colors duration-300 md:text-2xl"
+                    style={{ color: item.color }}
+                  >
+                    {item.label}
+                  </h3>
+                </div>
+              </div>
+            ))}
           </div>
-        </motion.div>
+        )}
       </div>
     </section>
   );
