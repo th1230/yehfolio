@@ -1,3 +1,5 @@
+import { GoogleAnalytics } from '@next/third-parties/google';
+
 import ErrorBoundary from '@/components/ErrorBoundary';
 import SeasonalBackground from '@/components/SeasonalBackground';
 import { ThemeProvider } from '@/contexts/ThemeContext';
@@ -91,6 +93,7 @@ export default function RootLayout({
           </ThemeProvider>
         </ErrorBoundary>
       </body>
+      <GoogleAnalytics gaId="G-7VG0ZEBLL9" />
     </html>
   );
 }
