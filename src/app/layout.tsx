@@ -1,8 +1,6 @@
 import { GoogleAnalytics } from '@next/third-parties/google';
 
 import ErrorBoundary from '@/components/ErrorBoundary';
-import SeasonalBackground from '@/components/SeasonalBackground';
-import { ThemeProvider } from '@/contexts/ThemeContext';
 
 import type { Metadata } from 'next';
 
@@ -85,13 +83,8 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="text-outer-space dark:bg-outer-space dark:text-fawn !overflow-x-hidden bg-gray-50">
-        <ErrorBoundary>
-          <ThemeProvider>
-            <SeasonalBackground />
-            {children}
-          </ThemeProvider>
-        </ErrorBoundary>
+      <body className="overflow-hidden bg-[#050505] text-white antialiased">
+        <ErrorBoundary>{children}</ErrorBoundary>
       </body>
       <GoogleAnalytics gaId="G-7VG0ZEBLL9" />
     </html>

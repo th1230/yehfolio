@@ -1,82 +1,27 @@
-# Yeh Portfolio - 前端工程師個人作品集
+# Yehfolio - Thomas Yeh Portfolio
 
-> 🌐 **線上展示**: [https://portfolio.yehnext.com/](https://portfolio.yehnext.com/)
+> 線上展示：[https://portfolio.yehnext.com/](https://portfolio.yehnext.com/)
 
-這是一個展示三年前端開發經驗的個人作品集網站，使用 Next.js 15 和 TypeScript 開發。
-
-## 關於我
-
-我是一位擁有三年工作經驗的前端工程師，畢業於淡江大學。主要專精於 Angular 開發，同時具備 React、Vue 等多框架經驗和全端開發能力。
-
-### 主要技能
-
-- **前端框架**: Angular (主要)、React/Next.js、Vue/Nuxt.js
-- **程式語言**: TypeScript、JavaScript、HTML/CSS
-- **後端技術**: Node.js、Express、MongoDB、PostgreSQL
-- **開發工具**: Git、Docker、CI/CD、GitHub Actions
-
-### 專案經驗
-
-#### 工作專案
-
-- **數位遊牧平台**: 完整前後台開發，Lighthouse 95% 分數，SEO 優化
-- **內部中轉系統**: Angular + RxJS，自動 refresh 功能
-- **金融系統**: 期信申報平台、基金觀測站，多頁面通用列印功能
-
-#### Side Projects
-
-- **AI 票務平台**: Next.js + Node.js + PostgreSQL，Docker 部署
-- **才藝媒合網站**: Angular + Node.js + MongoDB，WebSocket 即時通訊
-
-#### 協作專案
-
-- **客製化 GPT 平台**: Nuxt.js + Vue，OpenAI API 整合
-- **LINE LIFF 管理系統**: Next.js + React，LINE 整合開發
+這是一個以 Next.js App Router 建置的個人作品集，內容聚焦在前端工程經驗、專案案例、職涯階段與聯絡方式。現行版本採用「Cyber Portfolio Interface」風格，透過 BIOS 啟動畫面、分頁式面板、Canvas 背景、音訊視覺化與靜態匯出部署，呈現個人作品集作為一個可互動的前端介面。
 
 ## 技術棧
 
-### 前端
+- Framework：Next.js 15 App Router
+- UI Runtime：React 19
+- Language：TypeScript
+- Styling：Tailwind CSS 4
+- Icons：React Icons
+- Analytics：`@next/third-parties/google`
+- Deployment：Next.js static export，輸出至 `out/`
 
-- **Framework**: Next.js 14, React 18
-- **Styling**: Tailwind CSS
-- **Animation**: Framer Motion
-- **Language**: TypeScript
+## 專案特色
 
-### 部署
-
-- **Platform**: 自定義域名
-- **URL**: https://portfolio.yehnext.com/
-- **Build**: Next.js 靜態生成
-- **替代選擇**: Vercel, Netlify
-
-## 功能特色
-
-### 🎨 現代化設計
-
-- 響應式設計，支援桌面與行動裝置
-- 深色模式支援
-- 流暢的動畫效果
-
-### 🚀 效能優化
-
-- Next.js 14 App Router
-- 靜態生成 (SSG)
-- 圖片優化
-- 程式碼分割
-
-### 💼 專業內容
-
-- 詳細的技能展示
-- 完整的工作經驗
-- 實際專案案例
-- 技術能力評估
-
-### 🔧 開發體驗
-
-- TypeScript 型別安全
-- ESLint 程式碼品質
-- 模組化組件設計
-- 易於維護的程式碼結構
+- 單頁式作品集介面，包含 Profile、Experience、Projects、Contact 四個主要面板
+- BIOS boot screen 作為進入作品集的互動入口
+- Canvas network background 與自訂 cursor，支援 `prefers-reduced-motion`
+- 背景音訊播放、音量偏好保存與 waveform visualizer
+- 專案案例以資料檔集中管理，並支援分類篩選、截圖瀏覽與 case study thread
+- 靜態輸出設定，適合部署到 GitHub Pages / 靜態主機 / CDN
 
 ## 開始使用
 
@@ -92,93 +37,103 @@ npm install
 npm run dev
 ```
 
-### 建置專案
+開發伺服器預設會啟動 Next.js dev server。
+
+### 建置靜態輸出
 
 ```bash
 npm run build
 ```
 
-### 啟動生產環境
+目前 `next.config.ts` 使用 `output: 'export'`，建置後會輸出靜態檔案到 `out/`。
+
+> 注意：此專案是靜態匯出架構，production 驗證應服務 `out/` 目錄，而不是依賴 `next start`。
+
+### 程式碼檢查
 
 ```bash
-npm start
+npm run lint
+npx tsc --noEmit
 ```
 
 ## 專案結構
 
-```
+```text
 src/
-├── app/                 # Next.js 14 App Router
-│   ├── globals.css     # 全域樣式
-│   ├── layout.tsx      # 根佈局
-│   └── page.tsx        # 首頁
-├── components/         # React 組件
-│   ├── About.tsx       # 關於我
-│   ├── Contact.tsx     # 聯絡資訊
-│   ├── Experience.tsx  # 工作經驗
-│   ├── Footer.tsx      # 頁尾
-│   ├── Hero.tsx        # 首頁橫幅
-│   ├── Navigation.tsx  # 導航列
-│   ├── Projects.tsx    # 專案展示
-│   └── Skills.tsx      # 技能展示
-└── public/             # 靜態資源
+├── app/
+│   ├── globals.css          # Tailwind 4 theme、全域樣式與動畫
+│   ├── layout.tsx           # metadata、JSON-LD、GA、ErrorBoundary
+│   ├── not-found.tsx
+│   └── page.tsx             # 首頁入口
+├── components/
+│   ├── ErrorBoundary.tsx
+│   └── CyberPortfolio/
+│       ├── index.tsx        # 作品集主殼，管理面板、音訊與互動狀態
+│       ├── BiosBooter.tsx
+│       ├── ProfilePanel.tsx
+│       ├── ExperiencePanel.tsx
+│       ├── ProjectsPanel.tsx
+│       ├── ContactPanel.tsx
+│       ├── NetworkCanvas.tsx
+│       ├── constants.ts
+│       ├── types.ts
+│       └── utils.ts
+├── data/
+│   └── portfolio.ts         # 專案案例與職涯資料
+└── lib/
+    └── audioPreferences.ts  # 背景音訊偏好讀寫
 ```
 
-## 自訂指南
+靜態資源放在 `public/`：
 
-### 更新個人資訊
+```text
+public/
+├── audio/background.mp3
+├── images/projects/
+├── images/skills/
+└── CNAME
+```
 
-1. 修改 `src/components/About.tsx` 中的個人介紹
-2. 更新 `src/components/Skills.tsx` 中的技能資料
-3. 調整 `src/components/Experience.tsx` 中的工作經驗
-4. 更新 `src/components/Projects.tsx` 中的專案資料
+## 主要資料來源
 
-### 樣式自訂
+作品集內容主要集中在：
 
-- 在 `tailwind.config.js` 中修改主題配色
-- 調整 `src/app/globals.css` 中的全域樣式
+- `src/data/portfolio.ts`：專案案例、case study、技術棧、職涯階段
+- `src/components/CyberPortfolio/constants.ts`：面板設定與預設音訊路徑
+- `src/app/layout.tsx`：SEO metadata、Open Graph、Twitter card、JSON-LD
 
-### 添加新組件
+若要更新履歷內容，優先修改 `src/data/portfolio.ts`。若要調整網站標題、描述、分享預覽或結構化資料，修改 `src/app/layout.tsx`。
 
-1. 在 `src/components/` 中創建新組件
-2. 在 `src/app/page.tsx` 中匯入並使用
-3. 如需導航，在 `src/components/Navigation.tsx` 中添加連結
+## 常用腳本
 
-## 部署建議
+| 指令                   | 用途                       |
+| ---------------------- | -------------------------- |
+| `npm run dev`          | 啟動開發環境               |
+| `npm run build`        | 建置 production 靜態輸出   |
+| `npm run lint`         | 執行 ESLint                |
+| `npm run lint:fix`     | 自動修正可修正的 lint 問題 |
+| `npm run format`       | 格式化 `src/`              |
+| `npm run format:check` | 檢查 `src/` 格式           |
 
-### 自定義域名部署 (目前使用)
+## 部署
 
-1. 將專案推送到 GitHub
-2. 配置自定義域名 DNS 設定
-3. 配置靜態匯出設定
-4. 部署到 `https://portfolio.yehnext.com/`
+目前 GitHub Actions 會在 push 到 `main` 時執行：
 
-### 其他部署選項
+1. Checkout
+2. Setup Node.js
+3. `npm install`
+4. `npm run build`
+5. 將 `out/` 發布到 `deploy` branch
 
-- **Vercel**: 支援 Next.js 自動部署
-- **Netlify**: 支援 Next.js 部署
-- **自架伺服器**: 使用 Docker 容器化部署
+部署設定位於 `.github/workflows/deploy.yml`。
 
-## 線上展示
+## 維護建議
 
-🚀 **立即查看**: [https://portfolio.yehnext.com/](https://portfolio.yehnext.com/)
-
-體驗完整的作品集功能，包含：
-
-- 響應式設計展示
-- 深色模式切換
-- 專案案例瀏覽
-- 技能展示互動
-- 聯絡表單功能
-
-## 聯絡方式
-
-如有任何問題或合作機會，歡迎透過以下方式聯絡：
-
-- **作品集**: [https://portfolio.yehnext.com/](https://portfolio.yehnext.com/)
-- **GitHub**: [https://github.com/th1230](https://github.com/th1230)
-- **Email**: 透過作品集聯絡表單
+- 大型互動效果盡量保持在 `CyberPortfolio` client component 內，靜態內容優先放在 `src/data/portfolio.ts`
+- 新增專案截圖時，放入 `public/images/projects/`，並於 `PROJECTS` 對應項目的 `images` 欄位加入路徑
+- 新增音訊資源時，放入 `public/audio/`，並更新 `AUDIO_SOURCE`
+- 修改 SEO 或社群分享資訊時，同步檢查 `metadataBase`、Open Graph image 與 JSON-LD
 
 ## 授權
 
-此專案僅供個人作品集使用，請勿用於商業用途。
+此專案為個人作品集用途，內容與素材請勿未經同意用於商業用途。
