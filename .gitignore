@@ -17,6 +17,7 @@
 
 # Next.js
 /.next/
+/.next-dev/
 /out/
 
 # 建置輸出
@@ -48,10 +49,6 @@ lerna-debug.log*
 # Vercel
 .vercel
 
-# TypeScript
-*.tsbuildinfo
-next-env.d.ts
-
 # 作業系統檔案
 .DS_Store
 Thumbs.db
@@ -76,6 +73,4 @@ Desktop.ini
 # 其他
 *.pem
 *.key
-.contentlayer
-/public/sw.js
-/public/workbox-*.js
+

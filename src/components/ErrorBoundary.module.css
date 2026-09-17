@@ -1,0 +1,35 @@
+.page {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 24px;
+  text-align: center;
+  font-family: var(--tc);
+  color: var(--text);
+}
+.page h1 {
+  font-weight: 500;
+  font-size: 28px;
+  letter-spacing: 0.12em;
+}
+.page p {
+  color: var(--body);
+}
+.page a {
+  font-family: var(--serif);
+  color: var(--deep);
+}
+.button {
+  height: 48px;
+  padding: 0 28px;
+  border-radius: 99px;
+  background: var(--deep);
+  color: #fff;
+  font: 500 14px var(--zen);
+}
+.button:hover {
+  background: var(--coral);
+}

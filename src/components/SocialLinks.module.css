@@ -1,0 +1,9 @@
+.link {
+  display: flex;
+  flex: none;
+  color: var(--deep);
+  transition: color var(--quick) var(--ease);
+}
+.link:hover {
+  color: var(--coral);
+}

@@ -1,21 +1,18 @@
-import Link from 'next/link';
+import Button from '@/components/Button';
+
+import styles from './not-found.module.css';
+
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = { title: '找不到頁面' };
 
 export default function NotFound() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 dark:bg-gray-900">
-      <div className="max-w-md text-center">
-        <div className="text-sandy-brown mb-8 text-9xl font-bold">404</div>
-        <h1 className="text-outer-space dark:text-apricot mb-4 text-3xl font-bold">找不到頁面</h1>
-        <p className="text-outer-space/80 dark:text-apricot/80 mb-8 text-lg">
-          抱歉，您要找的頁面不存在或已被移除。
-        </p>
-        <Link
-          href="/"
-          className="bg-sandy-brown hover:bg-sandy-brown/90 inline-block rounded-lg px-8 py-3 font-medium text-white transition-colors"
-        >
-          返回首頁
-        </Link>
-      </div>
-    </div>
+    <main id="main-content" className={styles.page}>
+      <span className={styles.code}>404</span>
+      <h1>這一頁不在這裡。</h1>
+      <p className={styles.note}>Same sky, different page.</p>
+      <Button href="/">Back to Home</Button>
+    </main>
   );
 }

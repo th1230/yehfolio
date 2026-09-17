@@ -1,0 +1,400 @@
+/* Filter and cards on the Projects artboard (canvas PageWork / TabletWork / MobileWork). */
+
+/* ── filter ── */
+.filter {
+  position: absolute;
+  left: 363px;
+  top: 792px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  isolation: isolate;
+}
+.option {
+  position: relative;
+  flex: none;
+  font-family: var(--serif);
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  transition: color 260ms var(--ease);
+}
+.option:not(.pressed):hover {
+  color: var(--coral);
+}
+.all {
+  width: 82px;
+  height: 36px;
+  border-radius: 99px;
+  display: grid;
+  place-items: center;
+  transition:
+    background-color 260ms var(--ease),
+    color 260ms var(--ease),
+    box-shadow 260ms var(--ease);
+}
+.all.pressed {
+  background: var(--deep);
+  color: #fff;
+  box-shadow: 0 6px 14px -8px rgb(46 124 166 / 0.8);
+}
+.option.withPill {
+  background: transparent;
+  box-shadow: none;
+  color: var(--text);
+}
+.option.withPill.pressed {
+  color: #fff;
+}
+.option:focus-visible,
+.option.withPill:focus-visible {
+  box-shadow: 0 0 0 4px rgb(112 188 224 / 0.35);
+}
+.pill {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  height: 36px;
+  border-radius: 99px;
+  background: var(--deep);
+  box-shadow: 0 6px 14px -8px rgb(46 124 166 / 0.8);
+  pointer-events: none;
+  transition:
+    left 260ms var(--ease),
+    width 260ms var(--ease);
+}
+.divider {
+  flex: none;
+  width: 1px;
+  height: 20px;
+  margin: 0 44px;
+  background: var(--hair);
+}
+
+/* ── cards: a blob picture, the name, tags and a round arrow ── */
+.card {
+  --pitch: 450px;
+  position: absolute;
+  top: calc(var(--top) + var(--row) * var(--pitch));
+  left: var(--left);
+  transition: opacity 120ms ease;
+}
+.col0 {
+  --left: 63px;
+  --top: 869px;
+  --w: 418px;
+  --h: 309px;
+  --title-x: 29px;
+  --title-y: 291px;
+  --tags-y: 381px;
+  --arrow-x: 369px;
+  --arrow-y: 376px;
+}
+.col1,
+.col2 {
+  --top: 889px;
+  --h: 275px;
+  --title-x: 17px;
+  --title-y: 267px;
+  --tags-y: 361px;
+  --arrow-y: 356px;
+}
+.col1 {
+  --left: 520px;
+  --w: 391px;
+  --arrow-x: 344px;
+}
+.col2 {
+  --left: 956px;
+  --w: 380px;
+  --arrow-x: 342px;
+}
+.out {
+  opacity: 0.12;
+  pointer-events: none;
+}
+.in {
+  animation: card-in 320ms var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 40ms);
+}
+@keyframes card-in {
+  from {
+    opacity: 0;
+    translate: 0 8px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+.link {
+  display: block;
+}
+.picture {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--w);
+  height: var(--h);
+}
+.picture img {
+  object-fit: cover;
+  transition: transform var(--base) var(--ease);
+}
+.title {
+  position: absolute;
+  left: var(--title-x);
+  top: calc(var(--title-y) + 28px);
+}
+.name {
+  display: block;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: 0.03em;
+  color: var(--text);
+  white-space: nowrap;
+  transition: color var(--quick) var(--ease);
+}
+.nameEn {
+  display: block;
+  margin-top: 5px;
+  font-family: var(--serif);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: var(--deep);
+  white-space: nowrap;
+}
+.row {
+  display: contents;
+}
+.tags {
+  position: absolute;
+  left: var(--title-x);
+  top: var(--tags-y);
+  display: flex;
+  gap: 10px;
+}
+.tags span {
+  padding: 6px 14px 7px;
+  border-radius: 7px;
+  background: var(--pill);
+  font-family: var(--serif);
+  font-size: 12.5px;
+  color: var(--deep);
+  white-space: nowrap;
+}
+.arrow {
+  position: absolute;
+  left: var(--arrow-x);
+  top: var(--arrow-y);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.4px solid var(--deep);
+  display: grid;
+  place-items: center;
+  color: var(--deep);
+  transition:
+    background-color var(--quick) var(--ease),
+    color var(--quick) var(--ease);
+}
+.arrow svg {
+  transition: transform var(--quick) var(--ease);
+}
+
+/* hover and keyboard focus: picture grows, name turns coral, arrow fills (States board).
+   The link box itself has no size, so the focus ring goes on the arrow. */
+.link:focus-visible {
+  box-shadow: none;
+}
+.link:is(:hover, :focus-visible) .picture img {
+  transform: scale(1.04);
+}
+.link:is(:hover, :focus-visible) .name {
+  color: var(--coral);
+}
+.link:is(:hover, :focus-visible) .arrow {
+  background: var(--deep);
+  color: #fff;
+}
+.link:is(:hover, :focus-visible) .arrow svg {
+  transform: translateX(3px);
+}
+.link:focus-visible .arrow {
+  box-shadow: 0 0 0 4px rgb(112 188 224 / 0.35);
+}
+
+/* ── tablet 1024 ── */
+@media (max-width: 1279.98px) and (min-width: 768px) {
+  .filter {
+    left: 258.1px;
+    top: 563.2px;
+    height: 25.6px;
+  }
+  .option {
+    font-size: 10px;
+  }
+  .all {
+    width: 58.3px;
+    height: 25.6px;
+    border-radius: 70.4px;
+  }
+  .all.pressed:not(.withPill),
+  .pill {
+    box-shadow: 0 4.3px 10px -5.7px rgb(46 124 166 / 0.8);
+  }
+  .pill {
+    height: 25.6px;
+    border-radius: 70.4px;
+  }
+  .divider {
+    width: 0.7px;
+    height: 14.2px;
+    margin: 0 31.3px;
+  }
+
+  .card {
+    --pitch: 320px;
+  }
+  .col0 {
+    --left: 44.8px;
+    --top: 618px;
+    --w: 297.2px;
+    --h: 219.7px;
+    --title-x: 20.6px;
+    --title-y: 206.9px;
+    --tags-y: 270.9px;
+    --arrow-x: 262.4px;
+    --arrow-y: 267.3px;
+  }
+  .col1,
+  .col2 {
+    --top: 632.2px;
+    --h: 195.6px;
+    --title-x: 12.1px;
+    --title-y: 189.8px;
+    --tags-y: 256.7px;
+    --arrow-y: 253.1px;
+  }
+  .col1 {
+    --left: 369.8px;
+    --w: 278px;
+    --arrow-x: 244.6px;
+  }
+  .col2 {
+    --left: 679.8px;
+    --w: 270.2px;
+    --arrow-x: 243.2px;
+  }
+  .title {
+    top: calc(var(--title-y) + 19.9px);
+  }
+  .name {
+    font-size: 15.6px;
+  }
+  .nameEn {
+    margin-top: 3.6px;
+    font-size: 9.2px;
+  }
+  .tags {
+    gap: 7.1px;
+  }
+  .tags span {
+    padding: 4.3px 10px 5px;
+    border-radius: 5px;
+    font-size: 8.9px;
+  }
+  .arrow {
+    width: 27px;
+    height: 27px;
+    border-width: 1px;
+  }
+  .arrow svg {
+    width: 11.4px;
+    height: 8.5px;
+  }
+}
+
+/* ── phone 390: one card per row ── */
+@media (max-width: 767.98px) {
+  .filter {
+    left: 0;
+    top: 604px;
+    width: 390px;
+    height: 34px;
+    padding-left: 24px;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .option {
+    font-size: 13px;
+    letter-spacing: normal;
+  }
+  .all,
+  .all.pressed {
+    width: 64px;
+    height: 32px;
+    box-shadow: none;
+  }
+  .pill {
+    top: 1px;
+    height: 32px;
+    box-shadow: none;
+  }
+  .divider {
+    height: 16px;
+    margin: 0 20px;
+  }
+
+  .card {
+    left: 24px;
+    top: calc(676px + var(--n) * 434px);
+    width: 342px;
+  }
+  .picture {
+    position: relative;
+    display: block;
+    width: 342px;
+    height: 236px;
+  }
+  .title {
+    position: static;
+    display: block;
+  }
+  .name {
+    margin-top: 18px;
+    font-size: 21px;
+  }
+  .nameEn {
+    margin-top: 4px;
+    font-size: 12.5px;
+    letter-spacing: 0.1em;
+  }
+  .row {
+    margin-top: 13px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tags {
+    position: static;
+    gap: 8px;
+  }
+  .tags span {
+    padding: 5px 12px 6px;
+    font-size: 12px;
+  }
+  .arrow {
+    position: static;
+    width: 34px;
+    height: 34px;
+    margin-left: auto;
+    border-width: 1.3px;
+  }
+  .arrow svg {
+    width: 14px;
+    height: 11px;
+  }
+}

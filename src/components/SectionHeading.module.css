@@ -1,0 +1,38 @@
+.heading {
+  display: block;
+  font-weight: inherit;
+}
+.title {
+  display: block;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 44px;
+  line-height: 1.1;
+  color: var(--text);
+}
+.title em {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-left: 10px;
+  border-radius: 50%;
+  background: var(--ocean);
+  vertical-align: 5px;
+}
+.zh {
+  display: block;
+  margin-top: 8px;
+  font-family: var(--tc);
+  font-weight: 500;
+  font-size: 17px;
+  letter-spacing: 0.2em;
+  color: var(--text);
+}
+@media (max-width: 767.98px) {
+  .title {
+    font-size: 34px;
+  }
+  .zh {
+    font-size: 15px;
+  }
+}

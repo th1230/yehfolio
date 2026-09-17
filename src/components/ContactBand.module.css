@@ -1,0 +1,197 @@
+.band {
+  position: relative;
+  height: 463px;
+  overflow: hidden;
+}
+
+.art {
+  position: absolute;
+  inset: 0;
+}
+.scene {
+  position: absolute;
+  right: 0;
+  top: -10px;
+  height: 483px;
+  width: auto;
+  -webkit-mask-image:
+    linear-gradient(90deg, rgb(0 0 0 / 0) 29%, #000 46%),
+    linear-gradient(180deg, rgb(0 0 0 / 0) 0, #000 7%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(90deg, rgb(0 0 0 / 0) 29%, #000 46%),
+    linear-gradient(180deg, rgb(0 0 0 / 0) 0, #000 7%);
+  mask-composite: intersect;
+}
+.flowers {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 1080px;
+  height: auto;
+  clip-path: inset(0 0 0 16%);
+}
+.leaf {
+  position: absolute;
+  left: 466px;
+  top: 259px;
+  width: 700px;
+  height: auto;
+  clip-path: inset(48% 86% 23% 1%);
+}
+
+.text {
+  position: absolute;
+  left: 150px;
+  top: 66px;
+  z-index: 2;
+}
+.headline {
+  font-size: 52px;
+  line-height: 1.25;
+  letter-spacing: 0.08em;
+  transform: rotate(-7deg);
+  transform-origin: 0 100%;
+}
+.secondLine {
+  padding-left: 40px;
+}
+.lead {
+  margin-top: 30px;
+  padding-left: 36px;
+  font-family: var(--serif);
+  font-size: 18.5px;
+  letter-spacing: 0.05em;
+  line-height: 29px;
+  color: var(--body);
+}
+.actions {
+  margin-top: 30px;
+  padding-left: 28px;
+  display: flex;
+  align-items: center;
+  gap: 34px;
+}
+.actions .button {
+  height: 54px;
+  padding: 0 32px;
+  font-size: 15px;
+}
+.icon svg {
+  flex: none;
+  width: auto;
+  height: 23px;
+}
+
+@media (max-width: 1279.98px) {
+  .band {
+    height: 400px;
+  }
+  .scene {
+    height: 420px;
+    -webkit-mask-image:
+      linear-gradient(90deg, rgb(0 0 0 / 0) 41%, #000 58%),
+      linear-gradient(180deg, rgb(0 0 0 / 0) 0, #000 7%);
+    mask-image:
+      linear-gradient(90deg, rgb(0 0 0 / 0) 41%, #000 58%),
+      linear-gradient(180deg, rgb(0 0 0 / 0) 0, #000 7%);
+  }
+  .flowers {
+    width: 820px;
+  }
+  .leaf {
+    left: 367px;
+    top: 238px;
+    width: 560px;
+  }
+  .text {
+    left: 40px;
+    top: 62px;
+  }
+  .headline {
+    font-size: 44px;
+  }
+  .lead {
+    margin-top: 26px;
+    padding-left: 30px;
+    font-size: 16px;
+    line-height: 26px;
+  }
+  .actions {
+    margin-top: 26px;
+    padding-left: 24px;
+    gap: 26px;
+  }
+  .icon svg {
+    height: 21px;
+  }
+  .actions .button {
+    height: 50px;
+    padding: 0 28px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .band {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .text {
+    position: relative;
+    left: 0;
+    top: 0;
+    order: 0;
+    padding: 40px 24px 0;
+  }
+  .headline {
+    font-size: 36px;
+    transform: rotate(-6deg);
+  }
+  .secondLine {
+    padding-left: 24px;
+  }
+  .lead {
+    margin-top: 20px;
+    padding-left: 24px;
+    font-size: 13.5px;
+    line-height: 23px;
+  }
+  .actions {
+    margin-top: 22px;
+    padding-left: 18px;
+    gap: 18px;
+  }
+  .actions .button {
+    height: 46px;
+    padding: 0 22px;
+    font-size: 13.5px;
+  }
+  .actions .wide {
+    width: 100%;
+  }
+  .icon svg {
+    height: 20px;
+  }
+  .art {
+    position: relative;
+    order: 1;
+    height: 250px;
+    margin-top: 22px;
+  }
+  .scene {
+    top: -6px;
+    height: 262px;
+    -webkit-mask-image: linear-gradient(180deg, rgb(0 0 0 / 0) 0%, #000 24%);
+    -webkit-mask-composite: source-over;
+    mask-image: linear-gradient(180deg, rgb(0 0 0 / 0) 0%, #000 24%);
+    mask-composite: add;
+  }
+  .flowers {
+    width: 560px;
+  }
+  .leaf {
+    display: none;
+  }
+}

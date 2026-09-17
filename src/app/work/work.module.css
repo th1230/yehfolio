@@ -1,0 +1,595 @@
+/* Projects page (canvas PageWork / TabletWork / MobileWork). */
+.canvas {
+  position: relative;
+  height: 2530px;
+}
+
+.canvas > :not(ul, section),
+.contact > *,
+.links > * {
+  position: absolute;
+}
+
+/* ── hero ── */
+.heroArt {
+  left: 0;
+  top: 0;
+  width: 1440px;
+  height: 860px;
+  object-fit: cover;
+  object-position: 50% 20%;
+}
+.wave {
+  left: 0;
+  top: 600px;
+  width: 1440px;
+  height: 300px;
+  pointer-events: none;
+}
+.title {
+  left: 150px;
+  top: 232px;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 88px;
+  line-height: 1;
+  letter-spacing: -0.005em;
+  color: var(--text);
+}
+.titleZh {
+  left: 157px;
+  top: 360px;
+  font-family: var(--tc);
+  font-weight: 500;
+  font-size: 25px;
+  letter-spacing: 0.2em;
+  color: var(--text);
+}
+.titleEn {
+  left: 158px;
+  top: 410px;
+  font-family: var(--serif);
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  line-height: 27px;
+  color: var(--text);
+}
+.scroll {
+  left: 170px;
+  top: 522px;
+  display: flex;
+  gap: 22px;
+}
+.scroll i {
+  width: 1.3px;
+  height: 48px;
+  background: var(--text);
+}
+.scroll span {
+  padding-top: 6px;
+  font-family: var(--serif);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--text);
+}
+.scroll svg {
+  margin: 12px 0 0 22px;
+}
+/* The box matches the paper tag in the artwork; the text sits in its middle. */
+.tagNote {
+  left: 1098.4px;
+  top: 240.3px;
+  width: 42px;
+  height: 154px;
+  padding-top: 0.14em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  writing-mode: vertical-rl;
+  font-family: var(--hand);
+  font-size: 21px;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  color: var(--deep);
+  transform: rotate(-10deg);
+}
+.sweep {
+  left: 1270px;
+  top: 782px;
+}
+
+/* ── handwritten notes ── */
+.ideas {
+  left: 1178px;
+  top: 744px;
+  font-size: 19px;
+  transform: rotate(-15deg);
+}
+.exploring {
+  left: 1314px;
+  top: 1950px;
+  font-size: 20px;
+  transform: rotate(-18deg);
+}
+.stories {
+  left: 1134px;
+  top: 2272px;
+  font-size: 20px;
+  transform: rotate(-18deg);
+}
+
+/* ── contact ── */
+.anchor {
+  left: 0;
+  top: 2190px;
+}
+.hand {
+  left: 258px;
+  top: 2232px;
+  font-size: 48px;
+  line-height: 1;
+  letter-spacing: 0.08em;
+}
+.handFirst,
+.handSecond {
+  display: block;
+  transform: rotate(-7deg);
+  transform-origin: 0 100%;
+}
+.handSecond {
+  position: absolute;
+  left: 48px;
+  top: 58px;
+}
+.lead {
+  left: 352px;
+  top: 2350px;
+  font-family: var(--serif);
+  font-size: 14.5px;
+  letter-spacing: 0.07em;
+  line-height: 24px;
+  color: var(--body);
+}
+.links {
+  position: static;
+}
+.mail {
+  left: 350px;
+  top: 2416px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 28px 13px;
+  border-radius: 99px;
+  background: var(--deep);
+  box-shadow: 0 8px 18px -10px rgb(46 124 166 / 0.7);
+  font-family: var(--serif);
+  font-size: 14.5px;
+  letter-spacing: 0.03em;
+  color: #fff;
+  transition: background-color var(--quick) var(--ease);
+}
+.mail:hover {
+  background: var(--coral);
+}
+.iconMail {
+  left: 548px;
+  top: 2430px;
+}
+.iconMail svg {
+  width: 23px;
+  height: 17px;
+}
+.iconGitHub {
+  left: 606px;
+  top: 2427px;
+}
+.iconGitHub svg {
+  width: 22px;
+  height: 22px;
+}
+.iconLinkedIn {
+  left: 665px;
+  top: 2428px;
+}
+.iconLinkedIn svg {
+  width: 21px;
+  height: 21px;
+}
+.polaroid {
+  left: 851px;
+  top: 2256px;
+  width: 282px;
+  height: 219px;
+  padding: 13px 13px 36px;
+  transform: rotate(-5deg);
+}
+.polaroid .tape {
+  right: -18px;
+  top: -12px;
+  width: 62px;
+  height: 24px;
+  transform: rotate(38deg);
+}
+.keep {
+  left: 1304px;
+  top: 2330px;
+  font-family: var(--serif);
+  font-size: 11.5px;
+  letter-spacing: 0.05em;
+  line-height: 21px;
+  color: var(--text);
+}
+.keep i {
+  display: block;
+  width: 1.3px;
+  height: 46px;
+  margin: 0 0 20px 4px;
+  background: var(--text);
+}
+
+/* ── leaves ── */
+.leafContact {
+  left: 680px;
+  top: 2300px;
+  width: 58px;
+  height: auto;
+  transform: rotate(36deg);
+}
+.leafTitle {
+  left: 500px;
+  top: 285px;
+  width: 44px;
+  height: auto;
+  transform: rotate(-30deg);
+}
+.leafLeft {
+  left: -30px;
+  top: 2210px;
+  width: 170px;
+  height: auto;
+  opacity: 0.7;
+  transform: rotate(-40deg);
+}
+.leafRight {
+  left: 1380px;
+  top: 2440px;
+  width: 110px;
+  height: auto;
+  opacity: 0.7;
+  transform: rotate(150deg);
+}
+.blurTop,
+.blurBottom {
+  height: auto;
+  opacity: 0.75;
+  filter: blur(9px) saturate(0.9);
+}
+.blurTop {
+  left: -160px;
+  top: 40px;
+  width: 330px;
+  transform: rotate(8deg);
+}
+.blurBottom {
+  left: -120px;
+  top: 2430px;
+  width: 300px;
+  transform: rotate(-20deg);
+}
+
+/* ── tablet 1024 ── */
+@media (max-width: 1279.98px) and (min-width: 768px) {
+  .canvas {
+    height: 1799.1px;
+  }
+  .heroArt {
+    width: 1024px;
+    height: 611.6px;
+  }
+  .wave {
+    top: 426.7px;
+    width: 1024px;
+    height: 213.3px;
+  }
+  .title {
+    left: 106.7px;
+    top: 165px;
+    font-size: 62.6px;
+  }
+  .titleZh {
+    left: 111.6px;
+    top: 256px;
+    font-size: 17.8px;
+  }
+  .titleEn {
+    left: 112.4px;
+    top: 291.6px;
+    font-size: 10.7px;
+    line-height: 19.2px;
+  }
+  .scroll {
+    left: 120.9px;
+    top: 371.2px;
+    gap: 15.6px;
+  }
+  .scroll i {
+    width: 0.9px;
+    height: 34.1px;
+  }
+  .scroll span {
+    padding-top: 4.3px;
+    font-size: 8.5px;
+  }
+  .scroll svg {
+    width: 7.1px;
+    height: 15.6px;
+    margin: 8.5px 0 0 15.6px;
+  }
+  .tagNote {
+    left: 781.1px;
+    top: 170.9px;
+    width: 29.9px;
+    height: 109.5px;
+    font-size: 14.9px;
+  }
+  .sweep {
+    left: 903.1px;
+    top: 556.1px;
+    width: 120.9px;
+    height: 49.8px;
+  }
+  .ideas {
+    left: 837.7px;
+    top: 529.1px;
+    font-size: 13.5px;
+  }
+  .exploring {
+    left: 934.4px;
+    top: 1386.7px;
+    font-size: 14.2px;
+  }
+  .stories {
+    left: 806.4px;
+    top: 1615.6px;
+    font-size: 14.2px;
+  }
+
+  .anchor {
+    top: 1560px;
+  }
+  .hand {
+    left: 183.5px;
+    top: 1587.2px;
+    font-size: 34.1px;
+  }
+  .handSecond {
+    left: 34.1px;
+    top: 41.2px;
+  }
+  .lead {
+    left: 250.3px;
+    top: 1671.1px;
+    font-size: 10.3px;
+    line-height: 17.1px;
+  }
+  .mail {
+    left: 248.9px;
+    top: 1718px;
+    gap: 7.1px;
+    padding: 8.5px 19.9px 9.2px;
+    border-radius: 70.4px;
+    box-shadow: 0 5.7px 12.8px -7.1px rgb(46 124 166 / 0.7);
+    font-size: 10.3px;
+  }
+  .mail svg {
+    width: 11.4px;
+    height: 7.1px;
+  }
+  .iconMail {
+    left: 389.7px;
+    top: 1728px;
+  }
+  .iconMail svg {
+    width: 16.4px;
+    height: 12.1px;
+  }
+  .iconGitHub {
+    left: 430.9px;
+    top: 1725.9px;
+  }
+  .iconGitHub svg {
+    width: 15.6px;
+    height: 15.6px;
+  }
+  .iconLinkedIn {
+    left: 472.9px;
+    top: 1726.6px;
+  }
+  .iconLinkedIn svg {
+    width: 14.9px;
+    height: 14.9px;
+  }
+  .polaroid {
+    left: 605.2px;
+    top: 1604.3px;
+    width: 200.5px;
+    height: 155.7px;
+    padding: 9.2px 9.2px 25.6px;
+  }
+  .polaroid .tape {
+    right: -12.8px;
+    top: -8.5px;
+    width: 44.1px;
+    height: 17.1px;
+  }
+  .keep {
+    left: 927.3px;
+    top: 1656.9px;
+    font-size: 8.2px;
+    line-height: 14.9px;
+  }
+  .keep i {
+    width: 0.9px;
+    height: 32.7px;
+    margin: 0 0 14.2px 2.8px;
+  }
+
+  .leafContact {
+    left: 483.6px;
+    top: 1635.6px;
+    width: 41.2px;
+  }
+  .leafTitle {
+    left: 355.6px;
+    top: 202.7px;
+    width: 31.3px;
+  }
+  .leafLeft {
+    left: -21.3px;
+    top: 1571.6px;
+    width: 120.9px;
+  }
+  .leafRight {
+    left: 981.3px;
+    top: 1735.1px;
+    width: 78.2px;
+  }
+  .blurTop,
+  .blurBottom {
+    filter: blur(6.4px) saturate(0.9);
+  }
+  .blurTop {
+    left: -113.8px;
+    top: 28.4px;
+    width: 234.7px;
+  }
+  .blurBottom {
+    left: -85.3px;
+    top: 1728px;
+    width: 213.3px;
+  }
+}
+
+/* ── phone 390 ── */
+@media (max-width: 767.98px) {
+  .canvas {
+    height: 4850px;
+  }
+  .heroArt {
+    width: 390px;
+    height: 560px;
+    object-position: 64% 0;
+  }
+  .wave {
+    top: 440px;
+    width: 390px;
+    height: 150px;
+  }
+  .title {
+    left: 22px;
+    top: 128px;
+    font-size: 52px;
+    letter-spacing: normal;
+  }
+  .titleZh {
+    left: 24px;
+    top: 198px;
+    font-size: 15px;
+    letter-spacing: 0.14em;
+  }
+  .titleEn {
+    left: 25px;
+    top: 230px;
+    font-size: 12.5px;
+    letter-spacing: 0.07em;
+    line-height: 21px;
+  }
+  .ideas {
+    left: 232px;
+    top: 522px;
+    font-size: 15px;
+    transform: rotate(-14deg);
+  }
+  .exploring {
+    left: 278px;
+    top: 4422px;
+    font-size: 16px;
+  }
+
+  .anchor {
+    top: 4480px;
+  }
+  .hand {
+    left: 22px;
+    top: 4532px;
+    font-size: 36px;
+  }
+  .handFirst,
+  .handSecond {
+    transform: rotate(-6deg);
+  }
+  .handSecond {
+    left: 24px;
+    top: 46px;
+  }
+  .lead {
+    left: 48px;
+    top: 4638px;
+    font-size: 12.5px;
+    letter-spacing: 0.06em;
+    line-height: 22px;
+  }
+  .links {
+    position: absolute;
+    left: 46px;
+    top: 4700px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .links > * {
+    position: static;
+  }
+  .mail {
+    gap: 9px;
+    padding: 10px 22px 11px;
+    font-size: 13px;
+    letter-spacing: normal;
+  }
+  .mail svg {
+    width: 14px;
+    height: 9px;
+  }
+  .iconMail svg {
+    width: 19px;
+    height: 14px;
+  }
+  .iconGitHub svg {
+    width: 18px;
+    height: 18px;
+  }
+  .iconLinkedIn svg {
+    width: 17px;
+    height: 17px;
+  }
+  .polaroid {
+    left: 236px;
+    top: 4492px;
+    width: 130px;
+    height: 110px;
+    padding: 9px 9px 26px;
+    transform: rotate(-6deg);
+  }
+  .polaroid .tape {
+    right: -14px;
+    top: -9px;
+    width: 48px;
+    height: 19px;
+  }
+  .leafContact {
+    left: 200px;
+    top: 4602px;
+    width: 34px;
+  }
+}

@@ -1,0 +1,109 @@
+.bright {
+  position: absolute;
+  left: 0;
+  top: 224px;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+.bright i {
+  display: block;
+  width: 126px;
+  height: 1px;
+  margin-top: 14px;
+  background: rgb(43 58 74 / 0.55);
+}
+.bright p {
+  font-family: var(--serif);
+  font-size: 12.5px;
+  letter-spacing: 0.24em;
+  line-height: 30px;
+  color: var(--text);
+}
+
+.hand {
+  position: absolute;
+  left: 422px;
+  top: 318px;
+  width: 628px;
+}
+.handImage {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.english {
+  position: absolute;
+  left: 745px;
+  top: 527px;
+  font-family: var(--serif);
+  font-size: 17px;
+  letter-spacing: 0.03em;
+  line-height: 33px;
+  color: var(--text);
+}
+
+.scroll {
+  position: absolute;
+  left: 1318px;
+  top: 704px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.scroll span {
+  font-family: var(--note);
+  font-size: 17px;
+  letter-spacing: 0.08em;
+  color: var(--text);
+}
+
+@media (max-width: 1279.98px) {
+  .bright {
+    top: 160px;
+    gap: 14px;
+  }
+  .bright i {
+    width: 84px;
+    margin-top: 12px;
+  }
+  .bright p {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    line-height: 25px;
+  }
+  .hand {
+    left: 300px;
+    top: 226px;
+    width: 447px;
+  }
+  .english {
+    left: 530px;
+    top: 378px;
+    font-size: 15px;
+    line-height: 28px;
+  }
+  .scroll {
+    left: 930px;
+    top: 500px;
+    gap: 8px;
+  }
+  .scroll span {
+    font-size: 15px;
+  }
+}
+@media (max-width: 767.98px) {
+  .hand {
+    left: 20px;
+    top: 150px;
+    width: 288px;
+  }
+  .english {
+    left: 24px;
+    top: 262px;
+    font-size: 14px;
+    line-height: 24px;
+  }
+}

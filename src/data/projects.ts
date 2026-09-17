@@ -1,0 +1,1011 @@
+import type { Project } from './types';
+
+// Site order: Projects page, Home featured (first three) and the "next project" cycle.
+export const PROJECTS: Project[] = [
+  {
+    slug: 'enterprise-ai-sdlc',
+    name: '企業 AI SDLC',
+    nameEn: 'Enterprise AI SDLC',
+    titleStyle: 'cjk',
+    category: 'commercial',
+    year: '2026',
+    type: 'AI 開發流程與舊系統現代化',
+    summary:
+      '參與大型金融企業的 AI SDLC 導入，以 COBOL 舊系統轉換為 Java 作為驗證場景，設計分階段工作流程、Skills 分工與固定案例評估。',
+    role: 'AI 開發流程與 Skills 設計',
+    client: '大型金融企業（匿名）',
+    facts: [],
+    links: {},
+    cardTags: ['AI SDLC', 'Codex', 'GitHub Copilot'],
+    screenRatio: 1.778,
+    screens: [],
+    details: [
+      '將 COBOL 舊程式的理解與轉換拆成逆向工程、規格、目標設計、Java 實作與一致性驗證，定義各階段的輸入、輸出及執行順序。',
+      '設計並調整逆向工程、Java 產碼、規格演進、原型設計與一致性驗證 Skills，釐清共用工程規則與子 Skill 的責任，避免重複帶入 Context 或互相干擾。',
+      '使用固定案例，逐輪比較基準版本與 Skill、Prompt、Workflow 調整版本，觀察觸發情形、逆向理解完整性、Java 品質、規格與程式一致性、Context 與 Token 使用及版本回歸。',
+      '以 Graphify 封裝 COBOL 依賴分析 Skill 的 PoC，整理 COBOL／JCL 中的 CALL、Copybook 等關聯，再供逆向工程取用；這項實驗尚未顯示 Token 用量明顯降低。',
+    ],
+    tech: [
+      'AI SDLC',
+      'Codex',
+      'GitHub Copilot',
+      'Skill-based Agent Workflow',
+      'Prompt & Context Engineering',
+      'SDD',
+      'COBOL',
+      'Java',
+      'Static Analysis',
+      'Graphify PoC',
+      'Baseline Comparison',
+      'Regression Testing',
+      'Git',
+    ],
+    features: [
+      {
+        title: '分階段 AI 開發流程',
+      },
+      {
+        title: 'Skills 與 Context 邊界',
+      },
+      {
+        title: '固定案例與版本比較',
+      },
+      {
+        title: 'Graphify 依賴分析 PoC',
+      },
+    ],
+    highlights: [
+      '定義 AI 開發各階段的 Agent／Skill 責任、輸入輸出與執行順序。',
+      '將企業工程知識與規則整理成可供 Agent 執行的 Skills 與共用規則。',
+      '以固定案例比較流程版本，同時檢查輸出品質、一致性、資源使用與回歸。',
+    ],
+    context:
+      '參與大型金融企業的 AI SDLC 導入研究，將 Coding Agent 整合進既有開發流程，以 COBOL 舊系統現代化作為驗證場景。本人工作集中在流程設計、Skills 分工、Context 整理與固定案例評估；Graphify 依賴分析另列為實驗 PoC。',
+    challenges: [
+      {
+        text: '讓逆向文件、規格、設計與 Java 實作能相互對照，定位各階段的輸出差異。',
+        cases: [1],
+      },
+      {
+        text: '釐清 Skills 的上下游與共用規則，避免重複 Context 及責任互相干擾。',
+        cases: [2],
+      },
+      {
+        text: '分開評估工具是否正確觸發，以及是否實際改善理解品質或資源使用。',
+        cases: [],
+      },
+    ],
+    threads: [
+      {
+        title: '分階段的 AI 開發流程',
+        finding:
+          '舊系統轉換包含理解程式、整理規格與重新實作，需要讓各階段的輸出能供下一步使用，也能回頭驗證。',
+        decision:
+          '將 COBOL 理解到 Java 實作拆成逆向工程、規格演進、目標設計、Java 產碼與一致性驗證，逐一界定 Agent／Skill 的責任、輸入輸出與執行順序。',
+        result: '建立可分段檢查的 AI 開發流程，讓後續測試能定位到具體階段與輸出。',
+      },
+      {
+        title: 'Skills 責任與 Context 邊界',
+        finding:
+          '逆向工程、規格演進、設計與產碼各有不同任務；Skills（Agent 的任務指引）責任重疊或重複帶入 Context，會干擾後續執行。',
+        decision:
+          '拆分並調整 Skills 的命名、責任與上下游關係，將共用工程規則另行整理，讓各階段取得需要的資料與規則。',
+        result:
+          '建立涵蓋逆向工程、規格演進、原型設計、Java 產碼與一致性驗證的 Skills 分工，並持續依實跑結果調整。',
+      },
+      {
+        title: '固定案例評估與 Graphify PoC',
+        finding:
+          'Agent 產碼成功不代表流程有效；需要用同一組案例，比較完整性、一致性、資源使用與版本回歸。',
+        decision:
+          '以固定案例比較基準與調整版本，檢查 Skill 觸發、規格與程式一致性及 Token 使用。另以 Graphify PoC 整理 COBOL／JCL 的程式依賴，供逆向工程取用。',
+        result:
+          '經多輪測試，確認調整後可觸發依賴分析；尚未觀察到 Token 用量明顯降低，目前仍屬 PoC。',
+      },
+    ],
+  },
+  {
+    slug: 'content-platform',
+    name: '企業內容平台',
+    nameEn: 'Corporate Content Platform',
+    titleStyle: 'cjk',
+    category: 'commercial',
+    year: '2023–2024',
+    type: '企業內容展示與管理平台',
+    summary:
+      '官網翻新重做案。前台以 Razor 作為 SSR 方案並搭配 .NET，重點放在 SEO、UI/UX 與品牌呈現細節；後台以 Angular 管理內容上下架、文章、廣告、預覽與排序等動態資料。',
+    role: '前端開發工程師',
+    client: 'Content Platform',
+    facts: [
+      {
+        label: 'SEO',
+        value: '100',
+      },
+      {
+        label: 'SCOPE',
+        value: '前後台',
+      },
+      {
+        label: 'SHARE',
+        value: 'OG Validated',
+      },
+    ],
+    links: {},
+    cardTags: ['Razor', 'JavaScript', 'Angular'],
+    screenRatio: 1.778,
+    screens: [
+      {
+        name: 'Digital-Nomad-Home',
+        label: '首頁',
+        labelEn: 'Home',
+      },
+      {
+        name: 'Digital-Nomad-Articles',
+        label: '文章列表',
+        labelEn: 'Articles',
+      },
+    ],
+    details: [
+      '前台以 Razor 作為 SSR 呈現方案，搭配 .NET 與 JavaScript 完成官網內容展示、互動效果與 RWD，並針對 SEO、字體、間距、顏色、ARIA、Meta Tag、分享預覽與載入策略做細節調整。',
+      '後台採 Angular 架構，負責內容上下架、文章新增/編輯/刪除/查詢、預覽、排序、廣告等管理模組，處理動態切換與資料狀態一致性。',
+    ],
+    tech: ['Razor', 'JavaScript', 'Angular', 'SEO', 'Meta Tag', 'Lighthouse'],
+    features: [
+      {
+        title: 'RWD 響應式設計',
+      },
+      {
+        title: 'SEO / Lighthouse 最佳化',
+      },
+      {
+        title: 'Open Graph 分享設定',
+      },
+      {
+        title: '文章 / 標籤 / 廣告後台管理',
+      },
+    ],
+    highlights: [
+      '調整圖片延遲載入、ARIA 標籤、RWD 與字體載入策略；留存的單次 Lighthouse 檢測中，效能為 95、SEO 為 100。',
+      '實作 Facebook、Twitter、LINE 分享用 Open Graph / Meta Tag，並通過外部檢測工具驗證。',
+      '完成後台文章模組的狀態切換、草稿回復、分頁與預覽流程，提升內容管理效率。',
+    ],
+    context:
+      '前台以 Razor + .NET 輸出主要內容與 Meta 資訊，並調整載入、分享預覽與品牌視覺；後台以 Angular 處理內容管理、上下架與多模組操作。',
+    challenges: [
+      {
+        text: '圖片與字體載入策略優化，降低初始渲染負擔。',
+        cases: [],
+      },
+      {
+        text: '跨平台分享 Meta Tag 設定與外部檢測工具驗證。',
+        cases: [1],
+      },
+      {
+        text: '文章狀態、分頁與預覽流程之間的資料一致性處理。',
+        cases: [2],
+      },
+    ],
+    threads: [
+      {
+        title: '前台 SSR 與 SEO 呈現',
+        finding:
+          '公開官網需要被搜尋引擎、社群爬蟲與外部驗證工具正確讀取，HTML 結構、Meta、分享預覽與載入策略都會影響最終呈現。',
+        decision:
+          '以前端切版與互動配合 Razor + .NET SSR，讓主要內容與 Meta 資訊在伺服器端輸出，再補上 JavaScript 互動、RWD 與載入細節。',
+        result:
+          '完成官網前台翻新，調整 SEO、分享資訊、ARIA 與載入策略。留存的 Lighthouse 檢測畫面中，效能為 95、SEO 為 100，並以外部工具驗證分享預覽。',
+        evidence: {
+          name: 'Digital-Nomad-Lighthouse',
+          ratio: 1.249,
+          caption: 'Lighthouse — Case 01 結果的佐證',
+        },
+      },
+      {
+        title: '內容生命週期一致性',
+        finding:
+          '後台同時處理文章、廣告、排序、預覽、上下架與草稿回復；狀態若分散在頁面流程中，預覽內容與正式內容容易出現落差。',
+        decision: '用 Angular 模組處理編輯、預覽、排序與上下架，集中管理文章狀態與草稿回復。',
+        result:
+          '完成新增、編輯、預覽、排序、上下架與草稿回復功能，讓內容管理者在同一套後台流程中操作。',
+      },
+    ],
+  },
+  {
+    slug: 'eventa',
+    name: 'Eventa',
+    nameEn: 'AI Ticketing Platform',
+    titleStyle: 'latin',
+    category: 'personal',
+    year: '2024',
+    type: 'AI 票務平台',
+    summary: '日常中小型活動票務平台，結合活動報名、主辦管理、AI 推薦、QR 驗票與自動化部署。',
+    role: '全端開發工程師',
+    client: 'Eventa',
+    facts: [
+      {
+        label: 'DEPLOY',
+        value: 'CI / CD',
+      },
+      {
+        label: 'BUILD',
+        value: '10 → 3 min',
+      },
+      {
+        label: 'AI',
+        value: 'Chatbot',
+      },
+    ],
+    links: {
+      live: 'https://eventa-frontend.onrender.com',
+      repo: 'https://github.com/Eventa5',
+    },
+    cardTags: ['Next.js', 'Zustand', 'SWR'],
+    screenRatio: 1.778,
+    screens: [
+      {
+        name: 'Eventa-Home',
+        label: '首頁',
+        labelEn: 'Home',
+      },
+      {
+        name: 'Eventa-Event-Overview',
+        label: '活動總覽',
+        labelEn: 'Event Overview',
+      },
+      {
+        name: 'Eventa-AI-Chat',
+        label: 'AI 客服推薦',
+        labelEn: 'AI Chat',
+      },
+    ],
+    details: [
+      'AI 票務平台針對日常中小型活動（如聚會、市集、工作坊）打造，強調直覺報名流程與「認票不認人」的管理模式，讓主辦方能快速建構活動、管理票券，使用者則可透過 AI 聊天機制獲得個人化活動推薦，提升報名效率與參與體驗。',
+      '技術上採用 Next.js App Router 架構，整合 SWR 與 Zustand 管理前端狀態與快取，後端以 Node.js、PostgreSQL、Prisma 建構交易與資料邏輯。整合 AI 機器人 API、票券 QR 驗票、金流、主辦後台等功能，並透過 Docker 與 GitHub Actions 實現自動化部署流程。',
+    ],
+    tech: ['Next.js', 'Zustand', 'SWR', 'Node.js', 'PostgreSQL', 'Prisma', 'Docker'],
+    features: [
+      {
+        title: 'AI 客服聊天推薦活動',
+      },
+      {
+        title: '主辦單位活動建立與後台管理',
+      },
+      {
+        title: '即時訂單與票券查詢',
+      },
+      {
+        title: 'ECPay 金流與 QR 驗票',
+      },
+      {
+        title: '自動化部署流程（Docker + GitHub Actions）',
+      },
+      {
+        title: '多主辦單位支援與活動分群管理',
+      },
+    ],
+    highlights: [
+      '整合 AI 對話機器人，實現活動推薦與互動式搜尋。',
+      '以 Next.js 實作 SSR 架構。',
+      '實現活動建立流程以及後台管理系統。',
+      '使用 Docker 實作容器化部署並導入 GitHub Actions 建立自動化 CI/CD。',
+      '規劃及調整前後端專案架構並負責團隊進度確認與時程安排，協調任務分工並確保開發節奏穩定推進。',
+      '規劃與建立活動建立流程 UI 流程與表單邏輯。',
+    ],
+    context:
+      '團隊為聚會、市集與工作坊等中小型活動打造票務平台，提供活動建立、票券管理與 AI 聊天推薦，採用「認票不認人」的票券管理模式。',
+    challenges: [
+      {
+        text: '整合 AI 機器人 API，實作公開資料查詢與回應流程，並透過流量控制機制（節流套件）限制過高頻率觸發，避免資源濫用。',
+        cases: [],
+      },
+      {
+        text: '設計活動建立流程的狀態共用邏輯，並處理多入口（編輯/新建）進入流程時的資料載入與狀態初始化。',
+        cases: [1],
+      },
+      {
+        text: '實作跨 SSR 與 Client 的登入狀態一致性機制，結合 Cookie、Storage 與 Middleware，並透過 Next.js API 設定 HttpOnly Cookie，避免於 client 端直接操作，強化安全性。',
+        cases: [2],
+      },
+      {
+        text: '整合 Docker 與 GitHub Actions 實現前後端自動化部署，過程中解決多架構設定問題。',
+        cases: [3],
+      },
+      {
+        text: '優化 Next.js 在 Ubuntu 環境下的建置流程，將建置時間從 10 分鐘縮短至約 3 分鐘。',
+        cases: [3],
+      },
+    ],
+    threads: [
+      {
+        title: '新建與編輯的活動表單',
+        finding: '同一活動流程有新建與編輯兩個入口，進入時需要載入正確資料，並初始化表單狀態。',
+        decision: '整理共用的活動建立流程，分別處理新建與編輯入口的資料載入和狀態初始化。',
+        result: '完成活動建立與主辦管理流程，讓新建和編輯入口共用表單操作。',
+      },
+      {
+        title: 'SSR / Client 登入狀態一致性',
+        finding:
+          'Next.js 在 SSR / Client 邊界切換時，身分狀態若只存在前端儲存，容易出現首屏判斷與互動狀態不一致，也會增加 token 暴露風險。',
+        decision: '整合 Cookie、Storage 與 Middleware 的登入判斷，並由伺服器設定 HttpOnly Cookie。',
+        result: '完成首屏渲染與瀏覽器互動之間的登入狀態同步。',
+      },
+      {
+        title: '部署流程與 Ubuntu 建置時間優化',
+        finding: 'Docker 多架構設定與 GitHub Actions 建置耗時，影響每次部署與驗證的速度。',
+        decision: '整理 Docker 與 GitHub Actions 的部署串接，並調整 Ubuntu 上的 Next.js 建置流程。',
+        result: '在當時的 Ubuntu 環境中，建置時間由約 10 分鐘縮短至約 3 分鐘。',
+      },
+    ],
+  },
+  {
+    slug: 'finance-platform',
+    name: '金融資訊平台',
+    nameEn: 'Financial Info Platform',
+    titleStyle: 'cjk',
+    category: 'commercial',
+    year: '2024–2025',
+    type: '金融資訊平台第三階段',
+    summary:
+      '金融前台第三階段擴充案。主要負責期信功能模組核心開發，完成後續也接手全案前端維護、優化、調整與收尾，直到第三階段上線。',
+    role: '前端開發工程師',
+    client: 'Finance Platform',
+    facts: [
+      {
+        label: 'MODULE',
+        value: '期信核心',
+      },
+      {
+        label: 'PRINT',
+        value: 'Common Print',
+      },
+      {
+        label: 'STAGE',
+        value: 'Phase 3',
+      },
+    ],
+    links: {},
+    cardTags: ['Angular', 'TypeScript', 'RxJS'],
+    screenRatio: 1.778,
+    screens: [],
+    details: [
+      '主要負責期信功能模組核心開發，包含前台子頁面、資料串接、互動邏輯、查詢列、表格、資料呈現與相關頁面流程。',
+      '後續接手全案前端維護、優化與調整，處理跨模組問題、共用元件彈性、頁面邏輯與上線前收尾，直到第三階段正式上線。',
+    ],
+    tech: ['Angular', 'TypeScript', 'RxJS', 'Highcharts', 'SCSS', 'Nx'],
+    features: [
+      {
+        title: '期信功能模組開發',
+      },
+      {
+        title: '共用查詢列與表格整合',
+      },
+      {
+        title: '共用列印流程',
+      },
+      {
+        title: '全案前端維護與上線調整',
+      },
+    ],
+    highlights: [
+      '負責期信功能模組核心開發，整合查詢、表格、資料呈現與前台互動需求。',
+      '實作共用列印功能並整合至既有元件架構，支援多模組差異化使用情境。',
+      '後續負責全案前端維護、優化與調整，協助第三階段穩定上線。',
+    ],
+    challenges: [
+      {
+        text: '擴充既有共用元件邏輯，處理多模組差異化需求。',
+        cases: [1],
+      },
+      {
+        text: '處理 Nx Monorepo 架構下的模組管理與依賴設定。',
+        cases: [],
+      },
+      {
+        text: '列印功能在不同資料與版型下的顯示一致性。',
+        cases: [1],
+      },
+    ],
+    threads: [
+      {
+        title: '共用列印與跨模組整合',
+        finding:
+          '金融資訊頁面需要共用列印能力，但各模組資料結構、表格版型與輸出格式不同；若各自實作，就需要在多個頁面分別維護列印邏輯。',
+        decision:
+          '將列印流程接回既有共用元件架構，透過模組差異設定與版型調整保留彈性，避免在每個頁面複製列印邏輯。',
+        result: '完成共用列印，讓各模組沿用相同流程，並依各自的資料與版型設定輸出。',
+      },
+      {
+        title: '全案前端維護到上線',
+        finding: '第三階段上線前仍有跨模組錯誤、資料呈現落差、共用元件調整與頁面細節需要處理。',
+        decision:
+          '後續接手全案前端維護與收尾，優先處理會影響上線穩定性的跨模組問題、資料顯示差異與共用元件調整。',
+        result: '期信模組完成後，我接手跨模組維護與上線前調整，直到第三階段正式上線。',
+      },
+    ],
+  },
+  {
+    slug: 'hr-system-upgrade',
+    name: '人事系統擴充與升級',
+    nameEn: 'HR System Upgrade',
+    titleStyle: 'cjk-long',
+    category: 'commercial',
+    year: '2025',
+    type: '人事系統功能擴充與架構升級',
+    summary:
+      '企業內部人資系統的功能擴充與架構升級。除了 Angular 版本升級，也包含架構優化調整、核心套件如 Kendo UI 升級，以及客製化考試模組與共用元件擴充。',
+    role: '前端開發工程師',
+    client: 'Internal HR',
+    facts: [
+      {
+        label: 'UPGRADE',
+        value: '11 → 19',
+      },
+      {
+        label: 'UI',
+        value: 'Kendo / Material',
+      },
+      {
+        label: 'STATUS',
+        value: 'Maintained',
+      },
+    ],
+    links: {},
+    cardTags: ['Angular 11-19', 'TypeScript', 'RxJS'],
+    screenRatio: 1.778,
+    screens: [],
+    details: [
+      '針對既有人事系統進行功能擴充，開發客製化考試模組、共用元件與管理流程，讓內部作業可以支援更多情境。',
+      '參與 Angular 11 至 Angular 19 升級，包含架構優化調整、核心套件如 Kendo UI 升級、舊有程式結構調整與元件使用方式收斂。',
+    ],
+    tech: ['Angular 11-19', 'TypeScript', 'RxJS', 'Angular Material', 'Kendo UI', 'Signal'],
+    features: [
+      {
+        title: '客製化考試模組',
+      },
+      {
+        title: '擴充型共用元件',
+      },
+      {
+        title: 'Angular 版本升級',
+      },
+      {
+        title: 'Kendo / Material UI 整合',
+      },
+    ],
+    highlights: [
+      '開發客製化考試模組與可擴充共用元件，提升內部流程彈性。',
+      '參與 Angular 11 至 Angular 19 升級，處理架構優化、Kendo UI 等核心套件升級與舊有架構調整。',
+      '重構多處舊程式結構，讓後續功能開發更一致且易維護。',
+    ],
+    context:
+      '長期維護中的企業內部人資系統。工作範圍包含功能擴充、架構優化、Angular 版本升級、Kendo UI 等核心套件升級、舊結構整理與共用元件調整，並保持既有 HR 流程可用。',
+    challenges: [
+      {
+        text: '在既有大型系統中維持相容性，同時逐步清理舊結構。',
+        cases: [],
+      },
+      {
+        text: '跨版本升級時處理套件、元件 API 與樣式差異。',
+        cases: [1],
+      },
+      {
+        text: '以可擴充元件承接客製化考試流程需求。',
+        cases: [],
+      },
+    ],
+    threads: [
+      {
+        title: 'Angular 與核心套件升級',
+        finding:
+          '系統需要從 Angular 11 升級到 Angular 19，並處理 Kendo UI 等核心套件升級，牽涉元件 API、樣式、相依套件與既有寫法調整。',
+        decision:
+          '分段處理 Angular、Kendo UI 與相關套件升級，逐步修正 API 差異、樣式差異與相依問題，避免一次性大改造成既有流程不穩。',
+        result: '參與完成 Angular 11 至 19 升級，並處理 Kendo UI 等套件的 API、樣式與相依差異。',
+      },
+      {
+        title: '架構優化與舊結構整理',
+        finding:
+          '長期維護系統累積了舊結構與不一致寫法；若只做版本升級，後續新功能仍會被舊邏輯與元件邊界拖住。',
+        decision:
+          '在升級與功能開發過程中同步整理舊有程式結構、元件使用方式與共用邏輯，將能收斂的流程逐步統一。',
+        result: '整理舊有程式結構、元件使用方式與共用邏輯，並將可共用的流程逐步統一。',
+      },
+    ],
+  },
+  {
+    slug: 'talent-match',
+    name: 'TalentMatch',
+    nameEn: 'Talent Match Platform',
+    titleStyle: 'latin-long',
+    category: 'personal',
+    year: '2024',
+    type: '才藝媒合平台',
+    summary: '以課程為導向的才藝媒合平台，實作即時聊天、課程預約、Google 登入與 ECPay 付款。',
+    role: '全端開發工程師',
+    client: 'Talent Match',
+    facts: [
+      {
+        label: 'ROUTES',
+        value: 'Lazy Domain',
+      },
+      {
+        label: 'AUTH',
+        value: 'JWT Refresh',
+      },
+      {
+        label: 'CHAT',
+        value: 'Socket.IO',
+      },
+    ],
+    links: {
+      live: 'https://talent-match-frontend.onrender.com/home',
+      repo: 'https://github.com/TalentMatchNorth10',
+    },
+    cardTags: ['Angular', 'Lazy Routes', 'Node.js'],
+    screenRatio: 2.188,
+    screens: [
+      {
+        name: 'TalentMatch-Home',
+        label: '首頁',
+        labelEn: 'Home',
+      },
+      {
+        name: 'TalentMatch-Course-Detail',
+        label: '課程詳情',
+        labelEn: 'Course Detail',
+      },
+      {
+        name: 'TalentMatch-Teacher-Course',
+        label: '教師課程管理',
+        labelEn: 'Teacher Courses',
+      },
+    ],
+    details: [
+      '才藝媒合平台聚焦於音樂、藝術、舞蹈等多元才藝領域，強調課程自由度與內容多樣性，讓老師可彈性設計課程、學生能依興趣媒合合適內容。本平台參考語言教學平台設計，並強化課程彈性與自由度，提升整體使用體驗。',
+      '前端採用 Angular standalone component 與 lazy-loaded routes，以學生、老師、課程搜尋、購物車等 domain 拆分功能邊界。後端以 Node.js + Express 搭配 MongoDB 實作，支援 Google OAuth、JWT / refresh token、ECPay 金流與 Socket.IO 即時聊天公告。',
+    ],
+    tech: [
+      'Angular',
+      'Standalone Components',
+      'Lazy Routes',
+      'Node.js',
+      'Express',
+      'MongoDB',
+      'Tailwind CSS',
+      'Socket.IO',
+      'Google OAuth',
+      'JWT',
+      'Refresh Token',
+      'ECPay',
+      'Fullcalendar',
+      'Nodemailer',
+      'Swagger Autogen',
+    ],
+    features: [
+      {
+        title: '多元課程查詢與預約',
+      },
+      {
+        title: '教師自由上架與管理課程',
+      },
+      {
+        title: '學生課程購買與預約時段管理',
+      },
+      {
+        title: '即時聊天與公告（Socket.IO）',
+      },
+      {
+        title: 'Google 第三方登入',
+      },
+      {
+        title: 'JWT / Refresh Token 續期',
+      },
+      {
+        title: 'ECPay 金流付款流程',
+      },
+      {
+        title: 'Email 預約通知',
+      },
+    ],
+    highlights: [
+      '以 domain-based lazy routes 拆分學生後台、教師後台、課程搜尋與購物車流程。',
+      '整合 JWT access token、refresh token 與 Angular interceptor，集中處理登入續期流程。',
+      '以 Socket.IO personal room / chat room 建構即時聊天與公告推播。',
+      '串接 ECPay 金流完成付款流程。',
+      '主導團隊技術整合與開發節奏協調。',
+    ],
+    context:
+      '系統涵蓋學生後台、教師後台、課程搜尋、購物車、預約、付款、即時聊天與公告，因此前端重點不只是頁面完成，而是要讓大型 Angular SPA 在功能邊界、登入續期與即時互動上能維持清楚結構。',
+    challenges: [
+      {
+        text: '大型 Angular SPA 需拆分學生、老師、課程、購物車等 domain，避免功能邊界混在同一套路由中。',
+        cases: [1],
+      },
+      {
+        text: 'JWT refresh flow 需在安全性、登入體驗與前端狀態複雜度之間取捨。',
+        cases: [2],
+      },
+      {
+        text: 'Socket.IO 即時訊息需處理連線生命週期、授權與 room 狀態。',
+        cases: [3],
+      },
+      {
+        text: '規劃團隊功能分工與開發時程，協調進度與人力配置，並因應時程調整進行功能優先順序的取捨與調整。',
+        cases: [],
+      },
+    ],
+    threads: [
+      {
+        title: 'Angular Lazy Loading + Domain-based Pages',
+        finding:
+          '學生後台、教師後台、課程搜尋與購物車若集中在同一套路由與模組，功能責任不易區分，也難以分開載入。',
+        decision:
+          '採用 Angular standalone component 與延遲載入路由，依學生、教師、課程及購物車拆分頁面，讓各功能能獨立載入與調整。',
+        result: '依學生、教師、課程及購物車拆分頁面，透過延遲載入路由按需載入各功能。',
+      },
+      {
+        title: 'JWT + Refresh Token 登入體驗',
+        finding:
+          '登入權杖到期時，不希望使用者被迫重新登入。但同一頁可能同時發出多個請求，每個請求各自更新權杖，又會造成重複處理。',
+        decision:
+          '以 JWT 與更新權杖維持登入，在 Angular 的請求攔截器集中處理 401。第一個失敗的請求啟動更新，其餘請求等待同一次結果，再繼續原本的操作。',
+        result: '多個請求同時收到 401 時，共用一次權杖更新；更新完成後再恢復原本的 API 請求。',
+      },
+      {
+        title: 'Socket.IO 即時訊息與公告',
+        finding: '聊天與公告需要處理連線授權，並依使用者與聊天房間決定訊息的接收範圍。',
+        decision:
+          '以 Socket.IO 的 personal room 與 chat room 管理聊天與公告推播，並處理連線生命週期、授權與房間狀態。',
+        result: '完成聊天與公告推播，依 personal room 與 chat room 傳送訊息。',
+      },
+    ],
+  },
+  {
+    slug: 'gpt-platform',
+    name: '客製化 GPT 對話平台',
+    nameEn: 'Custom GPT Platform',
+    titleStyle: 'cjk-long',
+    category: 'commercial',
+    year: '2024',
+    summary: '基於 Nuxt.js 開發的 GPT 對話平台，支援 SSE 串接、逐字輸出、歷史紀錄與對話分享。',
+    role: '前端開發工程師',
+    client: 'AI Client',
+    facts: [
+      {
+        label: 'STREAM',
+        value: 'SSE',
+      },
+      {
+        label: 'SHARE',
+        value: 'Public View',
+      },
+      {
+        label: 'UX',
+        value: 'Chat Flow',
+      },
+    ],
+    links: {},
+    cardTags: ['Nuxt.js', 'Vue.js', 'SSE'],
+    screenRatio: 2.226,
+    screens: [
+      {
+        name: 'MyGPT-Home',
+        label: '對話',
+        labelEn: 'Chat',
+      },
+      {
+        name: 'MyGPT-Login',
+        label: '登入',
+        labelEn: 'Login',
+      },
+      {
+        name: 'MyGPT-Share-Conversation',
+        label: '分享對話',
+        labelEn: 'Shared Conversation',
+      },
+      {
+        name: 'MyGPT-Template',
+        label: '對話範本',
+        labelEn: 'Templates',
+      },
+    ],
+    details: [
+      '客戶需要一個方便使用自行 fine-tune AI 模型的平台，因此以前端互動與對話體驗為核心，規劃輸入框、逐字輸出、自動滾動與響應式版面。',
+      '前端採 Nuxt.js 與 Vue，與後端協作串接 OpenAI API，以 SSE 流式傳輸處理逐字回應，並加入對話儲存、歷史查詢、分享與評論流程。',
+    ],
+    tech: ['Nuxt.js', 'Vue.js', 'SSE', 'OpenAI API'],
+    features: [
+      {
+        title: 'SSE 即時對話',
+      },
+      {
+        title: '歷史紀錄查詢',
+      },
+      {
+        title: '對話分享與評論',
+      },
+      {
+        title: '自動滾動與響應式介面',
+      },
+    ],
+    highlights: [
+      '完成整體 UI 規劃與互動邏輯設計，支援響應式與打字效果。',
+      '整合 SSE 串流機制，實現逐字回應輸出與自動滾動。',
+      '設計對話分享流程，實作複製連結與公開檢視邏輯。',
+      '建立對話儲存與查詢 API 串接邏輯，支援歷史紀錄功能。',
+      '與後端溝通 API 架構並協調 SSE 資料格式。',
+    ],
+    context:
+      '客戶希望能方便使用其自行 fine-tune 的 AI 模型，因此建立一個具備對話、儲存、分享功能的平台。我以 ChatGPT 為參考規劃版面，實作對話輸入框、逐字輸出、自動滾動與響應式設計。應客戶需求加入對話分享與評論功能，簡化操作流程。',
+    challenges: [
+      {
+        text: '處理對話過程中逐字回應與自動滾動的同步邏輯。',
+        cases: [1],
+      },
+      {
+        text: '處理 SSE 串流資料格式、部分回應、完成狀態與打字動畫同步顯示。',
+        cases: [1],
+      },
+      {
+        text: '處理連續對話過程中的狀態同步與捲動行為。',
+        cases: [1],
+      },
+      {
+        text: '設計可分享的對話內容結構，並處理前端路由與檢視邏輯。',
+        cases: [],
+      },
+      {
+        text: '與後端溝通資料格式、API 回傳規格與錯誤處理方式。',
+        cases: [1],
+      },
+    ],
+    threads: [
+      {
+        title: 'SSE 對話串流狀態',
+        finding: '逐字輸出需要同時處理部分回應、完成狀態、錯誤狀態、連續對話與自動滾動。',
+        decision:
+          '以前端串流狀態管理承接 SSE 事件，並和後端對齊資料格式、結束條件與錯誤回傳，讓 UI 反映對話進度。',
+        result: '介面可逐字顯示回應，並處理串流完成、錯誤與自動捲動。',
+      },
+    ],
+  },
+  {
+    slug: 'line-liff',
+    name: 'LINE LIFF 管理系統',
+    nameEn: 'LINE LIFF Management',
+    titleStyle: 'cjk-long',
+    category: 'commercial',
+    year: '2024',
+    type: 'LINE LIFF 前台與後台管理系統',
+    summary:
+      'LINE LIFF 前台與 React 後台管理系統。核心處理多群編 / 多公司登入選擇與切換流程，並整合 LIFF 登入、登出跳轉、資料刷新與 React 頁面狀態管理。',
+    role: '前端開發工程師',
+    client: 'Internal System',
+    facts: [
+      {
+        label: 'CHANNEL',
+        value: 'LINE LIFF',
+      },
+      {
+        label: 'IDENTITY',
+        value: 'Multi Group',
+      },
+      {
+        label: 'STATE',
+        value: 'Session Sync',
+      },
+    ],
+    links: {},
+    cardTags: ['Next.js', 'React', 'LINE LIFF'],
+    screenRatio: 1.778,
+    screens: [],
+    details: [
+      '前台以 LINE LIFF + Next.js 開發，處理 LINE 內嵌環境中的登入驗證、登入時公司 / 群編選擇、切換時重新登出登入、跳轉與資料重新取得。',
+      '後台以 React 建置模板管理與訊息發送流程，並配合登入身分切換處理頁面狀態重置、資料刷新與錯誤跳轉情境。',
+    ],
+    tech: ['Next.js', 'React', 'LINE LIFF'],
+    features: [
+      {
+        title: 'LINE LIFF 登入與身分切換',
+      },
+      {
+        title: '多群編 / 多公司選擇流程',
+      },
+      {
+        title: '訊息模板設定與管理',
+      },
+      {
+        title: '條件式訊息發送',
+      },
+      {
+        title: '前後台雙平台分離架構',
+      },
+    ],
+    highlights: [
+      '規劃多群編 / 多公司登入選擇與切換流程，讓不同市區對應的公司資料能正確載入。',
+      '整合 LIFF 登入、登出、重新登入與跳轉流程，優化切換身分時的使用體驗。',
+      '處理 React 頁面狀態、資料刷新與錯誤跳轉情境，避免舊身分資料殘留。',
+      '建置後台模板管理與訊息發送流程，支援資料維護、條件篩選與動態模板內容。',
+    ],
+    context:
+      '本專案為企業內部系統的新版改造，前台採用 LINE LIFF + Next.js，後台使用 React。該公司有多個群編，不同市區會對應不同公司，因此登入時需要選擇身分，切換時也必須重新登出登入、跳轉並重新取得資料；後台同時要維持模板管理、訊息發送與 React 頁面狀態的一致性。',
+    challenges: [
+      {
+        text: '多群編 / 多公司身分切換時，需重新建立登入狀態並刷新對應資料。',
+        cases: [1],
+      },
+      {
+        text: 'LIFF 登出登入、跳轉流程與 React 頁面狀態管理需要同步處理。',
+        cases: [1],
+      },
+      {
+        text: '處理使用者錯誤跳轉、舊資料殘留與切換過程中的 UX 中斷。',
+        cases: [1],
+      },
+    ],
+    threads: [
+      {
+        title: '多群編登入與身分切換',
+        finding:
+          '同一套系統需要支援多個群編／公司身分；切換時需處理 LIFF 登出登入、跳轉、資料重新取得與 React 頁面狀態重置。',
+        decision:
+          '將身分切換視為重新建立 session，重新梳理登入選擇、登出、重新登入、資料刷新與頁面導向流程，並處理使用者錯誤跳轉情境。',
+        result: '完成重新登入、取得對應公司資料及頁面狀態重置，切換後不沿用舊身分資料。',
+      },
+    ],
+  },
+  {
+    slug: 'ecommerce',
+    name: '日系電商平台',
+    nameEn: 'Japanese Style E-commerce',
+    titleStyle: 'cjk',
+    category: 'commercial',
+    year: '2025',
+    summary: 'Nuxt 3 SSR 日系電商平台，整合 Orval 自動生成型別安全 API Client 與完整前後台系統。',
+    role: '前端開發工程師',
+    client: 'E-commerce',
+    facts: [
+      {
+        label: 'API',
+        value: '28+ Endpoints',
+      },
+      {
+        label: 'AUTH',
+        value: 'Google OAuth',
+      },
+      {
+        label: 'MODE',
+        value: 'SSR / CSR',
+      },
+    ],
+    links: {},
+    cardTags: ['Nuxt 3', 'Vue 3', 'TypeScript'],
+    screenRatio: 1.922,
+    screens: [
+      {
+        name: 'E-commerce-Detail',
+        label: '商品詳情',
+        labelEn: 'Product Detail',
+      },
+      {
+        name: 'E-commerce-Home',
+        label: '首頁',
+        labelEn: 'Home',
+      },
+      {
+        name: 'E-commerce-List',
+        label: '商品列表',
+        labelEn: 'Product List',
+      },
+    ],
+    details: [
+      '前台使用 Nuxt 3、Vue 3、TypeScript 與 Composition API，透過 Orval 從 OpenAPI Specification 自動生成型別安全 API Client，整合商品、會員、購物車、收藏與訂單流程。',
+      '後台管理系統涵蓋商品管理（商品資訊、款式、庫存）、分類管理、品牌管理、訂單管理、優惠券管理、輪播圖管理、評論管理等模組。整合 Google OAuth 2.0 第三方登入，並實作 API 快取機制（useApiCache）減少重複請求。SEO 優化方面設定完整的 Meta Tag、Schema.org 結構化資料、useSeoMeta 動態生成等。',
+    ],
+    tech: [
+      'Nuxt 3',
+      'Vue 3',
+      'TypeScript',
+      'Tailwind CSS',
+      'Pinia',
+      'Orval',
+      'Swiper',
+      'Docker',
+      'ESLint',
+      'Prettier',
+      'Husky',
+      'Google OAuth 2.0',
+      'OpenAPI',
+      'useSeoMeta',
+      'Composables',
+    ],
+    features: [
+      {
+        title: '商品瀏覽與搜尋',
+        description: '支援多維度篩選、排序、分頁功能',
+      },
+      {
+        title: '購物車系統',
+        description: '即時新增、刪除、數量調整與總價計算',
+      },
+      {
+        title: '收藏清單',
+        description: '收藏商品、批次管理',
+      },
+      {
+        title: '訂單管理',
+        description: '建立訂單、訂單追蹤、歷史查詢',
+      },
+      {
+        title: '優惠券功能',
+        description: '套用折扣碼、驗證優惠條件',
+      },
+      {
+        title: '會員系統',
+        description: 'Email 登入、Google OAuth 2.0 第三方登入',
+      },
+      {
+        title: '後台管理',
+        description: '商品、款式、分類、品牌、訂單、優惠券、輪播圖管理',
+      },
+    ],
+    highlights: [
+      '採用 Orval 自動生成 API Client，實現 28+ 個端點的型別安全整合。',
+      '使用 Composables 模式建立可重用狀態管理邏輯，確保 SSR/CSR 狀態一致性。',
+      '整合 Google OAuth 2.0 第三方登入與 Token 持久化機制。',
+      '實作 API 快取與去重機制（useApiCache），優化請求效能。',
+      '設定 SEO Meta Tag、Schema.org 結構化資料與 useSeoMeta 動態優化。',
+      '建立完整後台管理系統：商品、分類、訂單、優惠券、輪播圖等模組。',
+    ],
+    context:
+      '這個電商平台同時包含顧客購物介面與商品、訂單管理後台。會員、購物車、收藏與訂單會在多個頁面共用資料，因此開發重點是讓首屏與後續操作保持一致，並能跟上後端規格的更新。前端以 Nuxt 3、Vue 3 與 TypeScript 建置，使用 Orval 產生 API 呼叫方法，整合 28 個以上端點。',
+    challenges: [
+      {
+        text: 'SSR/CSR 狀態一致性：透過 useState 確保伺服器端與客戶端狀態同步。',
+        cases: [2],
+      },
+      {
+        text: 'API 自動化生成：設定 Orval 配置，將 OpenAPI Spec 轉換為 TypeScript Client。',
+        cases: [1],
+      },
+      {
+        text: '認證狀態管理：整合 Cookie、Token、Google OAuth，處理登入/登出/自動登入邏輯。',
+        cases: [],
+      },
+      {
+        text: 'API 快取機制：設計 TTL 快取、請求去重、自動失效邏輯減少重複請求。',
+        cases: [3],
+      },
+      {
+        text: 'SEO 動態生成：針對商品詳情頁、分類頁等動態路由設定個別 Meta Tag。',
+        cases: [],
+      },
+    ],
+    threads: [
+      {
+        title: 'Orval API Client 自動化生成',
+        finding: '電商前後台 API 端點多，手寫呼叫方法與型別時，規格更新容易漏改。',
+        decision:
+          '用 Orval 從 OpenAPI 生成 TypeScript Client，讓 API 規格變更能反映到前端型別與呼叫方法。',
+        result: '完成 28 個以上端點串接，呼叫方法與 TypeScript 型別由 Orval 從 OpenAPI 規格產生。',
+      },
+      {
+        title: 'SSR / CSR 狀態一致性與 Composables',
+        finding:
+          '登入、購物車、收藏與訂單狀態同時出現在 SSR 首屏與 Client 互動流程，狀態來源分散會導致 hydration 與跨頁行為不穩。',
+        decision:
+          '以 Composables 與 useState 收斂狀態來源，讓共享狀態在頁面、元件與 SSR / CSR 邊界間有一致的更新方式。',
+        result: '登入、購物車、收藏與訂單共用狀態來源，供伺服器渲染與瀏覽器互動使用。',
+      },
+      {
+        title: '請求快取與失效邊界',
+        finding:
+          '商品、會員、購物車與收藏資料會被多個頁面重複讀取，若沒有快取與失效邊界，容易造成重複請求或顯示舊資料。',
+        decision:
+          '建立 useApiCache 的 TTL、請求去重與失效邏輯，並和登入 / Token 狀態一起整理資料更新時機。',
+        result:
+          '完成 useApiCache 的 TTL 快取、請求去重與失效邏輯，配合登入與 Token 狀態處理資料更新時機。',
+      },
+    ],
+  },
+];

@@ -1,0 +1,840 @@
+/* Home (canvas PageHome / TabletHome / MobileHome). Each board places its pieces on its own grid. */
+.canvas {
+  position: relative;
+  height: 2400px;
+}
+.canvas > *,
+.featured > *,
+.about > *,
+.card > * {
+  position: absolute;
+}
+.featured ul,
+.featured li,
+.card {
+  position: static;
+}
+.featured,
+.about {
+  left: 0;
+  width: 100%;
+  height: 0;
+}
+.featured {
+  top: 0;
+}
+.about {
+  top: 1640px;
+}
+
+/* ── hero ── */
+.heroArt {
+  left: 0;
+  top: 0;
+  width: 1440px;
+  height: 1640px;
+  object-fit: cover;
+  object-position: 50% 0;
+  -webkit-mask-image: linear-gradient(180deg, #000 84%, rgb(0 0 0 / 0) 100%);
+  mask-image: linear-gradient(180deg, #000 84%, rgb(0 0 0 / 0) 100%);
+}
+.chime {
+  left: 961.8px;
+  top: -42.2px;
+  width: 292.4px;
+  height: 826.8px;
+}
+.light {
+  height: auto;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(180deg, rgb(0 0 0 / 0), #000 22%, #000 78%, rgb(0 0 0 / 0));
+  mask-image: linear-gradient(180deg, rgb(0 0 0 / 0), #000 22%, #000 78%, rgb(0 0 0 / 0));
+}
+.lightLeft {
+  left: -160px;
+  top: 1329px;
+  width: 880px;
+  opacity: 0.55;
+}
+.lightRight {
+  left: 760px;
+  top: 1399px;
+  width: 760px;
+  opacity: 0.38;
+  transform: scaleX(-1);
+}
+
+/* ── featured projects ── */
+.rail {
+  left: 49px;
+  top: 1250px;
+  width: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.rail b,
+.based b {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1.1px solid var(--text);
+}
+.rail i {
+  width: 1.1px;
+  height: 26px;
+  background: var(--text);
+}
+.goodIdeas {
+  left: 44px;
+  top: 1289px;
+  font-size: 16px;
+  transform: rotate(-8deg);
+}
+.featuredTitle {
+  left: 169px;
+  top: 1271px;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 25px;
+  letter-spacing: 0.005em;
+  color: var(--text);
+}
+.titleLine {
+  left: 372px;
+  top: 1287px;
+  width: 40px;
+  height: 1px;
+  background: var(--hair);
+}
+.featuredText {
+  left: 169px;
+  top: 1327px;
+  font-family: var(--tc);
+  font-size: 12.5px;
+  letter-spacing: 0.2em;
+  line-height: 21px;
+  color: var(--body);
+}
+.viewAll,
+.moreAbout {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--serif);
+  transition: color var(--quick) var(--ease);
+}
+.viewAll svg,
+.moreAbout svg {
+  transition: transform var(--quick) var(--ease);
+}
+.viewAll:hover,
+.moreAbout:hover {
+  color: var(--coral);
+}
+.viewAll:hover svg,
+.moreAbout:hover svg {
+  transform: translateX(3px);
+}
+.viewAll {
+  left: 170px;
+  top: 1393px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--text);
+}
+.kind {
+  left: 49px;
+  top: 1510px;
+  font-family: var(--serif);
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  line-height: 14px;
+  color: var(--mute);
+}
+.kind::after {
+  content: '';
+  display: block;
+  width: 36px;
+  height: 1px;
+  margin-top: 11px;
+  background: var(--hair);
+}
+
+.card1 {
+  --blob-x: 394px;
+  --blob-y: 1275px;
+  --blob-w: 248px;
+  --blob-h: 197px;
+  --title-x: 381px;
+  --title-y: 1453px;
+}
+.card2 {
+  --blob-x: 683px;
+  --blob-y: 1278px;
+  --blob-w: 255px;
+  --blob-h: 184px;
+  --title-x: 692px;
+  --title-y: 1453px;
+}
+.card3 {
+  --blob-x: 975px;
+  --blob-y: 1286px;
+  --blob-w: 253px;
+  --blob-h: 167px;
+  --title-x: 989px;
+  --title-y: 1453px;
+}
+.blob {
+  left: var(--blob-x);
+  top: var(--blob-y);
+  width: var(--blob-w);
+  height: var(--blob-h);
+}
+.blob img {
+  object-fit: cover;
+  transition: transform var(--base) var(--ease);
+}
+.cardTitle {
+  left: var(--title-x);
+  top: var(--title-y);
+  padding-top: 16px;
+}
+.cardName {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 19px;
+  letter-spacing: 0.03em;
+  color: var(--text);
+  white-space: nowrap;
+  transition: color var(--quick) var(--ease);
+}
+.cardEn {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--serif);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  color: var(--deep);
+  white-space: nowrap;
+}
+/* hover and keyboard focus (the link box has no size, so the ring goes on the title) */
+.card:focus-visible {
+  box-shadow: none;
+}
+.card:is(:hover, :focus-visible) .blob img {
+  transform: scale(1.04);
+}
+.card:is(:hover, :focus-visible) .cardName {
+  color: var(--coral);
+}
+.card:focus-visible .cardTitle {
+  border-radius: 6px;
+  box-shadow: 0 0 0 4px rgb(112 188 224 / 0.35);
+}
+
+.smallAgents {
+  left: 1283px;
+  top: 1265px;
+  font-size: 17px;
+  transform: rotate(-13deg);
+}
+.based {
+  left: 1344px;
+  top: 1467px;
+  display: flex;
+  gap: 14px;
+}
+.based div {
+  padding-top: 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.based i {
+  width: 1.1px;
+  height: 58px;
+  background: var(--text);
+}
+.based p {
+  font-family: var(--serif);
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  line-height: 17.5px;
+  color: var(--text);
+}
+.sweep {
+  left: 900px;
+  top: 1359px;
+}
+.petal1 {
+  left: 1273px;
+  top: 1374px;
+  width: 34px;
+  height: 16px;
+  transform: rotate(-28deg);
+}
+.petal2 {
+  left: 1160px;
+  top: 1517px;
+  width: 46px;
+  height: 16px;
+  transform: rotate(-18deg);
+}
+.petal3 {
+  left: 1108px;
+  top: 1559px;
+  width: 30px;
+  height: 12px;
+  transform: rotate(12deg);
+}
+.leafRail {
+  left: 1392px;
+  top: 1367px;
+  width: 26px;
+  height: auto;
+  transform: rotate(40deg);
+}
+.leafCards {
+  left: 890px;
+  top: 1519px;
+  width: 34px;
+  height: auto;
+  transform: rotate(-30deg);
+}
+.leafFar {
+  left: 60px;
+  top: 1414px;
+  width: 78px;
+  height: auto;
+  transform: rotate(-52deg);
+}
+
+/* ── about me ── */
+.aboutTitle {
+  left: 169px;
+  top: 96px;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 40px;
+  line-height: 1.14;
+  letter-spacing: 0.005em;
+  color: var(--text);
+}
+.aboutTitle em {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-left: 10px;
+  border-radius: 50%;
+  background: var(--ocean);
+  vertical-align: 4px;
+}
+.dotline {
+  left: 169px;
+  top: 200px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+}
+.dotline i {
+  flex: 1;
+  height: 1.2px;
+  background: var(--deep);
+}
+.dotline b {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--deep);
+}
+.aboutLead {
+  left: 169px;
+  top: 232px;
+  font-family: var(--tc);
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.17em;
+  line-height: 30px;
+  color: var(--text);
+}
+.aboutBody {
+  left: 169px;
+  top: 310px;
+  font-family: var(--tc);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  line-height: 26px;
+  color: var(--body);
+}
+.moreAbout {
+  left: 169px;
+  top: 436px;
+  font-size: 13px;
+  letter-spacing: 0.09em;
+  color: var(--deep);
+}
+.panel {
+  left: 632px;
+  top: 24px;
+  width: 860px;
+  height: 606px;
+  clip-path: polygon(15% 17%, 100% 0, 100% 100%, 0 86%);
+  -webkit-mask-image: linear-gradient(90deg, rgb(0 0 0 / 0) 0%, #000 16%);
+  mask-image: linear-gradient(90deg, rgb(0 0 0 / 0) 0%, #000 16%);
+}
+.panel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 60% 40%;
+}
+.polaroid {
+  z-index: 2;
+  left: 590px;
+  top: 318px;
+  width: 200px;
+  height: 170px;
+  padding: 10px 10px 30px;
+  transform: rotate(-6deg);
+}
+.polaroid .tape {
+  left: 38%;
+  top: -11px;
+  width: 64px;
+  height: 22px;
+  transform: rotate(-5deg);
+}
+.stillNote {
+  left: 820px;
+  top: 196px;
+  font-family: var(--hand);
+  font-size: 27px;
+  line-height: 1.55;
+  color: var(--deep);
+  transform: rotate(-14deg);
+}
+.stillNote span {
+  display: block;
+}
+.stillNote span + span {
+  padding-left: 26px;
+}
+.skills {
+  left: 169px;
+  top: 536px;
+  display: grid;
+  grid-template-columns: repeat(4, 178px);
+}
+.skills svg {
+  margin: 0 0 12px 6px;
+}
+.skills h3 {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.01em;
+  color: var(--text);
+}
+.skills p {
+  margin-top: 5px;
+  font-family: var(--serif);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--body);
+}
+.leafAbout {
+  left: 650px;
+  top: 122px;
+  width: 62px;
+  height: auto;
+  transform: rotate(-24deg);
+}
+.leafSmall {
+  left: 560px;
+  top: 40px;
+  width: 22px;
+  height: auto;
+  transform: rotate(60deg);
+}
+.leafPanel {
+  left: 1330px;
+  top: 70px;
+  width: 40px;
+  height: auto;
+  opacity: 0.8;
+  transform: rotate(30deg);
+}
+
+.contact {
+  margin-top: 40px;
+}
+
+/* ── tablet 1024 ── */
+@media (max-width: 1279.98px) {
+  .canvas {
+    height: 1917px;
+  }
+  .about {
+    top: 0;
+  }
+  .heroArt {
+    width: 1024px;
+    height: 1150px;
+  }
+  .chime {
+    left: 683.9px;
+    top: -30px;
+    width: 207.9px;
+    height: 587.9px;
+  }
+  .lightLeft {
+    left: -120px;
+    top: 887px;
+    width: 640px;
+    opacity: 0.5;
+  }
+  .goodIdeas {
+    left: 36px;
+    top: 1075px;
+    font-size: 15px;
+  }
+  .featuredTitle {
+    left: 40px;
+    top: 915px;
+    font-size: 22px;
+    letter-spacing: normal;
+  }
+  .featuredText {
+    left: 40px;
+    top: 959px;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    line-height: 20px;
+  }
+  .viewAll,
+  .moreAbout {
+    gap: 10px;
+    font-size: 12.5px;
+    letter-spacing: 0.1em;
+    color: var(--deep);
+  }
+  .viewAll {
+    left: 40px;
+    top: 1017px;
+  }
+  .card1 {
+    --blob-x: 250px;
+    --blob-y: 887px;
+    --blob-w: 232px;
+    --blob-h: 184px;
+    --title-x: 240px;
+    --title-y: 1079px;
+  }
+  .card2 {
+    --blob-x: 510px;
+    --blob-y: 893px;
+    --blob-w: 236px;
+    --blob-h: 172px;
+    --title-x: 500px;
+    --title-y: 1079px;
+  }
+  .card3 {
+    --blob-x: 770px;
+    --blob-y: 899px;
+    --blob-w: 232px;
+    --blob-h: 156px;
+    --title-x: 760px;
+    --title-y: 1079px;
+  }
+  .cardTitle {
+    padding-top: 0;
+  }
+  .cardName {
+    font-size: 17px;
+  }
+  .cardEn {
+    margin-top: 3px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+  }
+  .petal1 {
+    left: 930px;
+    top: 1067px;
+    width: 30px;
+    height: 14px;
+    transform: rotate(-20deg);
+  }
+  .leafCards {
+    left: 700px;
+    top: 1127px;
+    width: 30px;
+  }
+
+  .aboutTitle {
+    left: 40px;
+    top: 1267px;
+    font-size: 34px;
+    letter-spacing: normal;
+  }
+  .aboutTitle em {
+    width: 6px;
+    height: 6px;
+    margin-left: 8px;
+    vertical-align: 3px;
+  }
+  .dotline {
+    left: 40px;
+    top: 1357px;
+    width: 32px;
+  }
+  .aboutLead {
+    left: 40px;
+    top: 1385px;
+    font-size: 15px;
+    letter-spacing: 0.15em;
+    line-height: 28px;
+  }
+  .aboutBody {
+    left: 40px;
+    top: 1453px;
+    font-size: 12.5px;
+    letter-spacing: 0.08em;
+    line-height: 24px;
+  }
+  .moreAbout {
+    left: 40px;
+    top: 1567px;
+  }
+  .panel {
+    left: 440px;
+    top: 1227px;
+    width: 620px;
+    height: 470px;
+    clip-path: polygon(15% 16%, 100% 0, 100% 100%, 0 88%);
+    -webkit-mask-image: linear-gradient(90deg, rgb(0 0 0 / 0) 0%, #000 15%);
+    mask-image: linear-gradient(90deg, rgb(0 0 0 / 0) 0%, #000 15%);
+  }
+  .panel img {
+    object-position: 62% 40%;
+  }
+  .polaroid {
+    left: 420px;
+    top: 1577px;
+    width: 170px;
+    height: 140px;
+    padding: 9px 9px 26px;
+  }
+  .polaroid .tape {
+    left: 36%;
+    top: -10px;
+    width: 54px;
+    height: 20px;
+  }
+  .stillNote {
+    left: 600px;
+    top: 1387px;
+    font-size: 21px;
+  }
+  .stillNote span + span {
+    padding-left: 20px;
+  }
+  .skills {
+    left: 40px;
+    top: 1747px;
+    width: 944px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .skills svg {
+    width: 30px;
+    height: 30px;
+    margin: 0 0 10px 4px;
+  }
+  .skills h3 {
+    font-size: 15px;
+    letter-spacing: normal;
+  }
+  .skills p {
+    margin-top: 4px;
+    font-size: 11.5px;
+    letter-spacing: 0.05em;
+  }
+  .contact {
+    margin-top: 0;
+  }
+}
+
+/* ── phone 390 ── */
+@media (max-width: 767.98px) {
+  .canvas {
+    height: 2610px;
+  }
+  .heroArt {
+    width: 390px;
+    height: 740px;
+    -webkit-mask-image: linear-gradient(180deg, #000 80%, rgb(0 0 0 / 0) 100%);
+    mask-image: linear-gradient(180deg, #000 80%, rgb(0 0 0 / 0) 100%);
+  }
+  .chime {
+    left: 294.4px;
+    top: -17.4px;
+    width: 120.3px;
+    height: 340px;
+  }
+  .goodIdeas {
+    left: 250px;
+    top: 660px;
+    transform: rotate(-10deg);
+  }
+  .featuredTitle {
+    left: 24px;
+    top: 626px;
+    font-size: 27px;
+  }
+  .featuredText {
+    left: 24px;
+    top: 670px;
+    font-size: 12.5px;
+    line-height: 22px;
+  }
+  .viewAll {
+    left: 24px;
+    top: 730px;
+  }
+  .card1 {
+    --blob-x: 40px;
+    --blob-y: 770px;
+    --blob-w: 310px;
+    --blob-h: 230px;
+    --title-x: 32px;
+    --title-y: 1002px;
+  }
+  .card2 {
+    --blob-x: 24px;
+    --blob-y: 1110px;
+    --blob-w: 320px;
+    --blob-h: 220px;
+    --title-x: 32px;
+    --title-y: 1332px;
+  }
+  .card3 {
+    --blob-x: 44px;
+    --blob-y: 1440px;
+    --blob-w: 306px;
+    --blob-h: 200px;
+    --title-x: 32px;
+    --title-y: 1642px;
+  }
+  .cardTitle {
+    padding-top: 17px;
+  }
+  .cardName {
+    margin-top: 7px;
+    font-size: 21px;
+  }
+  .cardEn {
+    margin-top: 4px;
+    font-size: 11.5px;
+  }
+  .smallAgents {
+    left: 250px;
+    top: 1336px;
+    font-size: 15px;
+  }
+  .petal1 {
+    left: 330px;
+    top: 1630px;
+    width: 28px;
+    height: 13px;
+  }
+  .leafRail {
+    left: 340px;
+    top: 1020px;
+    width: 24px;
+  }
+
+  .aboutTitle {
+    left: 24px;
+    top: 1770px;
+    font-size: 30px;
+  }
+  .aboutTitle em {
+    width: 5px;
+    height: 5px;
+    margin-left: 7px;
+  }
+  .dotline {
+    left: 24px;
+    top: 1846px;
+    width: 30px;
+  }
+  .aboutLead {
+    left: 24px;
+    top: 1872px;
+    font-size: 14.5px;
+    letter-spacing: 0.14em;
+    line-height: 27px;
+  }
+  .aboutBody {
+    left: 24px;
+    top: 1936px;
+    letter-spacing: 0.05em;
+    line-height: 23px;
+  }
+  .moreAbout {
+    left: 24px;
+    top: 2040px;
+  }
+  .panel {
+    left: 0;
+    top: 2080px;
+    width: 390px;
+    height: 300px;
+    clip-path: polygon(0 14%, 100% 0, 100% 100%, 0 88%);
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .panel img {
+    object-position: 66% 40%;
+  }
+  .polaroid {
+    left: 246px;
+    top: 2330px;
+    width: 120px;
+    height: 100px;
+    padding: 7px 7px 20px;
+    transform: rotate(7deg);
+  }
+  .polaroid .tape {
+    left: 34%;
+    top: -9px;
+    width: 44px;
+    height: 17px;
+  }
+  .stillNote {
+    left: 34px;
+    top: 2164px;
+    font-size: 19px;
+    transform: rotate(-12deg);
+  }
+  .stillNote span + span {
+    padding-left: 16px;
+  }
+  .skills {
+    left: 24px;
+    top: 2440px;
+    width: 342px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 26px;
+  }
+  .skills svg {
+    width: 28px;
+    height: 28px;
+    margin: 0 0 9px 3px;
+  }
+  .skills p {
+    font-size: 12px;
+  }
+}

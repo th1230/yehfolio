@@ -1,0 +1,59 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 28px;
+  border-radius: 99px;
+  font-family: var(--zen);
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  transition:
+    background-color var(--quick) var(--ease),
+    color var(--quick) var(--ease),
+    box-shadow var(--quick) var(--ease),
+    transform var(--quick) var(--ease);
+}
+.button svg {
+  flex: none;
+}
+
+.primary {
+  background: var(--deep);
+  color: #fff;
+  box-shadow: 0 10px 20px -12px rgb(46 124 166 / 0.7);
+}
+.primary:hover {
+  background: var(--coral);
+}
+.primary:active {
+  background: var(--coral);
+  box-shadow: inset 0 3px 6px rgb(43 58 74 / 0.18);
+  transform: translateY(1px);
+}
+.primary:focus-visible {
+  border-radius: 99px;
+  box-shadow: 0 0 0 4px rgb(112 188 224 / 0.35);
+}
+
+.secondary {
+  color: var(--deep);
+  box-shadow: inset 0 0 0 1.5px var(--deep);
+}
+.secondary:hover {
+  color: var(--coral);
+  box-shadow: inset 0 0 0 1.5px var(--coral);
+}
+.secondary:active {
+  color: var(--coral);
+  background: rgb(238 139 134 / 0.1);
+  box-shadow: inset 0 0 0 1.5px var(--coral);
+}
+.secondary:focus-visible {
+  border-radius: 99px;
+  box-shadow:
+    inset 0 0 0 1.5px var(--deep),
+    0 0 0 4px rgb(112 188 224 / 0.35);
+}

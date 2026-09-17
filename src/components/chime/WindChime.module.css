@@ -1,0 +1,18 @@
+.box {
+  position: absolute;
+  overflow: visible;
+  pointer-events: none;
+}
+/* The source frame is 720×1280; the box is its chime area (x226 y0 394×1114). */
+.frame {
+  position: absolute;
+  left: calc(-226 / 394 * 100%);
+  top: 0;
+  width: calc(720 / 394 * 100%);
+  height: calc(1280 / 1114 * 100%);
+  max-width: none;
+}
+.hidden,
+.waiting {
+  visibility: hidden;
+}

@@ -1,0 +1,15 @@
+/* `overflow: clip` cuts off artwork that reaches past the board like `hidden` does, but the box
+   is not a scroll container, so jumping to #contact can't scroll the board's content inside it. */
+.frame {
+  display: flow-root;
+  width: 100%;
+  overflow: clip;
+}
+.board {
+  position: relative;
+  display: flow-root;
+  width: var(--board);
+  zoom: var(--zoom);
+  overflow: clip;
+  background: var(--sand);
+}

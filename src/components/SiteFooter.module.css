@@ -1,0 +1,184 @@
+.footer {
+  display: flex;
+  align-items: center;
+}
+.sig {
+  line-height: 0;
+}
+.signature {
+  display: block;
+  width: 104px;
+  height: auto;
+}
+.copy,
+.keep,
+.role {
+  font-family: var(--serif);
+  letter-spacing: 0.06em;
+}
+.keep,
+.keep > span:first-child,
+.projects .copy {
+  display: flex;
+  align-items: center;
+}
+.keep i,
+.copy i {
+  display: block;
+  height: 1px;
+  background: var(--hair);
+}
+
+/* ── Home and inner pages: the pale band ── */
+.band {
+  position: relative;
+  height: 112px;
+  padding: 0 60px;
+  background: var(--band);
+  border-top: 1px solid var(--line);
+}
+.band .copy {
+  font-size: 12.5px;
+  color: var(--body);
+}
+.band .keep {
+  margin-left: auto;
+  gap: 14px;
+  font-size: 12.5px;
+  color: var(--text);
+}
+.band .keep > span:first-child {
+  gap: 14px;
+}
+.band .keep i {
+  width: 34px;
+}
+.home .sig {
+  width: 190px;
+}
+.page {
+  gap: 40px;
+}
+
+/* ── Projects page: drawn over the leaves that reach into it ── */
+.projects {
+  position: relative;
+  height: 80px;
+  padding: 0 42px;
+}
+.divider {
+  width: 1px;
+  height: 18px;
+  margin: 0 22px;
+  background: var(--hair);
+}
+.projects .role,
+.projects .copy {
+  font-size: 11.5px;
+  color: var(--text);
+}
+.projects .copy {
+  margin-left: auto;
+  gap: 16px;
+}
+.projects .copy i {
+  width: 32px;
+}
+
+@media (max-width: 1279.98px) {
+  .signature {
+    width: 92px;
+  }
+  .band {
+    padding: 0 40px;
+  }
+  .home {
+    height: 100px;
+  }
+  .home .sig {
+    width: 140px;
+  }
+  .home .copy,
+  .home .keep {
+    font-size: 12px;
+  }
+  .home .keep,
+  .home .keep > span:first-child {
+    gap: 12px;
+  }
+  .home .keep i {
+    width: 28px;
+  }
+  .projects {
+    height: 56.9px;
+    padding: 0 29.9px;
+  }
+  .divider {
+    width: 0.7px;
+    height: 12.8px;
+    margin: 0 15.6px;
+  }
+  .projects .role,
+  .projects .copy {
+    font-size: 8.2px;
+  }
+  .projects .copy {
+    gap: 11.4px;
+  }
+  .projects .copy i {
+    width: 22.8px;
+    height: 0.7px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .signature {
+    width: 84px;
+  }
+  .home {
+    display: block;
+    height: 100px;
+    padding: 22px 24px 0;
+  }
+  .home .copy {
+    display: block;
+    margin-top: 8px;
+    font-size: 11.5px;
+    letter-spacing: 0.05em;
+  }
+  .home .keep {
+    position: absolute;
+    right: 24px;
+    top: 30px;
+    display: block;
+    font-size: 11.5px;
+    letter-spacing: 0.05em;
+    line-height: 19px;
+    text-align: right;
+  }
+  .page {
+    height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 22px 24px 26px;
+  }
+  .page .keep {
+    margin-left: 0;
+  }
+  .projects {
+    display: block;
+    height: 92px;
+    padding: 22px 24px 0;
+  }
+  .divider {
+    display: none;
+  }
+  .projects .role,
+  .projects .copy {
+    display: block;
+    margin: 8px 0 0;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+  }
+}

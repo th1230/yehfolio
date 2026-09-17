@@ -1,0 +1,481 @@
+/* About page (canvas PageAbout / TabletAbout / MobileAbout). */
+
+/* ── hero: text on the left, slanted picture fading in on the right ── */
+.hero {
+  position: relative;
+  height: 720px;
+}
+.heroText {
+  position: absolute;
+  left: 169px;
+  top: 70px;
+  width: 500px;
+  z-index: 2;
+}
+.heroText h1 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 88px;
+  line-height: 1;
+  color: var(--text);
+}
+.en {
+  margin-top: 16px;
+  font-family: var(--serif);
+  font-size: 18px;
+  letter-spacing: 0.05em;
+  color: var(--deep);
+}
+.lead {
+  margin-top: 44px;
+  font-family: var(--tc);
+  font-weight: 600;
+  font-size: 17px;
+  letter-spacing: 0.14em;
+  line-height: 32px;
+  color: var(--text);
+}
+.body {
+  margin-top: 14px;
+  font-family: var(--tc);
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  line-height: 30px;
+  color: var(--body);
+}
+.actions {
+  margin-top: 40px;
+  display: flex;
+  gap: 16px;
+}
+.heroArt {
+  position: absolute;
+  left: 640px;
+  top: -30px;
+  width: 860px;
+  height: 720px;
+  clip-path: polygon(14% 9%, 100% 0, 100% 100%, 0 91%);
+  -webkit-mask-image: linear-gradient(90deg, rgb(0 0 0 / 0) 0%, #000 17%);
+  mask-image: linear-gradient(90deg, rgb(0 0 0 / 0) 0%, #000 17%);
+}
+.heroArt img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 62% 40%;
+}
+.heroNote {
+  position: absolute;
+  left: 770px;
+  top: 130px;
+  z-index: 2;
+  font-size: 22px;
+  transform: rotate(-12deg);
+}
+
+/* ── skills: four columns on a pale panel ── */
+.skills {
+  margin: 0 169px;
+  padding: 40px 8px;
+  border-radius: 24px;
+  background: linear-gradient(180deg, #edf6fa 0%, #f7fbfc 100%);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.skill {
+  padding: 4px 30px;
+  border-left: 1px solid #d9eaef;
+  display: flex;
+  flex-direction: column;
+}
+.skill:first-child {
+  border-left: 0;
+}
+.skillIcon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #fff;
+  display: grid;
+  place-items: center;
+}
+.skillIcon svg {
+  width: 28px;
+  height: 28px;
+}
+.skillTitle {
+  margin-top: 18px;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  column-gap: 10px;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--text);
+}
+.skillTitle small {
+  font-family: var(--tc);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  color: var(--mute);
+}
+.skillText {
+  margin-top: 10px;
+  font-family: var(--tc);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  line-height: 23px;
+  color: var(--body);
+}
+.skillText span {
+  display: inline-block;
+}
+.skillTags {
+  margin-top: auto;
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+.tagRow {
+  display: inline-flex;
+  gap: 6px;
+}
+.tagRow span {
+  font-family: var(--serif);
+  font-size: 11.5px;
+  color: var(--deep);
+  background: #fff;
+  padding: 3px 9px;
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 1px #d6e8ef;
+  white-space: nowrap;
+}
+
+/* ── experience: one line, year on the left, work on the right ── */
+.experience {
+  position: relative;
+  padding: 96px 169px 120px;
+}
+.timeline {
+  position: relative;
+  margin-top: 64px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 210px;
+  top: 12px;
+  bottom: 40px;
+  width: 1px;
+  background: var(--ocean);
+}
+.job {
+  display: grid;
+  grid-template-columns: 180px 60px minmax(0, 1fr);
+  padding-bottom: 56px;
+}
+.when {
+  padding-top: 3px;
+  text-align: right;
+  font-family: var(--serif);
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  color: var(--deep);
+  white-space: nowrap;
+}
+.dot {
+  position: relative;
+  z-index: 1;
+  justify-self: center;
+  width: 11px;
+  height: 11px;
+  margin-top: 8px;
+  border-radius: 50%;
+  background: var(--sand);
+  box-shadow: inset 0 0 0 1.5px var(--deep);
+}
+.jobBody h3 {
+  font-family: var(--tc);
+  font-weight: 600;
+  font-size: 19px;
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+  color: var(--text);
+}
+.role {
+  margin-top: 4px;
+  font-family: var(--serif);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  color: var(--mute);
+}
+.summary {
+  margin-top: 12px;
+  max-width: 640px;
+  font-family: var(--tc);
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  line-height: 28px;
+  color: var(--body);
+}
+.tags {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.tags li {
+  padding: 5px 12px;
+  border-radius: 6px;
+  background: var(--pill);
+  font-family: var(--serif);
+  font-size: 12.5px;
+  color: var(--deep);
+  transition: background-color var(--quick) var(--ease);
+}
+.tags li:hover {
+  background: rgb(112 188 224 / 0.3);
+}
+
+/* ── pasted photos ── */
+.polaroidOne,
+.polaroidTwo {
+  padding: 10px 10px 30px;
+}
+.polaroidOne .tape {
+  left: 36%;
+  top: -11px;
+  width: 62px;
+  height: 22px;
+  background: rgb(246 222 141 / 0.8);
+  transform: rotate(-5deg);
+}
+.polaroidOne {
+  right: 120px;
+  top: 560px;
+  width: 220px;
+  height: 180px;
+  transform: rotate(6deg);
+}
+.polaroidTwo {
+  right: 170px;
+  top: 1560px;
+  width: 200px;
+  height: 160px;
+  transform: rotate(-5deg);
+}
+
+/* ── tablet 1024 ── */
+@media (max-width: 1279.98px) {
+  .hero {
+    height: 620px;
+  }
+  .heroText {
+    left: 40px;
+    top: 40px;
+    width: 430px;
+  }
+  .heroText h1 {
+    font-size: 64px;
+  }
+  .en {
+    font-size: 16px;
+  }
+  .lead {
+    margin-top: 32px;
+    font-size: 15px;
+    line-height: 28px;
+  }
+  .body {
+    font-size: 13px;
+    line-height: 26px;
+  }
+  .actions {
+    margin-top: 30px;
+  }
+  .heroArt {
+    left: 450px;
+    top: -40px;
+    width: 620px;
+    height: 620px;
+  }
+  .heroNote {
+    left: 560px;
+    top: 110px;
+    font-size: 18px;
+  }
+  .skills {
+    margin: 0 40px;
+    padding: 6px 8px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .skill {
+    padding: 28px 30px;
+  }
+  .skill:nth-child(3) {
+    border-left: 0;
+  }
+  .skill:nth-child(n + 3) {
+    box-shadow: inset 0 1px 0 #d9eaef;
+  }
+  .skillTags {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .experience {
+    padding: 76px 40px 96px;
+  }
+  .timeline::before {
+    left: 150px;
+  }
+  .job {
+    grid-template-columns: 120px 60px minmax(0, 1fr);
+  }
+  .summary {
+    max-width: 560px;
+  }
+  .polaroidOne {
+    right: 24px;
+    top: 600px;
+    width: 160px;
+    height: 130px;
+  }
+  .polaroidTwo {
+    right: 34px;
+    top: 1700px;
+    width: 150px;
+    height: 120px;
+  }
+}
+
+/* ── phone 390 ── */
+@media (max-width: 767.98px) {
+  .hero {
+    height: auto;
+  }
+  .heroText {
+    position: static;
+    width: auto;
+    padding: 16px 24px 0;
+  }
+  .heroText h1 {
+    font-size: 52px;
+  }
+  .en {
+    margin-top: 12px;
+    font-size: 14px;
+  }
+  .lead {
+    margin-top: 26px;
+    font-size: 14.5px;
+    line-height: 26px;
+  }
+  .body {
+    font-size: 13px;
+    line-height: 25px;
+  }
+  .actions {
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 28px;
+  }
+  .actions > * {
+    width: 100%;
+  }
+  .heroArt {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 390px;
+    height: 300px;
+    margin-top: 36px;
+    clip-path: polygon(0 12%, 100% 0, 100% 100%, 0 90%);
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .heroNote {
+    display: none;
+  }
+  .skills {
+    margin: 24px 24px 0;
+    padding: 4px 20px;
+    border-radius: 18px;
+    grid-template-columns: 1fr;
+  }
+  .skill {
+    padding: 22px 0;
+    border-left: 0;
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    column-gap: 14px;
+    align-items: start;
+    box-shadow: none;
+  }
+  .skill + .skill {
+    box-shadow: inset 0 1px 0 #d9eaef;
+  }
+  .skillIcon {
+    width: 44px;
+    height: 44px;
+    grid-row: span 3;
+  }
+  .skillIcon svg {
+    width: 24px;
+    height: 24px;
+  }
+  .skillTitle {
+    margin-top: 2px;
+    font-size: 18px;
+  }
+  .skillText {
+    margin-top: 6px;
+    font-size: 12.5px;
+    line-height: 21px;
+  }
+  .skillTags {
+    padding-top: 10px;
+  }
+  .experience {
+    padding: 56px 24px 72px;
+  }
+  .timeline {
+    margin-top: 40px;
+  }
+  .timeline::before {
+    left: 5px;
+  }
+  .job {
+    grid-template-columns: 24px minmax(0, 1fr);
+    padding-bottom: 40px;
+  }
+  .dot {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    justify-self: start;
+    margin-top: 5px;
+  }
+  .when {
+    grid-column: 2;
+    padding: 0 0 6px;
+    text-align: left;
+    font-size: 13.5px;
+  }
+  .jobBody {
+    grid-column: 2;
+  }
+  .jobBody h3 {
+    font-size: 17px;
+  }
+  .summary {
+    font-size: 13px;
+    line-height: 25px;
+  }
+  .polaroidOne,
+  .polaroidTwo {
+    display: none;
+  }
+}
